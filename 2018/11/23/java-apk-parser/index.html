@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-material.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zpp0196.me","root":"/","images":"/images","scheme":"Gemini","darkmode":"auto","version":"8.15.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="apk-parser，一个纯 Java 实现的解析 Apk 的 lib，用于解码二进制 xml 文件，获取 Apk 信息。 Features  查看 Apk 的信息，如应用名、图标、包名、SDK 版本、权限、版本等 将二进制 xml 文件解析并转换为文本 从 dex 文件中获取类 获取签名信息">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 解析 apk 信息">
+<meta property="og:url" content="https://zpp0196.me/2018/11/23/java-apk-parser/index.html">
+<meta property="og:site_name" content="zpp0196&#39;s Blog">
+<meta property="og:description" content="apk-parser，一个纯 Java 实现的解析 Apk 的 lib，用于解码二进制 xml 文件，获取 Apk 信息。 Features  查看 Apk 的信息，如应用名、图标、包名、SDK 版本、权限、版本等 将二进制 xml 文件解析并转换为文本 从 dex 文件中获取类 获取签名信息">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-11-23T00:00:00.000Z">
+<meta property="article:modified_time" content="2018-11-23T00:00:00.000Z">
+<meta property="article:author" content="zpp0196">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="开源项目">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zpp0196.me/2018/11/23/java-apk-parser/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://zpp0196.me/2018/11/23/java-apk-parser/","path":"2018/11/23/java-apk-parser/","title":"Java 解析 apk 信息"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java 解析 apk 信息 | zpp0196's Blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1733106d19266620cbe7fcfa32eef010"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">zpp0196's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">7</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Features"><span class="nav-number">1.</span> <span class="nav-text">Features</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Get-apk-parser"><span class="nav-number">2.</span> <span class="nav-text">Get apk-parser</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Maven"><span class="nav-number">2.1.</span> <span class="nav-text">Maven</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle"><span class="nav-number">2.2.</span> <span class="nav-text">Gradle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub"><span class="nav-number">2.3.</span> <span class="nav-text">GitHub</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jar"><span class="nav-number">2.4.</span> <span class="nav-text">Jar</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Usage"><span class="nav-number">3.</span> <span class="nav-text">Usage</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Apk-info"><span class="nav-number">3.1.</span> <span class="nav-text">Apk info</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Get-binary-xml-and-manifest-xml-file"><span class="nav-number">3.2.</span> <span class="nav-text">Get binary xml and manifest xml file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Get-dex-classes"><span class="nav-number">3.3.</span> <span class="nav-text">Get dex classes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Get-Apk-Sign-info"><span class="nav-number">3.4.</span> <span class="nav-text">Get Apk Sign info</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Save-icon"><span class="nav-number">3.5.</span> <span class="nav-text">Save icon</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zpp0196"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">zpp0196</p>
+  <div class="site-description" itemprop="description">欢迎来到本萌新的博客</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zpp0196" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zpp0196" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zpp0196@gmail.com" title="Mail → mailto:zpp0196@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zpp0196.me/2018/11/23/java-apk-parser/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="zpp0196">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zpp0196's Blog">
+      <meta itemprop="description" content="欢迎来到本萌新的博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java 解析 apk 信息 | zpp0196's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 解析 apk 信息
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018/11/23 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-23T00:00:00+00:00">2018/11/23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Android-%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android 开发</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/11/23/java-apk-parser/" class="post-meta-item leancloud_visitors" data-flag-title="Java 解析 apk 信息" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="https://github.com/xiaxiaocao/apk-parser">apk-parser</a>，一个纯 Java 实现的解析 Apk 的 lib，用于解码二进制 xml 文件，获取 Apk 信息。</p>
+<h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><ul>
+<li> 查看 Apk 的信息，如应用名、图标、包名、SDK 版本、权限、版本等</li>
+<li>将二进制 xml 文件解析并转换为文本</li>
+<li>从 dex 文件中获取类</li>
+<li>获取签名信息</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="Get-apk-parser"><a href="#Get-apk-parser" class="headerlink" title="Get apk-parser"></a>Get apk-parser</h2><h3 id="Maven"><a href="#Maven" class="headerlink" title="Maven"></a>Maven</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>net.dongliu<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>apk-parser<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6.10<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://mvnrepository.com/artifact/net.dongliu/apk-parser">Maven Repository: net.dongliu » apk-parser</a></p>
+<h3 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h3><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// compile group: &#x27;net.dongliu&#x27;, name: &#x27;apk-parser&#x27;, version: &#x27;2.6.10&#x27;</span></span><br><span class="line"><span class="keyword">compile</span> <span class="string">&#x27;net.dongliu:apk-parser:2.6.10&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h3><p><a target="_blank" rel="noopener" href="https://github.com/hsiafan/apk-parser/releases">Releases · hsiafan&#x2F;apk-parser</a></p>
+<h3 id="Jar"><a href="#Jar" class="headerlink" title="Jar"></a>Jar</h3><p><a target="_blank" rel="noopener" href="http://central.maven.org/maven2/net/dongliu/apk-parser/">Central Repository: net&#x2F;dongliu&#x2F;apk-parser</a></p>
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><p>使用 ApkFile 类来获取 AndroidManifest.xml、apk 的信息。</p>
+<h3 id="Apk-info"><a href="#Apk-info" class="headerlink" title="Apk info"></a>Apk info</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApkFile</span> <span class="variable">apkFile</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    apkFile = <span class="keyword">new</span> <span class="title class_">ApkFile</span>(<span class="keyword">new</span> <span class="title class_">File</span>(apkPath));</span><br><span class="line">    <span class="type">ApkMeta</span> <span class="variable">apkMeta</span> <span class="operator">=</span> apkFile.getApkMeta();</span><br><span class="line">    <span class="comment">// System.out.println(apkMeta);</span></span><br><span class="line">    System.out.println(<span class="string">&quot;应用名：&quot;</span> + apkMeta.getLabel());</span><br><span class="line">    System.out.println(<span class="string">&quot;包名：&quot;</span> + apkMeta.getPackageName());</span><br><span class="line">    System.out.println(<span class="string">&quot;版本：&quot;</span> + apkMeta.getVersionName());</span><br><span class="line">    System.out.println(<span class="string">&quot;版本号：&quot;</span> + apkMeta.getVersionCode());</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// TODO close apkFile</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>ApkFile 使用完后记得释放资源。</p>
+</blockquote>
+<h3 id="Get-binary-xml-and-manifest-xml-file"><a href="#Get-binary-xml-and-manifest-xml-file" class="headerlink" title="Get binary xml and manifest xml file"></a>Get binary xml and manifest xml file</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApkFile</span> <span class="variable">apkFile</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    apkFile = <span class="keyword">new</span> <span class="title class_">ApkFile</span>(<span class="keyword">new</span> <span class="title class_">File</span>(apkPath));</span><br><span class="line">    <span class="type">String</span> <span class="variable">manifestXml</span> <span class="operator">=</span> apkFile.getManifestXml();</span><br><span class="line">    <span class="type">String</span> <span class="variable">menuXml</span> <span class="operator">=</span> apkFile.transBinaryXml(<span class="string">&quot;res/menu/main.xml&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// TODO close apkFile</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Get-dex-classes"><a href="#Get-dex-classes" class="headerlink" title="Get dex classes"></a>Get dex classes</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApkFile</span> <span class="variable">apkFile</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    apkFile = <span class="keyword">new</span> <span class="title class_">ApkFile</span>(<span class="keyword">new</span> <span class="title class_">File</span>(apkPath));</span><br><span class="line">    DexClass[] classes = apkFile.getDexClasses();</span><br><span class="line">    <span class="keyword">for</span> (DexClass dexClass : classes) &#123;</span><br><span class="line">        System.out.println(dexClass);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// TODO close apkFile</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Get-Apk-Sign-info"><a href="#Get-Apk-Sign-info" class="headerlink" title="Get Apk Sign info"></a>Get Apk Sign info</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApkFile</span> <span class="variable">apkFile</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    apkFile = <span class="keyword">new</span> <span class="title class_">ApkFile</span>(<span class="keyword">new</span> <span class="title class_">File</span>(apkPath));</span><br><span class="line">    List&lt;ApkSigner&gt; signers = apkFile.getApkSingers(); <span class="comment">// apk v1 signers</span></span><br><span class="line">    List&lt;ApkV2Signer&gt; v2signers = apkFile.getApkV2Singers(); <span class="comment">// apk v2 signers</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// TODO close apkFile</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Save-icon"><a href="#Save-icon" class="headerlink" title="Save icon"></a>Save icon</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">ApkFile</span> <span class="variable">apkFile</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="type">String</span> <span class="variable">apkPath</span> <span class="operator">=</span> <span class="string">&quot;C:/test.apk&quot;</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        apkFile = <span class="keyword">new</span> <span class="title class_">ApkFile</span>(<span class="keyword">new</span> <span class="title class_">File</span>(apkPath));</span><br><span class="line">        <span class="comment">// 保存所有 icon</span></span><br><span class="line">        <span class="keyword">for</span> (IconFace iconFace : apkFile.getAllIcons()) &#123;</span><br><span class="line">            saveIcon(savePath, iconFace);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 保存主 icon</span></span><br><span class="line">        <span class="comment">// saveIcon(savePath, apkFile.getIconFile());</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="comment">// TODO close apkFile</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 保存 apk 的 icon</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> savePath 保存的目录</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> icon</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">saveIcon</span><span class="params">(String savePath, IconFace iconFace)</span></span><br><span class="line">        <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">iconPath</span> <span class="operator">=</span> iconFace.getPath();</span><br><span class="line">    <span class="type">String</span> <span class="variable">iconName</span> <span class="operator">=</span> iconPath.substring(iconPath.lastIndexOf(<span class="string">&quot;/&quot;</span>) + <span class="number">1</span>);</span><br><span class="line">    <span class="type">File</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(savePath + iconName);</span><br><span class="line">    <span class="keyword">if</span> (!file.exists()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!file.getParentFile().exists()) &#123;</span><br><span class="line">             file.getParentFile().mkdirs();</span><br><span class="line">        &#125;</span><br><span class="line">        file.createNewFile();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">FileOutputStream</span> <span class="variable">fos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(file);</span><br><span class="line">    fos.write(iconFace.getData());</span><br><span class="line">    fos.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"><i class="fa fa-tag"></i> Android</a>
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+              <a href="/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/" rel="tag"><i class="fa fa-tag"></i> 开源项目</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/17/win10-dolby/" rel="prev" title="Windows 10 安装 Dolby 音效">
+                  <i class="fa fa-chevron-left"></i> Windows 10 安装 Dolby 音效
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/24/java-design-singleton/" rel="next" title="Java 设计模式之单例模式">
+                  Java 设计模式之单例模式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zpp0196</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/zpp0196" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"Ri5tyXNSjSPriqqfrPdoJnMg-gzGzoHsz","app_key":"jWpytCCWLbvDghDuIPNxA5Wp","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"zpp0196-blog","count":false,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1791 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Markdown 书写语法及规范</title>
+    <url>/2017/11/05/markdown-grammar/</url>
+    <content><![CDATA[<p><img src="/images/markdown.png" alt="markdown"></p>
+<span id="more"></span>
+
+<h2 id="区块元素"><a href="#区块元素" class="headerlink" title="区块元素"></a>区块元素</h2><h3 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h3><p><strong>Markdown</strong> 支持两种标题的语法，类 <em>Setext</em> 和类 <em>atx</em> 形式。</p>
+<p>类 <em>Setext</em> 形式是用底线的形式，利用 <code>=</code> （最高阶标题）和 <code>-</code> （第二阶标题），例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这是一级标题</span><br><span class="line">==========</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这是二级标题</span><br><span class="line">----------</span><br></pre></td></tr></table></figure>
+
+<p>至少两个以上的 <code>=</code> 和 <code>-</code> 都可以有效果。</p>
+<p>类 <em>Atx</em> 形式则是在行首插入 1 到 6 个 <code>#</code> ，对应到标题 1 到 6 阶，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 这是一级标题</span><br><span class="line"></span><br><span class="line">## 这是二级标题</span><br><span class="line"></span><br><span class="line">### 这是三级标题</span><br><span class="line"></span><br><span class="line">#### 这是四级标题</span><br><span class="line"></span><br><span class="line">##### 这是五级标题</span><br><span class="line"></span><br><span class="line">###### 这是六级标题</span><br></pre></td></tr></table></figure>
+
+<p>你可以选择性地「闭合」类 <code>atx</code> 样式的标题，这纯粹只是美观用的，若是觉得这样看起来比较舒适，你就可以在行尾加上 <code>#</code> ，而行尾的 <code>#</code> 数量也不用和开头一样（行首的井字符数量决定标题的阶数）：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 这是一级标题 #</span><br><span class="line"></span><br><span class="line">## 这是二级标题 ##</span><br><span class="line"></span><br><span class="line">### 这是三级标题 ###</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="区块引用"><a href="#区块引用" class="headerlink" title="区块引用"></a>区块引用</h3><p><strong>Markdown</strong> 区块引用是使用类似 email 中用 <code>&gt;</code> 的引用方式。如果你还熟悉在 email 信件中的引言部分，你就知道怎么在 <strong>Markdown</strong> 文件中建立一个区块引用，那会看起来像是你自己先断好行，然后在每行的最前面加上 <code>&gt;</code> ：</p>
+<blockquote>
+<p>引用区块的第一段。</p>
+<p>引用区块的第二段。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; 引用区块的第一段。</span><br><span class="line">&gt; </span><br><span class="line">&gt; 引用区块的第二段。</span><br></pre></td></tr></table></figure>
+
+<p><strong>Markdown</strong> 也允许你偷懒只在整个段落的第一行最前面加上 <code>&gt;</code> ：</p>
+<blockquote>
+<p>从前有座山，山里有个庙，庙里有个老和尚，给小和尚讲故事。故事讲的是：从前有座山，山里有个庙，庙里有个老和尚，给小和尚讲故事。故事讲的是：从前有座山，山里有个庙，庙里有个缸，缸里有个盆，盆里有个碗，碗里有个豆，我吃了，你馋了（完）。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; 从前有座山，山里有个庙，庙里有个老和尚，给小和尚讲故事。故事讲的是：从前有座山，山里有个庙，庙里有个老和尚，给小和尚讲故事。故事讲的是：从前有座山，山里有个庙，庙里有个缸，缸里有个盆，盆里有个碗，碗里有个豆，我吃了，你馋了（完）。</span><br></pre></td></tr></table></figure>
+
+<p>区块引用可以嵌套（例如：引用内的引用），只要根据层次加上不同数量的 <code>&gt;</code> ：</p>
+<blockquote>
+<p>这是第一个引用。</p>
+<blockquote>
+<p>这是嵌套引用。</p>
+</blockquote>
+<p>回到第一级。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; 这是第一个引用。</span><br><span class="line">&gt; </span><br><span class="line">&gt; &gt; 这是嵌套引用。</span><br><span class="line">&gt; </span><br><span class="line">&gt; 回到第一级。</span><br></pre></td></tr></table></figure>
+
+<p>引用的区块内也可以使用其他的 <strong>Markdown</strong> 语法，包括强调、列表、代码块等：</p>
+<blockquote>
+<p><strong>这是一段强调文本</strong></p>
+<ol>
+<li>这是第一行列表项。</li>
+<li>这是第二行列表项。</li>
+</ol>
+</blockquote>
+<hr>
+<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><p><strong>Markdown</strong> 支持有序列表和无序列表。</p>
+<p>无序列表使用 <code>*</code> 、 <code>+</code> 或是 <code>-</code> 作为列表标记：</p>
+<ul>
+<li>Red</li>
+<li>Green</li>
+<li>Blue</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* Red</span><br><span class="line">* Green</span><br><span class="line">* Blue</span><br></pre></td></tr></table></figure>
+<p>等同于：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">+ Red</span><br><span class="line">+ Green</span><br><span class="line">+ Blue</span><br></pre></td></tr></table></figure>
+
+<p>也等同于：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- Red</span><br><span class="line">- Green</span><br><span class="line">- Blue</span><br></pre></td></tr></table></figure>
+
+<p>有序列表则使用数字接着一个英文句点：</p>
+<ol>
+<li>Red</li>
+<li>Green</li>
+<li>Blue</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. Red</span><br><span class="line">2. Green</span><br><span class="line">3. Blue</span><br></pre></td></tr></table></figure>
+
+<p>很重要的一点是，你在列表标记上使用的数字并不会影响输出的 <strong>HTML</strong> 结果，上面的列表所产生的 <strong>HTML</strong> 标记为：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ol</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>Red<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>Green<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>Blue<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ol</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你的列表标记写成：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. Red</span><br><span class="line">1. Green</span><br><span class="line">1. Blue</span><br></pre></td></tr></table></figure>
+
+<p>或甚至是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">5. Red</span><br><span class="line">2. Green</span><br><span class="line">1. Blue</span><br></pre></td></tr></table></figure>
+
+<p>你都会得到完全相同的 <strong>HTML</strong> 输出。重点在于，你可以让 <strong>Markdown</strong> 文件的列表数字和输出的结果相同，或是你懒一点，你可以完全不用在意数字的正确性。</p>
+<p>如果你使用懒惰的写法，建议第一个项目最好还是从 <code>1.</code> 开始，因为 <strong>Markdown</strong> 未来可能会支持有序列表的 <code>start</code> 属性。</p>
+<hr>
+<h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>和程序相关的写作或是标签语言原始码通常会有已经排版好的代码区块，通常这些区块我们并不希望它以一般段落文件的方式去排版，而是照原来的样子显示，<strong>Markdown</strong> 会用 <code>&lt;pre&gt;</code> 和 <code>&lt;code&gt;</code> 来把代码区块包起来。</p>
+<p>要在 <strong>Markdown</strong> 中建立代码区块很简单，只要简单地缩进 4 个空格或是 1 个制表符就可以，例如下面的输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这是一个普通段落。</span><br><span class="line"></span><br><span class="line">    这是一个代码区块。</span><br></pre></td></tr></table></figure>
+
+<p><strong>Markdown</strong> 会转换成：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>这是一个普通段落。<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">pre</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span>这是一个代码区块。<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个每行一阶的缩进（4 个空格或是 1 个制表符），都会被移除，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Here is an example of AppleScript:</span><br><span class="line"></span><br><span class="line">    tell application &quot;Foo&quot;</span><br><span class="line">        beep</span><br><span class="line">    end tell</span><br></pre></td></tr></table></figure>
+
+<p>会被转换为：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Here is an example of AppleScript:<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">pre</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span></span><br><span class="line">    tell application &quot;Foo&quot;</span><br><span class="line">        beep</span><br><span class="line">    end tell</span><br><span class="line"><span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>一个代码区块会一直持续到没有缩进的那一行（或是文件结尾）。</p>
+<p>在代码区块里面， <code>&amp;</code> 、 <code>&lt;</code> 和 <code>&gt;</code> 会自动转成 <strong>HTML</strong> 实体，这样的方式让你非常容易使用 <strong>Markdown</strong> 插入范例用的 <strong>HTML</strong> 原始码，只需要复制贴上，再加上缩进就可以了，剩下的 <strong>Markdown</strong> 都会帮你处理，例如：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;footer&quot;</span>&gt;</span></span><br><span class="line">    <span class="symbol">&amp;copy;</span> 2004 Foo Corporation</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>会被转换为：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">pre</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span></span><br><span class="line"><span class="symbol">&amp;lt;</span>div class=&quot;footer&quot;<span class="symbol">&amp;gt;</span></span><br><span class="line">    <span class="symbol">&amp;amp;</span>copy; 2004 Foo Corporation</span><br><span class="line"><span class="symbol">&amp;lt;</span>/div<span class="symbol">&amp;gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h4><p>不要 在 shell 代码前加 <code>$</code> 符号，除非你想要展示命令的输出。</p>
+<p>解释：复制粘贴比较困难，不利于阅读。</p>
+<p>建议使用:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> a</span><br><span class="line"><span class="built_in">echo</span> a &gt; file</span><br></pre></td></tr></table></figure>
+
+<p>展示输出:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> a</span><br><span class="line">a</span><br><span class="line">$ <span class="built_in">echo</span> a &gt; file</span><br></pre></td></tr></table></figure>
+
+<p>不建议：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ echo a</span><br><span class="line">$ echo a &gt; file</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h3><p>你可以在一行中用三个以上的 <code>*</code> 、 <code>-</code> 、 <code>_</code> 来建立一个分隔线，行内不能有其他东西。你也可以在 <code>*</code> 或是 <code>-</code> 中间插入空格。下面每种写法都可以建立分隔线：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* * *</span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line">- - -</span><br><span class="line"></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="区段元素"><a href="#区段元素" class="headerlink" title="区段元素"></a>区段元素</h2><h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p><strong>Markdown</strong> 支持两种形式的链接语法： 行内式和参考式两种形式。</p>
+<p>不管是哪一种，链接文字都是用 <code>[]</code> 来标记。</p>
+<p>要建立一个行内式的链接，只要在 <code>[]</code> 后面紧接着 <code>()</code> 并插入网址链接即可，如果你还想要加上链接的 title 文字，只要在网址后面，用 <code>&quot;&quot;</code> 把 title 文字包起来即可，例如：</p>
+<p>欢迎来到<a href="https://zpp0196.me/" title="zpp0196&#39;s Blog">我的博客</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">欢迎来到[我的博客](https://zpp0196.me/ &quot;zpp0196&#x27;s Blog&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>转换后的 <strong>HTML</strong> 代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>欢迎来到<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://zpp0196.me/&quot;</span> <span class="attr">title</span>=<span class="string">&quot;zpp0196&#x27;s Blog&quot;</span>&gt;</span>我的博客<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你是要链接到该主机的资源，你可以使用相对路径：</p>
+<p><a href="/404.html">公益404</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[公益404](/404.html)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="锚链接"><a href="#锚链接" class="headerlink" title="锚链接"></a><a name="锚链接">锚链接</a></h3><p>直接使用 <strong>HTML</strong> 中的锚链接语法即可。</p>
+<p><a href="#锚链接">点击回到本节标题</a></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">## <span class="tag">&lt;<span class="name">a</span> <span class="attr">name</span>=<span class="string">&quot;锚链接&quot;</span>&gt;</span>锚链接<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#锚链接&quot;</span>&gt;</span>点击回到本节标题<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="强调"><a href="#强调" class="headerlink" title="强调"></a>强调</h3><p><strong>Markdown</strong> 使用 <code>*</code> 和 <code>_</code> 作为标记强调字词的符号，被 <code>*</code> 或 <code>_</code> 包围的字词会被转成用 <code>&lt;em&gt;</code> 标签包围，用两个 <code>*</code> 或 <code>_</code> 包起来的话，则会被转成 <code>&lt;strong&gt;</code> ，例如：</p>
+<p><em>single asterisks</em></p>
+<p><em>single underscores</em></p>
+<p><strong>double asterisks</strong></p>
+<p><strong>double underscores</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*single asterisks*</span><br><span class="line"></span><br><span class="line">_single underscores_</span><br><span class="line"></span><br><span class="line">**double asterisks**</span><br><span class="line"></span><br><span class="line">__double underscores__</span><br></pre></td></tr></table></figure>
+
+<p>转换后的 <strong>HTML</strong> 代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">em</span>&gt;</span>single asterisks<span class="tag">&lt;/<span class="name">em</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">em</span>&gt;</span>single underscores<span class="tag">&lt;/<span class="name">em</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">strong</span>&gt;</span>double asterisks<span class="tag">&lt;/<span class="name">strong</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">strong</span>&gt;</span>double underscores<span class="tag">&lt;/<span class="name">strong</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>你可以随便用你喜欢的样式，唯一的限制是，你用什么符号开启标签，就要用什么符号结束。</p>
+<p>强调也可以直接插在文字中间：</p>
+<p>un<em>frigging</em>believable</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">un*frigging*believable</span><br></pre></td></tr></table></figure>
+
+<p>但是如果你的 <code>*</code> 和 <code>_</code> 两边都有空白的话，它们就只会被当成普通的符号。</p>
+<p>如果要在文字前后直接插入普通的 <code>*</code> 或 <code>_</code> ，你可以用 <code>\</code> ：</p>
+<p>*this text is surrounded by literal asterisks*</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\*this text is surrounded by literal asterisks\*</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>如果要标记一小段行内代码，你可以用 <strong>&#96;</strong> 把它包起来，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Use the `printf()` function.</span><br></pre></td></tr></table></figure>
+
+<p>转换后的 <strong>HTML</strong> 代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Use the <span class="tag">&lt;<span class="name">code</span>&gt;</span>printf()<span class="tag">&lt;/<span class="name">code</span>&gt;</span> function.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果要在代码区段内插入 <strong>`** ，你可以用至少 **n + 1** 个 **`</strong> 来开启和结束代码区段：</p>
+<p><code>There is a literal backtick (`) here.</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">``There is a literal backtick (`) here.``</span><br></pre></td></tr></table></figure>
+
+<p>转换后的 <strong>HTML</strong> 代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span>There is a literal backtick (`) here.<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在代码区段内， <code>&amp;</code> 和 <code>&lt;&gt;</code> 都会被自动地转成 <strong>HTML</strong> 实体，这使得插入 <strong>HTML</strong> 原始码变得很容易，<strong>Markdown</strong> 会把下面这段：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Please don&#x27;t use any `&lt;blink&gt;` tags.</span><br></pre></td></tr></table></figure>
+
+<p>转换为：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Please don&#x27;t use any <span class="tag">&lt;<span class="name">code</span>&gt;</span><span class="symbol">&amp;lt;</span>blink<span class="symbol">&amp;gt;</span><span class="tag">&lt;/<span class="name">code</span>&gt;</span> tags.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>你也可以这样写：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">`&amp;#8212;` is the decimal-encoded equivalent of `&amp;mdash;`.</span><br></pre></td></tr></table></figure>
+
+<p>转换后的 <strong>HTML</strong> 代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">code</span>&gt;</span><span class="symbol">&amp;amp;</span>#8212;<span class="tag">&lt;/<span class="name">code</span>&gt;</span> is the decimal-encoded equivalent of <span class="tag">&lt;<span class="name">code</span>&gt;</span><span class="symbol">&amp;amp;</span>mdash;<span class="tag">&lt;/<span class="name">code</span>&gt;</span>.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h3><p><strong>Markdown</strong> 使用一种和链接很相似的语法来标记图片，同样也允许两种样式：行内式和参考式。</p>
+<p>行内式的图片语法看起来像是：</p>
+<p><img src="http://api.dujin.org/bing/1920.php" alt="Bing 每日一图"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">![Bing 每日一图](http://api.dujin.org/bing/1920.php)</span><br><span class="line"></span><br><span class="line">![Bing 每日一图](http://api.dujin.org/bing/1920.php &quot;Bing 每日一图&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>详细格式如下：</p>
+<ol>
+<li>前面一个 <code>!</code>。</li>
+<li>接着一对 <code>[]</code>，里面放上图片的替代文字。</li>
+<li>接着一对 <code>()</code>，里面放上图片的网址，最后还可以用引号包住并加上选择性的 <code>title</code> 文字。</li>
+</ol>
+<p>到目前为止，<strong>Markdown</strong> 还没有办法指定图片的宽高，如果你需要的话，你可以使用 <strong>HTML</strong> 中的 <code>&lt;img&gt;</code> 标签。</p>
+<hr>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="自动链接"><a href="#自动链接" class="headerlink" title="自动链接"></a>自动链接</h3><p><strong>Markdown</strong> 支持以比较简短的自动链接形式来处理网址和电子邮件信箱，只要是用 <code>&lt;&gt;</code> 方括号包起来， <strong>Markdown</strong> 就会自动把它转成链接。一般网址的链接文字就和链接地址一样，例如：</p>
+<p><a href="https://zpp0196.me/">https://zpp0196.me</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;https://zpp0196.me&gt;</span><br></pre></td></tr></table></figure>
+
+<p>转换后的 <strong>HTML</strong> 代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://zpp0196.me&quot;</span>&gt;</span>https://zpp0196.me<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>邮址的自动链接也很类似，只是 <strong>Markdown</strong> 会先做一个编码转换的过程，把文字字符转成 16 进位码的 <strong>HTML</strong> 实体，这样的格式可以糊弄一些不好的邮址收集机器人，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;address@example.com&gt;</span><br></pre></td></tr></table></figure>
+
+<p>转换后的 <strong>HTML</strong> 代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;<span class="symbol">&amp;#x6D;</span><span class="symbol">&amp;#x61;</span>i<span class="symbol">&amp;#x6C;</span><span class="symbol">&amp;#x74;</span><span class="symbol">&amp;#x6F;</span>:<span class="symbol">&amp;#x61;</span><span class="symbol">&amp;#x64;</span><span class="symbol">&amp;#x64;</span><span class="symbol">&amp;#x72;</span><span class="symbol">&amp;#x65;</span><span class="symbol">&amp;#115;</span><span class="symbol">&amp;#115;</span><span class="symbol">&amp;#64;</span><span class="symbol">&amp;#101;</span><span class="symbol">&amp;#120;</span><span class="symbol">&amp;#x61;</span>#109;<span class="symbol">&amp;#x70;</span><span class="symbol">&amp;#x6C;</span>e<span class="symbol">&amp;#x2E;</span><span class="symbol">&amp;#99;</span><span class="symbol">&amp;#111;</span><span class="symbol">&amp;#109;</span>&quot;</span>&gt;</span><span class="symbol">&amp;#x61;</span><span class="symbol">&amp;#x64;</span><span class="symbol">&amp;#x64;</span><span class="symbol">&amp;#x72;</span><span class="symbol">&amp;#x65;</span><span class="symbol">&amp;#115;</span><span class="symbol">&amp;#115;</span><span class="symbol">&amp;#64;</span><span class="symbol">&amp;#101;</span><span class="symbol">&amp;#120;</span><span class="symbol">&amp;#x61;</span><span class="symbol">&amp;#109;</span><span class="symbol">&amp;#x70;</span><span class="symbol">&amp;#x6C;</span>e<span class="symbol">&amp;#x2E;</span><span class="symbol">&amp;#99;</span><span class="symbol">&amp;#111;</span><span class="symbol">&amp;#109;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在浏览器里面，这段字符串转码后的结果是 <code>&lt;a href=&quot;mailto:address@example.com&quot;&gt;address@example.com&lt;/a&gt;</code> ，即一个可以点击的 <a href="mailto:&#97;&#x64;&#x64;&#114;&#x65;&#x73;&#x73;&#64;&#x65;&#x78;&#x61;&#x6d;&#112;&#108;&#101;&#x2e;&#99;&#111;&#109;">&#97;&#x64;&#x64;&#114;&#x65;&#x73;&#x73;&#64;&#x65;&#x78;&#x61;&#x6d;&#112;&#108;&#101;&#x2e;&#99;&#111;&#109;</a> 链接。</p>
+<p>（这种作法虽然可以糊弄不少的机器人，但并不能全部挡下来，不过总比什么都不做好些。不管怎样，公开你的信箱终究会引来广告信件的。）</p>
+<hr>
+<h3 id="反斜杠"><a href="#反斜杠" class="headerlink" title="反斜杠"></a>反斜杠</h3><p><strong>Markdown</strong> 可以利用 <code>\</code> 来插入一些在语法中有其它意义的符号，例如：如果你想要用 <code>*</code> 加在文字旁边的方式来做出强调效果（但不用 <code>&lt;em&gt;</code> 标签），你可以在 <code>*</code> 号的前面加上 <code>\</code> ：</p>
+<p>*literal asterisks*</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\*literal asterisks\*</span><br></pre></td></tr></table></figure>
+
+<p><strong>Markdown</strong> 支持以下这些符号前面加上 <code>\</code> 来帮助插入普通的符号：</p>
+<ul>
+<li><code>\</code> 反斜线</li>
+<li><code>`</code> 反引号</li>
+<li><code>*</code> 星号</li>
+<li><code>_</code> 底线</li>
+<li><code>#</code> 井字号</li>
+<li><code>+</code> 加号</li>
+<li><code>-</code> 减号</li>
+<li><code>.</code> 英文句点</li>
+<li><code>!</code> 惊叹号</li>
+<li><code>()</code> 括弧</li>
+<li><code>[]</code> 方括号</li>
+<li><code>&#123;&#125;</code> 花括号</li>
+<li><code>|</code> 仅在制作表格中有效</li>
+</ul>
+<hr>
+<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><table>
+<thead>
+<tr>
+<th>姓名</th>
+<th>性别</th>
+<th>年龄</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>张三</td>
+<td>男</td>
+<td>24</td>
+</tr>
+<tr>
+<td>李四</td>
+<td>男</td>
+<td>25</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">| 姓名 | 性别 | 年龄 |</span><br><span class="line">| --- | --- | --- |</span><br><span class="line">| 张三 | 男 | 24 |</span><br><span class="line">| 李四 | 男 | 25 |</span><br></pre></td></tr></table></figure>
+
+<p>参考上面的格式自行修改，<code>|</code> 旁边的空格只是为了美观，可以没有，如果要在表格中显示 <code>|</code> 可以在前面加上转义字符 <code>\</code> 。</p>
+<blockquote>
+<p>Markwon 暂不支持表格内容居中显示，如果需要表格内容居中显示，将需要居中的内容按照这种格式写即可： <code>&lt;center&gt;需要居中的内容&lt;/center&gt;</code> 。</p>
+</blockquote>
+<hr>
+<h3 id="下划线"><a href="#下划线" class="headerlink" title="下划线"></a>下划线</h3><p><u>带下划线的句子。</u></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">u</span>&gt;</span>带下划线的句子。<span class="tag">&lt;/<span class="name">u</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如上，直接使用 <strong>HTML</strong> 的 <code>&lt;u&gt;</code> 标签就行了。</p>
+<hr>
+<h3 id="删除线"><a href="#删除线" class="headerlink" title="删除线"></a>删除线</h3><p><del>带删除线的句子。</del></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">~~带删除线的句子。~~</span><br></pre></td></tr></table></figure>
+
+<p>在需要删除的句子前后各加上两个 <code>~</code> 即可。</p>
+<hr>
+<h3 id="MiscStuff"><a href="#MiscStuff" class="headerlink" title="MiscStuff"></a>MiscStuff</h3><blockquote>
+<p>Lorem <sup>superscript</sup> dolor <sub>subscript</sub> amet, consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. <cite>cite</cite>. Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus. Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. <acronym title="National Basketball Association">NBA</acronym> Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.  <abbr title="Avenue">AVE</abbr></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Lorem &lt;sup&gt;superscript&lt;/sup&gt; dolor &lt;sub&gt;subscript&lt;/sub&gt; amet, consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. &lt;cite&gt;cite&lt;/cite&gt;. Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus. Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. &lt;acronym title=&quot;National Basketball Association&quot;&gt;NBA&lt;/acronym&gt; Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.  &lt;abbr title=&quot;Avenue&quot;&gt;AVE&lt;/abbr&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此段内容引用自<a href="http://simpleyyt.com/jekyll-theme-next/foo/2013/12/24/elements/">jekyll-theme-next-demo</a>。</p>
+</blockquote>
+<hr>
+<h2 id="编写规范"><a href="#编写规范" class="headerlink" title="编写规范"></a>编写规范</h2><ul>
+<li><p>文件后缀<strong>必须</strong>使用 <code>.md</code>。</p>
+</li>
+<li><p>文件名必须<strong>必须</strong>使用<strong>小写</strong>，多个单词之间使用 <code>-</code> 分隔。</p>
+</li>
+<li><p>文件编码必须<strong>必须</strong>用 <code>UTF-8</code>。</p>
+</li>
+<li><p>文档标题应该这样写：</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Markdown 编写规范</span><br><span class="line">==========================</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>章节标题必须<strong>必须</strong>以 <code>##</code> 开始，而不是 <code>#</code>。</p>
+</li>
+<li><p>章节标题必须<strong>必须</strong>在 <code>##</code> 后加一个空格，且后面没有 <code>##</code>。</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad</span><br><span class="line">##章节 1</span><br><span class="line"></span><br><span class="line">// bad</span><br><span class="line">## 章节 1 ##</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">## 章节 1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>章节标题和内容间必须<strong>必须</strong>有一个空行。</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad</span><br><span class="line">## 章节 1</span><br><span class="line">内容。</span><br><span class="line">## 章节 2</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">## 章节 1</span><br><span class="line"></span><br><span class="line">内容。</span><br><span class="line"></span><br><span class="line">## 章节 2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>代码段的必须<strong>必须</strong>使用 <code>Fenced code blocks</code> 风格，如下所示：</p>
+<p>  ```javascript<br>  console.log(“”);<br>  ```</p>
+</li>
+<li><p>表格的写法应该应该参考 <a href="https://help.github.com/articles/organizing-information-with-tables/">Organizing information with tables</a>，如下所示：</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">First Header  | Second Header</span><br><span class="line">------------- | -------------</span><br><span class="line">Content Cell  | Content Cell</span><br><span class="line">Content Cell  | Content Cell</span><br><span class="line"></span><br><span class="line">| Left-Aligned  | Center Aligned  | Right Aligned |</span><br><span class="line">| :------------ |:---------------:| -----:|</span><br><span class="line">| col 3 is      | some wordy text | $1600 |</span><br><span class="line">| col 2 is      | centered        |   $12 |</span><br><span class="line">| zebra stripes | are neat        |    $1 |</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>中英文混排应该采用如下规则：</p>
+<ul>
+<li>英文和数字使用半角字符。</li>
+<li>中文文字之间不加空格。</li>
+<li>中文文字与英文、阿拉伯数字及 <code>@</code> <code>#</code> <code>$</code> <code>%</code> <code>^</code> <code>&amp;</code> <code>*</code> <code>.</code> <code>()</code> 等符号之间加空格。</li>
+<li>中文标点之间不加空格。</li>
+<li>中文标点与前后字符（无论全角或半角）之间不加空格。</li>
+<li>如果括号内有中文，则使用中文括号。</li>
+<li>如果括号中的内容全部都是英文，则使用半角英文括号。</li>
+<li>当半角符号 <code>/</code> 表示「或者」之意时，与前后的字符之间均不加空格</li>
+<li>其它具体例子推荐<a href="https://github.com/mzlogin/chinese-copywriting-guidelines">阅读这里</a>。</li>
+</ul>
+</li>
+<li><p>中文符号应该使用如下写法：</p>
+<ul>
+<li>用直角引号 <code>「」</code> 代替双引号 <code>“”</code>，不同输入法的具体设置方法请<a href="http://www.zhihu.com/question/19755746">参考这里</a>。</li>
+<li>省略号使用 <code>……</code> ，而 <code>。。。</code> 仅用于表示停顿。</li>
+<li>其它可以参考<a href="http://www.zhihu.com/question/20414919">知乎规范</a>。</li>
+</ul>
+</li>
+<li><p>表达方式，应当遵循《The Element of Style》：</p>
+<ul>
+<li>使段落成为文章的单元：一个段落只表达一个主题。</li>
+<li>通常在每一段落开始要点题，在段落结尾要扣题。</li>
+<li>使用主动语态。</li>
+<li>陈述句中使用肯定说法。</li>
+<li>删除不必要的词。</li>
+<li>避免连续使用松散的句子。</li>
+<li>使用相同的结构表达并列的意思。</li>
+<li>将相关的词放在一起。</li>
+<li>在总结中，要用同一种时态（这里指英文中的时态，中文不适用，所以可以不理会）。</li>
+<li>将强调的词放在句末。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>参考文档：<a href="https://github.com/google/styleguide/blob/gh-pages/docguide/style.md">《Google Markdown style guide》</a>。</p>
+</blockquote>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://www.appinn.com/markdown/#p">《Markdown 语法说明 (简体中文版) 》</a></li>
+<li><a href="https://github.com/fex-team/styleguide/blob/master/markdown.md">《Markdown 编写规范》</a></li>
+<li><a href="https://einverne.github.io/markdown-style-guide/zh.html">《Markdown 书写风格指南》</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>Markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android 开发之 XML 文件的命名规范</title>
+    <url>/2017/11/08/xml-name/</url>
+    <content><![CDATA[<p><img src="/images/xml-name/xml_android.jpg"></p>
+<p>你还记得最后一次不得不钻进 <code>strings.xml</code> 为了找到正确的字符串来使用吗？或者你会手动去在所有的 drawables 中寻找那个你需要的吗？</p>
+<p>每当我们开始一个新项目时，我们都会非常关心建立我们的架构，CI，构建风格，但是你有一个策略来命名您的资源吗？</p>
+<p>你应该有！由于缺乏 XML 命名空间，使得管理 Android Resources 变得乏味。并且使事情变得容易失控，特别是在大型项目中。</p>
+<p>所以我们来介绍一个简单的方案来解决你的痛苦。</p>
+<span id="more"></span>
+
+<ul>
+<li>轻松查找任何资源（自动完成）</li>
+<li>合逻辑的，可预测的名称</li>
+<li>干净的资源排序</li>
+<li>强类型的资源</li>
+</ul>
+<p>这篇博客将解释其机制、优点、局限性，并提供易于使用的备忘表。</p>
+<h2 id="基本原则"><a href="#基本原则" class="headerlink" title="基本原则"></a>基本原则</h2><p>所有资源名称遵循简单的规则<br><img src="/images/xml-name/what_where_description_size.png"></p>
+<p>我们先简要介绍一下每个元素。然后我们将看到如何应用于每种资源类型。</p>
+<h3 id="lt-WHAT-gt"><a href="#lt-WHAT-gt" class="headerlink" title="&lt;WHAT&gt;"></a><code>&lt;WHAT&gt;</code></h3><p>指示资源实际代表什么，通常是标准的Android视图类，例如 MainActivity -&gt; <code>activity_</code> 。</p>
+<h3 id="lt-WHERE-gt"><a href="#lt-WHERE-gt" class="headerlink" title="&lt;WHERE&gt;"></a><code>&lt;WHERE&gt;</code></h3><p>描述它在逻辑上属于应用程序。多个屏幕中使用的资源使用 <code>all</code>，所有其他用户使用他们所在的Android视图子类的自定义部分，例如 MainActivity -&gt; <code>activity_main</code>，ArticleDetailFragment -&gt; <code>fragment_articledetail</code> 。</p>
+<h3 id="lt-DESCRIPTION-gt"><a href="#lt-DESCRIPTION-gt" class="headerlink" title="&lt;DESCRIPTION&gt;"></a><code>&lt;DESCRIPTION&gt;</code></h3><p>区分一个屏幕中的多个元素，例如 <code>title_</code> 。</p>
+<h3 id="lt-SIZE-gt-（可选）"><a href="#lt-SIZE-gt-（可选）" class="headerlink" title="&lt;SIZE&gt;（可选）"></a><code>&lt;SIZE&gt;</code>（可选）</h3><p>一个精确的大小或对大小的描述，用于 drawablem 和 dimension，例如 <code>_24dp</code> 或 <code>_small</code> 。</p>
+<p><img src="/images/xml-name/what_where_description_size_table.png"></p>
+<p>下载并打印<a href="http://jeroenmols.com/img/blog/resourcenaming/resourcenaming_cheatsheet.pdf">备忘表</a>，方便参考。 </p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
+<li><strong>通过屏幕资源的排序</strong>。<br> <code>WHERE</code> 部分描述了筛选资源所属。因此，很容易获取特定屏幕的所有ID。</li>
+<li><strong>强类型的资源ID</strong>。<br> 对于资源 ID，<code>WHAT</code> 描述了它所属的 xml 元素的类名。这使得您的 <code>findViewById()</code> 变得容易使用。</li>
+<li><strong>更好的资源组织</strong>。<br> 文件浏览器&#x2F;项目导航器通常按字母顺序排序文件。这意味着 layouts 和 drawables 可以按它们的 <code>WHAT</code>(activity 或 fragment 等) 和 <code>WHERE</code> 前缀分组排序。一个简单的 Android Studio 插件&#x2F;特性可以将这些资源显示在它们自己的文件夹中。</li>
+<li><strong>更高效的自动填充</strong>。<br> 由于资源名称更加可预测，因此使用 IDE 的自动完成变得更加容易。通常输入 <code>WHAT</code> 或 <code>WHERE</code> 足以将自动完成缩小到有限的一组选项。</li>
+<li><strong>没有更多的名称冲突</strong>。<br> 不同屏幕中的类似资源是 <code>all</code> 或者有不同的 <code>WHERE</code>。固定的命名方案避免了所有的命名冲突。</li>
+<li><strong>干净的资源名称</strong>。<br> 总体而言，所有资源的命名将更加合乎逻辑，从而导致一个更干净的 Android 项目。</li>
+<li><strong>工具支持</strong>。<br> 这个命名方案可以很容易地被 Android Studio 支持，其功能包括：lint 规则强制执行这些名称，重构支持，当您更改 <code>WHAT</code> 或 <code>WHERE</code> 更好的资源可视化在项目视图……</li>
+</ol>
+<h2 id="Layouts"><a href="#Layouts" class="headerlink" title="Layouts"></a>Layouts</h2><p>布局相对简单，因为每个屏幕通常只有几个布局。因此，规则可以简化为：</p>
+<p><img src="/images/xml-name/what_where.png"></p>
+<p><code>&lt;WHAT&gt;</code> 是下面其中之一：</p>
+<table>
+<thead>
+<tr>
+<th>Prefix</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>activity</td>
+<td>contenview for activity</td>
+</tr>
+<tr>
+<td>fragment</td>
+<td>view for a fragment</td>
+</tr>
+<tr>
+<td>view</td>
+<td>inflated by a custom view</td>
+</tr>
+<tr>
+<td>item</td>
+<td>layout used in list&#x2F;recycler&#x2F;gridview</td>
+</tr>
+<tr>
+<td>layout</td>
+<td>layout reused using the include tag</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<ul>
+<li><strong>activity_main</strong>: content view of the MainActivity.</li>
+<li><strong>fragment_articledetail</strong>: view for the ArticleDetailFragment.</li>
+<li><strong>view_menu</strong>: layout inflated by custom view class MenuView.</li>
+<li><strong>item_article</strong>: list item in ArticleRecyclerView.</li>
+<li><strong>layout_actionbar_backbutton</strong>: layout for an actionbar with a backbutton (too simple to be a customview).</li>
+</ul>
+<h2 id="Strings"><a href="#Strings" class="headerlink" title="Strings"></a>Strings</h2><p>对于字符串来说不需要 <code>&lt;WHAT&gt;</code> 前缀，因此直接用 <code>&lt;WHERE&gt;</code> 作为前缀。</p>
+<p><img src="/images/xml-name/where_description.png"></p>
+<p>如果字符串会在多个页面被用到，使用 <code>all_</code> 作为前缀。</p>
+<p><img src="/images/xml-name/all_description.png"></p>
+<p>示例：</p>
+<ul>
+<li><strong>articledetail_title</strong>: title of ArticleDetailFragment.</li>
+<li><strong>feedback_explanation</strong>: feedback explanation in FeedbackFragment.</li>
+<li><strong>feedback_namehint</strong>: hint of name field in FeedbackFragment.</li>
+<li><strong>all_done</strong>: generic “done” string.</li>
+</ul>
+<p><code>&lt;WHERE&gt;</code> 对于同一视图中的所有资源显然是一样的。</p>
+<h2 id="Drawables"><a href="#Drawables" class="headerlink" title="Drawables"></a>Drawables</h2><p>同样<code>&lt;WHAT&gt;</code>对于 drawables 也是没有必要的，所以我们用 <code>&lt;WHERE&gt;</code> 来表示 drawable 的位置：</p>
+<p><img src="/images/xml-name/where_description_size.png"></p>
+<p>会被复用的 drawable 同样以 <code>all_</code> 作为前缀：</p>
+<p><img src="/images/xml-name/all_description_size.png"></p>
+<p>或者，您可以添加一个参数，它可以是实际大小 <code>_24dp</code> 或大小限定符 <code>_small</code>。</p>
+<p>示例：</p>
+<ul>
+<li><strong>articledetail_placeholder</strong>: placeholder in ArticleDetailFragment.</li>
+<li><strong>all_infoicon</strong>: generic info icon.</li>
+<li><strong>all_infoicon_large</strong>: large version of generic info icon.</li>
+<li><strong>all_infoicon_24dp</strong>: 24dp version of generic info icon.</li>
+</ul>
+<h2 id="IDs"><a href="#IDs" class="headerlink" title="IDs"></a>IDs</h2><p>对于ID，<code>&lt;WHAT&gt;</code> 是 xml 元素的类名，比如 tablayout、imageview 等等，<code>&lt;WHERE&gt;</code> 是 xml 文件所在屏幕的名称。<br><img src="/images/xml-name/what_where_description.png"></p>
+<p>示例：</p>
+<ul>
+<li><strong>tablayout_main</strong> -&gt; TabLayout in MainActivity.</li>
+<li><strong>imageview_menu_profile</strong> -&gt; profile image in custom MenuView.</li>
+<li><strong>textview_articledetail_title</strong> -&gt; title TextView in ArticleDetailFragment.</li>
+</ul>
+<h2 id="Dimensions"><a href="#Dimensions" class="headerlink" title="Dimensions"></a>Dimensions</h2><p>应当只定义有限的 dimension，并尽量复用它们，你应该主要使用：</p>
+<p><img src="/images/xml-name/what_all_description_size.png"></p>
+<p>并可选择使用屏幕特定的变体：</p>
+<p><img src="/images/xml-name/what_where_description_size.png"></p>
+<p><code>&lt;WHAT&gt;</code> 是下面其中之一：</p>
+<table>
+<thead>
+<tr>
+<th>Prefix</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>width</td>
+<td>width in dp</td>
+</tr>
+<tr>
+<td>height</td>
+<td>height in dp</td>
+</tr>
+<tr>
+<td>size</td>
+<td>if width &#x3D;&#x3D; height</td>
+</tr>
+<tr>
+<td>margin</td>
+<td>margin in dp</td>
+</tr>
+<tr>
+<td>padding</td>
+<td>padding in dp</td>
+</tr>
+<tr>
+<td>elevation</td>
+<td>elevation in dp</td>
+</tr>
+<tr>
+<td>keyline</td>
+<td>absolute keyline measured from view edge in dp</td>
+</tr>
+<tr>
+<td>textsize</td>
+<td>size of text in sp</td>
+</tr>
+</tbody></table>
+<p>请注意，此列表仅包含最常用的<code>&lt;WHAT&gt;</code>s，其他 dimensions 限定符，如旋转，刻度等通常仅用于可绘制，因此较少重复使用。</p>
+<p>示例：</p>
+<ul>
+<li><strong>height_toolbar</strong>: height of all toolbars.</li>
+<li><strong>keyline_listtext</strong>: listitem text is aligned at this keyline.</li>
+<li><strong>textsize_medium</strong>: medium size of all text.</li>
+<li><strong>size_menu_icon</strong>: size of icons in menu.</li>
+<li><strong>height_menu_profileimage</strong>: height of profile image in menu.</li>
+</ul>
+<h2 id="已知限制"><a href="#已知限制" class="headerlink" title="已知限制"></a>已知限制</h2><ol>
+<li><p><strong>屏幕需要有唯一的名称</strong>。</p>
+<p> 为了避免参数中的冲突 <code>&lt;WHERE&gt;</code>，View（比如 activity 或 fragment）必须有唯一的名称。因此，您不能拥有 <code>MainActivity</code> 和 <code>MainFragment</code>，因为 <code>Main</code> 前缀将不再唯一标识一个 <code>&lt;WHERE&gt;</code>。</p>
+</li>
+<li><p><strong>不支持重构</strong>。</p>
+<p> 更改类名称不会随资源名称而变化，所以如果你将 <code>MainActivity</code> 重命名为 <code>ContentActivity</code>，那么布局 <code>activity_main</code> 将不被自动被重命名为 <code>activity_content</code>。希望 Android Studio 有一天会为此添加支持。</p>
+</li>
+<li><p><strong>并非所有资源类型都支持</strong>。</p>
+<p> 该方案目前尚不支持所有资源类型。对于某些资源来说，这是因为它们的使用频率较低，往往是非常多样化的（例如 <code>raw</code> 和 <code>assets</code>），对于其他资源，这是因为它们难以泛化（例如，主题&#x2F;样式&#x2F;颜色&#x2F;动画）。</p>
+</li>
+</ol>
+<blockquote>
+<p>原文地址：<a href="http://jeroenmols.com/blog/2016/03/07/resourcenaming/">《A successful XML naming convention》</a>。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Android 开发</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java 中的运算符</title>
+    <url>/2017/11/24/java-operator/</url>
+    <content><![CDATA[<p>Java 中的运算符可以这样分为六类：</p>
+<ol>
+<li><a href="#算数运算符">算数运算符</a>：<code>+</code>、<code>-</code>、<code>*</code>、<code>/</code>、<code>%</code>、<code>++</code>、<code>--</code></li>
+<li><a href="#关系运算符">关系运算符</a>：<code>==</code>、<code>!=</code>、<code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code></li>
+<li><a href="#逻辑运算符">逻辑运算符</a>：<code>&amp;&amp;</code>、<code>||</code>、<code>!</code>、<code>^</code>、<code>&amp;</code>、<code>|</code></li>
+<li><a href="#位运算符">位运算符</a>：<code>&amp;</code>、<code>|</code>、<code>~</code>、<code>^</code>、<code>&lt;&lt;</code>、<code>&gt;&gt;</code>、<code>&gt;&gt;&gt;</code></li>
+<li><a href="#赋值运算符">赋值运算符</a>：<code>=</code>、<code>+=</code>、<code>-=</code>、<code>*=</code>、<code>/=</code>、<code>%=</code>、<code>&amp;=</code>、<code>|=</code>、<code>^=</code>、<code>&lt;&lt;=</code>、<code>&gt;&gt;=</code>、<code>&gt;&gt;&gt;=</code></li>
+<li><a href="#其他运算符">其他运算符</a>：<code>.</code>、<code>[]</code>、<code>()</code>、<code>?:</code>、<code>instanceof</code></li>
+</ol>
+<span id="more"></span>
+
+<h2 id="算数运算符"><a href="#算数运算符" class="headerlink" title="算数运算符"></a><a name="算数运算符">算数运算符</a></h2><p>算数运算符分为<a href="#一元运算符">一元运算符</a>和<a href="#二元运算符">二元运算符</a>。</p>
+<h3 id="一元运算符"><a href="#一元运算符" class="headerlink" title="一元运算符"></a><a name="一元运算符">一元运算符</a></h3><p>一元运算符只有一个操作数，其操作符为：正 <code>+</code>、负 <code>-</code>、自加 <code>++</code>、自减 <code>--</code> 这四个，其中自增 <code>++</code> 和自减 <code>--</code> 又分两种情况：</p>
+<ul>
+<li>用于数值变量之前：在赋值操作中，先对被 <code>++</code> 或 <code>--</code> 操作变量值先加 1 或者先减 1，然后在进行其他的操作。</li>
+<li>用于数值变量之后：在赋值操作中，先用被 <code>++</code> 或 <code>--</code> 的操作变量值进行其他的操作，然后在对其值加 1 或者减 1。</li>
+</ul>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> +a;</span><br><span class="line"><span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> -a;</span><br><span class="line"><span class="type">int</span> <span class="variable">d</span> <span class="operator">=</span> -c;</span><br><span class="line">System.out.println(<span class="string">&quot;a = &quot;</span> + a); <span class="comment">// 输出：a = 10</span></span><br><span class="line">System.out.println(<span class="string">&quot;b = &quot;</span> + b); <span class="comment">// 输出：b = 10</span></span><br><span class="line">System.out.println(<span class="string">&quot;c = &quot;</span> + c); <span class="comment">// 输出：c = -10</span></span><br><span class="line">System.out.println(<span class="string">&quot;d = &quot;</span> + d); <span class="comment">// 输出：d = 10</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ++a：先让 a 的值 +1 改变 a 的值然后再执行输出语句</span></span><br><span class="line">a = <span class="number">10</span>;</span><br><span class="line">System.out.println(++a); <span class="comment">// 输出：11</span></span><br><span class="line">System.out.println(a); <span class="comment">// 输出：11</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 上面三行代码等同于下面四行代码：</span></span><br><span class="line">a = <span class="number">10</span>;</span><br><span class="line">a = a + <span class="number">1</span>;</span><br><span class="line">System.out.println(a); <span class="comment">// 输出：11</span></span><br><span class="line">System.out.println(a); <span class="comment">// 输出：11</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ------分割线------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// a++：先执行了输出语句然后再让 a 的值 +1 改变 a 的值</span></span><br><span class="line">a = <span class="number">10</span>;</span><br><span class="line">System.out.println(a++); <span class="comment">// 输出：10</span></span><br><span class="line">System.out.println(a); <span class="comment">// 输出：11</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 上面三行代码等同于下面四行代码：</span></span><br><span class="line">a = <span class="number">10</span>;</span><br><span class="line">System.out.println(a); <span class="comment">// 输出：10</span></span><br><span class="line">a = a + <span class="number">1</span>;</span><br><span class="line">System.out.println(a); <span class="comment">// 输出：11</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>一元运算符和前后的操作数之间有空格，可能在有些编译器下编译时会出错。</p>
+</blockquote>
+<h3 id="二元运算符"><a href="#二元运算符" class="headerlink" title="二元运算符"></a><a name="二元运算符">二元运算符</a></h3><p>二元运算符则需要两个操作数（即符号两边都需要有操作数），其操作符为：加 <code>+</code>、减 <code>-</code>、乘 <code>*</code>、除 <code>/</code> 和 取余（取模） <code>%</code> 这五个，<code>+</code>、<code>-</code>、<code>*</code>、<code>/</code> 完成加减乘除基本的四则运算，<code>%</code> 是求两个数相除后的余数，运算规则和数学运算基本相同，在算数运算中，计算时按照从左向右的顺序计算，乘除和求余优先于加减，有括号先计算括号里面的，可以参考<a href="#运算符优先级">运算符优先级</a>。不同的是，程序中的乘运算符不可省略，在数学中可写为 <code>y=2x</code> 而程序中必须写为 <code>y=2*x</code>。当二元运算的两个操作数的数据类型不同时，运算结果的数据类型和参与运算的操作数的数据类型中精度较高(或位数较长)一致。</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">6</span>;</span><br><span class="line">System.out.println(<span class="string">&quot;a + b = &quot;</span> + (a + b)); <span class="comment">// 输出：16</span></span><br><span class="line">System.out.println(<span class="string">&quot;a - b = &quot;</span> + (a - b)); <span class="comment">// 输出：4</span></span><br><span class="line">System.out.println(<span class="string">&quot;a * b = &quot;</span> + (a * b)); <span class="comment">// 输出：60</span></span><br><span class="line">System.out.println(<span class="string">&quot;a / b = &quot;</span> + (a / b)); <span class="comment">// 输出：1</span></span><br><span class="line">System.out.println(<span class="string">&quot;a / b = &quot;</span> + (a * <span class="number">1.0</span> / b)); <span class="comment">// 输出：1.6666666666666667</span></span><br><span class="line">System.out.println(<span class="string">&quot;a % b = &quot;</span> + (a % b)); <span class="comment">// 输出：4</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="关系运算符"><a href="#关系运算符" class="headerlink" title="关系运算符"></a><a name="关系运算符">关系运算符</a></h2><p>关系运算符用于比较两个数值之间的大小，其运算结果为一个逻辑类型（boolean 布尔类型）的数值，其操作符为：等于 <code>==</code>、不等于 <code>!=</code>、小于 <code>&lt;</code>、小于等于 <code>&lt;=</code>、大于 <code>&gt;</code> 和 大于等于 <code>&gt;=</code> 这六个。</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">16</span>;</span><br><span class="line">System.out.println(<span class="string">&quot;a == b:&quot;</span> + (a == b)); <span class="comment">// 输出：a == b:false</span></span><br><span class="line">System.out.println(<span class="string">&quot;a != b:&quot;</span> + (a != b)); <span class="comment">// 输出：a != b:true</span></span><br><span class="line">System.out.println(<span class="string">&quot;a &lt; b:&quot;</span> + (a &lt; b)); <span class="comment">// 输出：a &lt; b:true</span></span><br><span class="line">System.out.println(<span class="string">&quot;a &lt;= b:&quot;</span> + (a &lt;= b)); <span class="comment">// 输出：a &lt;= b:true</span></span><br><span class="line">System.out.println(<span class="string">&quot;a &gt; b:&quot;</span> + (a &gt; b)); <span class="comment">// 输出：a &gt; b:false</span></span><br><span class="line">System.out.println(<span class="string">&quot;a &gt;= b:&quot;</span> + (a &gt;= b)); <span class="comment">// 输出：a &gt;= b:false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a><a name="逻辑运算符">逻辑运算符</a></h2><p>逻辑运算符要求操作数的数据类型为逻辑类型（boolean 布尔类型），其运算结果也是逻辑类型（boolean 布尔类型）的值，其操作符为：与 <code>&amp;&amp;</code>、或 <code>||</code>、非 <code>!</code>、异或 <code>^</code>、与 <code>&amp;</code>、和 或 <code>|</code> 这六个。</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="variable">a</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"><span class="type">boolean</span> <span class="variable">b</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">System.out.println(<span class="string">&quot;a &amp;&amp; b = &quot;</span> + (a &amp;&amp; b)); <span class="comment">// 输出：a &amp;&amp; b = false</span></span><br><span class="line">System.out.println(<span class="string">&quot;a || b = &quot;</span> + (a || b)); <span class="comment">// 输出：b = a || b = true</span></span><br><span class="line">System.out.println(<span class="string">&quot;a ^ b = &quot;</span> + (a ^ b)); <span class="comment">// 输出：a ^ b = true</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="逻辑运算符的真值表">逻辑运算符的真值表</a></p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>A &amp;&amp; B</th>
+<th>A || B</th>
+<th>!A</th>
+<th>A ^ B</th>
+<th>A &amp; B</th>
+<th>A | B</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>true</td>
+<td>true</td>
+<td>true</td>
+<td>true</td>
+<td>false</td>
+<td>false</td>
+<td>true</td>
+<td>true</td>
+</tr>
+<tr>
+<td>true</td>
+<td>false</td>
+<td>false</td>
+<td>true</td>
+<td>false</td>
+<td>true</td>
+<td>false</td>
+<td>true</td>
+</tr>
+<tr>
+<td>false</td>
+<td>true</td>
+<td>false</td>
+<td>true</td>
+<td>true</td>
+<td>true</td>
+<td>false</td>
+<td>true</td>
+</tr>
+<tr>
+<td>false</td>
+<td>false</td>
+<td>false</td>
+<td>false</td>
+<td>true</td>
+<td>false</td>
+<td>false</td>
+<td>false</td>
+</tr>
+</tbody></table>
+<ul>
+<li>&amp;、&amp;&amp;：A 与 B 均为 true 则结果为 true，否则结果为 false。</li>
+<li>|、||：A 与 B 其中一个为 true 则结果为 true，否则结果为 false。</li>
+<li>！：A true 则结果为 false，否则结果为 true。</li>
+<li>^：A 与 B 均为 true 或 false 即 A 与 B 结果相同时结果为 false，否则结果为 true。</li>
+</ul>
+<p>其中 <code>&amp;&amp;</code> 与 <code>&amp;</code> 看起来有同样的效果都表示<code>与</code>，<code>||</code> 与 <code>|</code> 看起来也有同样的效果都表示<code>或</code>，他们的运算规则也基本相同，<code>&amp;</code> 和 <code>|</code> 运算是把逻辑表达式全部计算完，而 <code>&amp;&amp;</code> 和 <code>||</code> 运算具有短路计算功能。在程序设计时使用 <code>&amp;&amp;</code> 和 <code>||</code>，不建议使用 <code>&amp;</code> 和 <code>|</code>。</p>
+<blockquote>
+<p>对于 <code>&amp;</code> 来说，如果左侧条件为 false，也会计算右侧条件的值，而对于 <code>&amp;&amp;</code> 来说，如果左侧的条件为 false，则不计算右侧的条件，这种现象被称作短路现象。</p>
+</blockquote>
+<h2 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a><a name="位运算符">位运算符</a></h2><p>位运算实际是将操作数转换成二进制表示方式，然后将两个二进制操作数对象从低端位（最右边）到高位对齐，每位进行位运算，其操作数和运算结果都是整型值（byte、short、int、long），可以是有符号的也可以是无符号的，其中位运算符又可以分为<a href="#位逻辑运算符">位逻辑运算符</a>和<a href="#位移运算符">位移运算符</a>，其运算符为：位与 <code>&amp;</code>、位或 <code>|</code>、位异或 <code>^</code>、位非 <code>~</code>、左移 <code>&lt;&lt;</code>、右移 <code>&gt;&gt;</code> 和 无符号右移（0填充的右移） <code>&gt;&gt;&gt;</code> 这七个。</p>
+<p><a name="位运算符参照表">位运算符参照表</a></p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>名称</th>
+<th>示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&amp;</code></td>
+<td>位与</td>
+<td><code>60 &amp; 13 = 12</code></td>
+<td>把 60 和 13 按位求与</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>位或</td>
+<td><code>60 | 13 = 61</code></td>
+<td>把 60 和 13 按位求或</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>位异或</td>
+<td><code>60 ^ 13 = 49</code></td>
+<td>把 60 和 13 按位求异或</td>
+</tr>
+<tr>
+<td><code>~</code></td>
+<td>位非</td>
+<td><code>~60 = -61</code></td>
+<td>把 60 按位求非</td>
+</tr>
+<tr>
+<td><code>&lt;&lt;</code></td>
+<td>左移</td>
+<td><code>60 &lt;&lt; 2  = 240</code></td>
+<td>把 60 的各位左移 2 位</td>
+</tr>
+<tr>
+<td><code>&gt;&gt;</code></td>
+<td>右移</td>
+<td><code>60 &gt;&gt; 2 = 15</code></td>
+<td>把 60 的各位右移 2 位</td>
+</tr>
+<tr>
+<td><code>&gt;&gt;&gt;</code></td>
+<td>无符号右移</td>
+<td><code>60 &gt;&gt;&gt; 2 = 15</code></td>
+<td>把 60 的各位右移 2 位，左边填 0</td>
+</tr>
+</tbody></table>
+<h3 id="位逻辑运算符"><a href="#位逻辑运算符" class="headerlink" title="位逻辑运算符"></a><a name="位逻辑运算符">位逻辑运算符</a></h3><p>位运算中的逻辑运算符：位与 <code>&amp;</code>、位或 <code>|</code>、位异或 <code>^</code> 和 位非 <code>~</code> 与<a href="#逻辑运算符的真值表">逻辑运算的相应操作的真值表</a>完全相同，其差别只是位运算操作的操作数和运算结果都是二进制整数，而逻辑运算相应操作的操作数和运算结果都是逻辑类型（boolean 布尔类型）的值。</p>
+<p><a name="位逻辑运算符参照表">位逻辑运算符参照表</a></p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>A &amp; B</th>
+<th>A | B</th>
+<th>A ^ B</th>
+<th>~A</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    &amp;：其中一个为 0 结果为 0 两个都为 1 时结果为 1 否则为 0</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">                0011 1100 = 60      操作数1</span></span><br><span class="line"><span class="comment">                0000 1101 = 13      操作数2</span></span><br><span class="line"><span class="comment">                --------------      按位求与</span></span><br><span class="line"><span class="comment">                0000 1100 = 12      结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">System.out.println(<span class="string">&quot;60 &amp; 13 = &quot;</span> + (<span class="number">60</span> &amp; <span class="number">13</span>)); <span class="comment">// 输出：60 &amp; 13 = 12</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    |：两个中有一个为 1 结果为 1 否则为 0</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">                0011 1100 = 60      操作数1</span></span><br><span class="line"><span class="comment">                0000 1101 = 13      操作数2</span></span><br><span class="line"><span class="comment">                --------------      按位求或</span></span><br><span class="line"><span class="comment">                0011 1101 = 61      结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">System.out.println(<span class="string">&quot;60 | 13 = &quot;</span> + (<span class="number">60</span> | <span class="number">13</span>)); <span class="comment">// 输出：60 | 13 = 61</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    ^：两个都为 0 或 都为 1 即两个一样时结果为 0 否则为 1</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">                0011 1100 = 60      操作数1</span></span><br><span class="line"><span class="comment">                0000 1101 = 13      操作数2</span></span><br><span class="line"><span class="comment">                --------------      按位求异或</span></span><br><span class="line"><span class="comment">                0011 0001 = 49      结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">System.out.println(<span class="string">&quot;60 ^ 13 = &quot;</span> + (<span class="number">60</span> ^ <span class="number">13</span>)); <span class="comment">// 输出：60 ^ 13 = 49</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    ~：为 0 时结果为 1  为 1 时结果为 0</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">                0011 1100 = 60      初始值</span></span><br><span class="line"><span class="comment">                ---------------     按位求非</span></span><br><span class="line"><span class="comment">                1100 0011 = -61     结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">System.out.println(<span class="string">&quot;~60 = &quot;</span> + (~<span class="number">60</span>)); <span class="comment">// 输出：~60 = -61</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="位移运算符"><a href="#位移运算符" class="headerlink" title="位移运算符"></a><a name="位移运算符">位移运算符</a></h3><p>位移运算符：左移 <code>&lt;&lt;</code>、右移 <code>&gt;&gt;</code> 和 无符号右移 <code>&gt;&gt;&gt;</code>。</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    &lt;&lt;：左移是将一个二进制操作数对象按指定的移动位数向左移，左边（高位端）溢出的位数被丢弃，</span></span><br><span class="line"><span class="comment">        右边（低端位）的空位用 0 补充，运算结果相当于乘以 2 的幂。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">                0011 1100 = 60      初始值</span></span><br><span class="line"><span class="comment">                ---------------     左移 2 位</span></span><br><span class="line"><span class="comment">                1111 0000 = 240     结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">System.out.println(<span class="string">&quot;60 &lt;&lt; 2 = &quot;</span> + (<span class="number">60</span> &lt;&lt; <span class="number">2</span>)); <span class="comment">// 输出：60 &lt;&lt; 2 = 240</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    &gt;&gt;：右移是将一个二进制操作数对象按指定的移动位数向右移，右边（低位端）溢出的位数被丢弃，</span></span><br><span class="line"><span class="comment">        左边（高端位）的空位用符号位补充，正数的符号位为 0 ，负数的符号位为 1 ，运算结果相当于除以 2 的幂。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">                0011 1100 = 60      初始值</span></span><br><span class="line"><span class="comment">                --------------      右移 2 位</span></span><br><span class="line"><span class="comment">                0000 1111 = 15      结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">System.out.println(<span class="string">&quot;60 &gt;&gt; 2  = &quot;</span> + (<span class="number">60</span> &gt;&gt; <span class="number">2</span>)); <span class="comment">// 输出：60 &gt;&gt; 2 = 15</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">                11111111 11111111 11111111 11000100 = -60     初始值</span></span><br><span class="line"><span class="comment">                -----------------------------------------     右移 2 位，前面补符号位 1</span></span><br><span class="line"><span class="comment">                11111111 11111111 11111111 11110001 = -15     结果</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">System.out.println(<span class="string">&quot;-60 &gt;&gt; 2  = &quot;</span> + (-<span class="number">60</span> &gt;&gt; <span class="number">2</span>)); <span class="comment">// 输出：-60 &gt;&gt; 2 = -15</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    &gt;&gt;&gt;：无符号右移是将一个二进制操作数对象按指定的移动位数向右移，右边（低位端）溢出的位数被丢弃，</span></span><br><span class="line"><span class="comment">        左边（高端位）的空位一律用 0 填充 ，正数运算结果相当于除以 2 的幂。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">                0011 1100 = 60      初始值</span></span><br><span class="line"><span class="comment">                --------------      无符号右移 2 位</span></span><br><span class="line"><span class="comment">                0000 1111 = 15      结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">System.out.println(<span class="string">&quot;60 &gt;&gt;&gt; 2 = &quot;</span> + (<span class="number">60</span> &gt;&gt;&gt; <span class="number">2</span>)); <span class="comment">// 输出：60 &gt;&gt;&gt; 2 = 15</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">                11111111 11111111 11111111 11000100 = -60            初始值</span></span><br><span class="line"><span class="comment">                -----------------------------------------            无符号右移 2 位，前面补 0</span></span><br><span class="line"><span class="comment">                00111111 11111111 11111111 11110001 = 1073741809     结果</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">System.out.println(<span class="string">&quot;-60 &gt;&gt;&gt; 2  = &quot;</span> + (-<span class="number">60</span> &gt;&gt;&gt; <span class="number">2</span>)); <span class="comment">// 输出：-60 &gt;&gt;&gt; 2 = 1073741809</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a><a name="赋值运算符">赋值运算符</a></h2><p>赋值运算符是由二元算术运算符、逻辑运算符和位运算符加上一个等号 <code>=</code> 组合成的简捷运算符，可以简化一些常用表达式的书写。</p>
+<blockquote>
+<p>Java 常见数据类型：</p>
+</blockquote>
+<ul>
+<li>类型①（整型）：<code>byte</code>、<code>short</code>、<code>int</code>、<code>long</code></li>
+<li>类型②（非整形）：<code>double</code>、<code>float</code></li>
+<li>类型③（非数值类型）：<code>char</code>、<code>boolean</code></li>
+<li>类型④（引用型数据类型）：<code>String</code></li>
+</ul>
+<p>赋值运算符与其他运算符的简介使用方式：</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>用法</th>
+<th>等同于</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>+=</code></td>
+<td><code>a += b</code></td>
+<td><code>a = a + b</code></td>
+<td>① || ② || ④</td>
+</tr>
+<tr>
+<td><code>-=</code></td>
+<td><code>a -= b</code></td>
+<td><code>a = a - b</code></td>
+<td>① || ②</td>
+</tr>
+<tr>
+<td><code>*=</code></td>
+<td><code>a *= b</code></td>
+<td><code>a = a * b</code></td>
+<td>① || ②</td>
+</tr>
+<tr>
+<td><code>/=</code></td>
+<td><code>a /= b</code></td>
+<td><code>a = a / b</code></td>
+<td>① || ②</td>
+</tr>
+<tr>
+<td><code>%=</code></td>
+<td><code>a %= b</code></td>
+<td><code>a = a % b</code></td>
+<td>① || ②</td>
+</tr>
+<tr>
+<td><code>&amp;=</code></td>
+<td><code>a &amp;= b</code></td>
+<td><code>a = a &amp; b</code></td>
+<td>① || boolean</td>
+</tr>
+<tr>
+<td><code>|=</code></td>
+<td><code>a |= b</code></td>
+<td><code>a = a | b</code></td>
+<td>① || boolean</td>
+</tr>
+<tr>
+<td><code>^=</code></td>
+<td><code>a ^= b</code></td>
+<td><code>a = a ^ b</code></td>
+<td>① || boolean</td>
+</tr>
+<tr>
+<td><code>&lt;&lt;=</code></td>
+<td><code>a &lt;&lt;= b</code></td>
+<td><code>a = a &lt;&lt; b</code></td>
+<td>①</td>
+</tr>
+<tr>
+<td><code>&gt;&gt;=</code></td>
+<td><code>a &gt;&gt;= b</code></td>
+<td><code>a = a &gt;&gt; b</code></td>
+<td>①</td>
+</tr>
+<tr>
+<td><code>&gt;&gt;&gt;=</code></td>
+<td><code>a &gt;&gt;&gt;= b</code></td>
+<td><code>a = a &gt;&gt;&gt; b</code></td>
+<td>①</td>
+</tr>
+</tbody></table>
+<h2 id="其他运算符"><a href="#其他运算符" class="headerlink" title="其他运算符"></a><a name="其他运算符">其他运算符</a></h2><h3 id="点运算符"><a href="#点运算符" class="headerlink" title="点运算符"></a><a name="点运算符">点运算符</a></h3><p>点运算符 <code>.</code> 的功能有两个：一是引用类中成员，二是指示包的层次等级，示例代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> (<span class="type">int</span>)(java.lang.Math.random() * <span class="number">100</span>);</span><br><span class="line">System.out.println(r); <span class="comment">//输出：16</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="括号运算符"><a href="#括号运算符" class="headerlink" title="括号运算符"></a><a name="括号运算符">括号运算符</a></h3><p>扩号运算符分为两种：</p>
+<ul>
+<li>方括号 <code>[]</code> 是数组运算符，方括号 <code>[]</code> 中的数值是数组的下标，整个表达式就代表数组中该下标所在位置的元素值。</li>
+<li>圆括号 <code>()</code> 运算符用于改变表达式中运算符的优先级。</li>
+</ul>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String[] name = &#123;<span class="string">&quot;z&quot;</span>, <span class="string">&quot;p&quot;</span>, <span class="string">&quot;p&quot;</span>, <span class="string">&quot;0&quot;</span>, <span class="string">&quot;1&quot;</span>, <span class="string">&quot;9&quot;</span>, <span class="string">&quot;6&quot;</span>&#125;;</span><br><span class="line">System.out.println(name[(<span class="number">1</span> + <span class="number">1</span>)]); <span class="comment">// 输出：p</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>括号运算符成对出现，缺一不可。</p>
+</blockquote>
+<h3 id="条件运算符"><a href="#条件运算符" class="headerlink" title="条件运算符"></a><a name="条件运算符">条件运算符</a></h3><p>条件运算符也被称为三目运算符。该运算符<strong>至少有3个</strong>操作数，并且需要判断布尔表达式的值。该运算符的主要是决定哪个值应该赋值给变量。</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a;</span><br><span class="line"><span class="type">boolean</span> <span class="variable">b</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"><span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> -<span class="number">1</span>, y = <span class="number">0</span>, z = -<span class="number">1</span>;</span><br><span class="line">a = b ? x : z;</span><br><span class="line">System.out.println(a); <span class="comment">// 输出：-1</span></span><br><span class="line"><span class="comment">// 判断表达式 b 是否成立，如果 b == true 则把 x 的值赋给 a；如果 b == false 则把 z 的值赋给 a</span></span><br><span class="line"><span class="comment">// 等同于下面的 if-else 语句：</span></span><br><span class="line"><span class="keyword">if</span> (b) &#123;</span><br><span class="line">    a = x;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    a = z;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(a); <span class="comment">// 输出：-1</span></span><br></pre></td></tr></table></figure>
+
+<p>上面提到说该运算符<strong>至少有3个操作数</strong>，也就是说可以有更多的操作数。以上面代码为例，其中的 <code>b</code> 为第一个操作数，<code>x</code> 为第二个操作数，<code>z</code> 为第三个操作数，如果我们将 <code>操作数1 ? 操作数2 : 操作数3</code> 视为一个整体，将其称为第四个操作数，照猫画虎，可以把第二个操作数换成第四个操作数，这时这个整体一共就有五个操作数，而原先的单个 <code>if-else</code> 就可以变成一个嵌套 <code>if-(if-else)-else</code>。</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a;</span><br><span class="line"><span class="type">boolean</span> <span class="variable">m</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"><span class="type">boolean</span> <span class="variable">n</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"><span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> -<span class="number">1</span>, y = <span class="number">0</span>, z = <span class="number">1</span>;</span><br><span class="line">a = m ? (n ? x : y) : z;</span><br><span class="line">System.out.println(a); <span class="comment">// 输出：-1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 等同于下面的if-else if-else</span></span><br><span class="line"><span class="keyword">if</span> (m) &#123;</span><br><span class="line">    <span class="keyword">if</span> (n) &#123;</span><br><span class="line">        a = x;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        a = y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    a = z;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(a); <span class="comment">// 输出：-1</span></span><br></pre></td></tr></table></figure>
+
+<p>如果把第三个操作数换成第四个操作数，这时这个整体一共就有五个操作数，而原先的单个 <code>if-else</code> 就可以变成一个 <code>if-else if-else</code>。</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a;</span><br><span class="line"><span class="type">boolean</span> <span class="variable">m</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"><span class="type">boolean</span> <span class="variable">n</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"><span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> -<span class="number">1</span>, y = <span class="number">0</span>, z = <span class="number">1</span>;</span><br><span class="line">a = m ? x : (n ? y : z);</span><br><span class="line">System.out.println(a); <span class="comment">// 输出：0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 等同于下面的if-else if-else</span></span><br><span class="line"><span class="keyword">if</span> (m) &#123;</span><br><span class="line">    a = x;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (n) &#123;</span><br><span class="line">    a = y;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    a = z;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(a); <span class="comment">// 输出：0</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>同理可以一直嵌套写下去，这样写虽然方便，可以节省一些代码量，但是可读性差，不建议多个嵌套使用，如果使用尽量写清楚注释。</p>
+</blockquote>
+<h3 id="对象运算符"><a href="#对象运算符" class="headerlink" title="对象运算符"></a><a name="对象运算符">对象运算符</a></h3><p>对象运算符用于操作对象实例，检查该对象是否是一个特定类型（类类型或接口类型），其操作符为：<code>instanceof</code>。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> <span class="string">&quot;zpp0196&quot;</span>;</span><br><span class="line">System.out.println(s <span class="keyword">instanceof</span> String); <span class="comment">// 输出：true</span></span><br></pre></td></tr></table></figure>
+
+<p>如果运算符左侧变量所指的对象，是操作符右侧类或接口 (class&#x2F;interface) 的一个对象，那么结果为真，很明显 name 是 String 的一个对象，所以返回 true。</p>
+<p>如果被比较的对象兼容于右侧类型,该运算符仍然返回 true：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">CharSequence</span> <span class="variable">c</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>();</span><br><span class="line">System.out.println(c <span class="keyword">instanceof</span> String); <span class="comment">// 输出：true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="运算符优先级"><a href="#运算符优先级" class="headerlink" title="运算符优先级"></a><a name="运算符优先级">运算符优先级</a></h2><table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>操作符</th>
+<th>关联性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><code>.</code>、<code>()</code>、<code>[]</code></td>
+<td>从左到右</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>+</code>、<code>-</code>、<code>!</code>、<code>~</code>、<code>++</code>、<code>--</code></td>
+<td>从右到左</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>*</code>、<code>/</code>、<code>%</code></td>
+<td>从左到右</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>+</code>、<code>-</code></td>
+<td>从左到右</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>&lt;&lt;</code>、<code>&gt;&gt;</code>、<code>&gt;&gt;&gt;</code></td>
+<td>从左到右</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code>、<code>instanceof</code></td>
+<td>从左到右</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>==</code>、<code>!=</code></td>
+<td>从左到右</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>&amp;</code></td>
+<td>从左到右</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>^</code></td>
+<td>从左到右</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>|</code></td>
+<td>从左到右</td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>&amp;&amp;</code></td>
+<td>从左到右</td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>||</code></td>
+<td>从左到右</td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>?:</code></td>
+<td>从右到左</td>
+</tr>
+<tr>
+<td>14</td>
+<td><code>=</code>、<code>+=</code>、<code>-=</code>、<code>*=</code>、<code>/=</code>、<code>%=</code>、<code>&amp;=</code>、<code>|=</code>、<code>^=</code>、<code>~=</code>、<code>&lt;&lt;=</code>、<code>&gt;&gt;=</code>、<code>&gt;&gt;&gt;=</code></td>
+<td>从右到左</td>
+</tr>
+<tr>
+<td>15</td>
+<td><code>,</code></td>
+<td>从左到右</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>Java 基础</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Xposed 开发之搭建开发环境</title>
+    <url>/2018/06/23/xposed-init/</url>
+    <content><![CDATA[<p>如果你对 Xposed <strong>有一定了解并可以熟悉使用 Xposed</strong>，同时你又是一名 <strong>具有 Android 开发经验</strong> 的 Programmer ，而你又对开发 Xposed 模块产生了兴趣但是又不知道该怎么做，下面的内容会告诉你如何在 Android Studio 上搭建 Xposed 模块的开发环境，即 Create New Xposed Module Project 时必须要做的事。</p>
+<span id="more"></span>
+
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>Xposed 模块说到底也只是一个 apk 文件，也就是 <strong>Android Project</strong>，所以先 Create Android Project：</p>
+<p><img src="/images/xposed-init/create_project.png" alt="create_project"></p>
+<p>后面接着一路 Next 到后面选模板时选择 <strong>Empty Activity</strong> 然后其他什么都默认即可。</p>
+<p>为了确保 Android Project 创建成功可以先安装到模拟器上试一下确保这个 App 可以正常运行：</p>
+<p><img src="/images/xposed-init/hello_world.png" alt="hello_world"></p>
+<blockquote>
+<p>Xposed 模块开发不支持 <strong>Instant Run</strong>，请在 <strong>File - Settings - Build, Execution, Deployment - Instant Run</strong> 找到 <strong>Enable Instant Run to hot swap code….</strong> 并关闭这个开关！</p>
+</blockquote>
+<h2 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h2><p>下面开始做一些初始化工作。</p>
+<h3 id="build-gradle"><a href="#build-gradle" class="headerlink" title="build.gradle"></a>build.gradle</h3><p>在下面的 <strong>dependencies</strong> 里面添加 <code>compileOnly &#39;de.robv.android.xposed:api:82&#39;</code> ，注意前面必须是 <strong>compileOnly</strong> ，具体参考 <a href="https://github.com/rovo89/XposedBridge/wiki/Using-the-Xposed-Framework-API#android-studio-gradle-based">Using the Xposed Framework API</a></p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compileOnly <span class="string">&#x27;de.robv.android.xposed:api:82&#x27;</span> <span class="comment">// 添加这一行且必须是 compileOnly</span></span><br><span class="line">    implementation fileTree(<span class="attr">dir:</span> <span class="string">&#x27;libs&#x27;</span>, <span class="attr">include:</span> [<span class="string">&#x27;*.jar&#x27;</span>])</span><br><span class="line">    implementation <span class="string">&#x27;com.android.support:appcompat-v7:26.1.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;com.android.support.constraint:constraint-layout:1.1.2&#x27;</span></span><br><span class="line">    testImplementation <span class="string">&#x27;junit:junit:4.12&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;com.android.support.test:runner:1.0.2&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;com.android.support.test.espresso:espresso-core:3.0.2&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>配置完了以后点击 <strong>Build - Make Project</strong> 让 Gradle 修改过的内容生效，如果是第一次配置会先下载 Xposed 的 jar 包。</p>
+<blockquote>
+<p>也可以选择手动<a href="https://jcenter.bintray.com/de/robv/android/xposed/api/">下载 jar 包</a>然后添加到项目中。</p>
+</blockquote>
+<h3 id="AndroidManifest-xml"><a href="#AndroidManifest-xml" class="headerlink" title="AndroidManifest.xml"></a>AndroidManifest.xml</h3><p>为了让 Xposed Installer 认为你的 App 是一个 Xposed 模块，你需要在 <code>AndroidManifest.xml</code> 中的 <strong>application</strong> 节点下添加以下代码：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">application</span></span></span><br><span class="line"><span class="tag">    &lt;!<span class="attr">--</span> <span class="attr">省略</span> <span class="attr">application</span> <span class="attr">代码</span> <span class="attr">--</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">&quot;.MainActivity&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 省略 activity 代码 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">&quot;xposedmodule&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">&quot;xposeddescription&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:value</span>=<span class="string">&quot;This is a Xposed Module Demo&quot;</span> /&gt;</span> <span class="comment">&lt;!-- 这里写模块描述 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">&quot;xposedminversion&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:value</span>=<span class="string">&quot;82&quot;</span> /&gt;</span> <span class="comment">&lt;!-- 最低支持的API版本 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="xposed-init"><a href="#xposed-init" class="headerlink" title="xposed_init"></a>xposed_init</h3><p>在 <code>Project/app/src/main/</code> 下面创建 <code>assets</code>文件夹，然后在这个文件夹下面创建一个名为 <code>xposed_init</code> 的文件（没有任何后缀），里面先什么都不写，后面会用到。</p>
+<h2 id="编写代码"><a href="#编写代码" class="headerlink" title="编写代码"></a>编写代码</h2><p>修改 <code>MainActivity.java</code> 里面的内容为：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> me.zpp0196.xposed.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.support.v7.app.AppCompatActivity;</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.widget.Toast;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MainActivity</span> <span class="keyword">extends</span> <span class="title class_">AppCompatActivity</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onCreate</span><span class="params">(Bundle savedInstanceState)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        Toast.makeText(<span class="built_in">this</span>, isModuleActive() ? <span class="string">&quot;module is active&quot;</span> : <span class="string">&quot;module not active&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isModuleActive</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在默认包目录下面新建一个 <code>MainHook.java</code> 参考代码如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> me.zpp0196.xposed.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> de.robv.android.xposed.IXposedHookLoadPackage;</span><br><span class="line"><span class="keyword">import</span> de.robv.android.xposed.XC_MethodReplacement;</span><br><span class="line"><span class="keyword">import</span> de.robv.android.xposed.XposedHelpers;</span><br><span class="line"><span class="keyword">import</span> de.robv.android.xposed.callbacks.XC_LoadPackage;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by zpp0196 on 2018/6/23 0023.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MainHook</span> <span class="keyword">implements</span> <span class="title class_">IXposedHookLoadPackage</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleLoadPackage</span><span class="params">(XC_LoadPackage.LoadPackageParam lpparam)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="keyword">if</span> (lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) &#123;</span><br><span class="line">            XposedHelpers.findAndHookMethod(MainActivity.class.getName(), lpparam.classLoader, <span class="string">&quot;isModuleActive&quot;</span>, XC_MethodReplacement.returnConstant(<span class="literal">true</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在刚才创建的 <code>xposed_init</code> 文件里面添加这个类（入口类）的完全限定名：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">me.zpp0196.xposed.demo.MainHook</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果开启了代码混淆记得将该类添加到 <code>proguard-rules.pro</code> 中。</p>
+</blockquote>
+<p>然后将模块安装到模拟器上看看效果：</p>
+<p><img src="/images/xposed-init/module_not_active.png" alt="module_not_active"></p>
+<p>在 Xposed Installer 里面打勾后重启模拟器再启动看看：</p>
+<p><img src="/images/xposed-init/module_active.png" alt="module_active"></p>
+<p>Toast 显示的内容由 <code>module not active</code> 变成了 <code>module is active</code> 一般这样就可以来检测模块是否被激活。</p>
+<blockquote>
+<p>如果觉得每次重启模拟器或者手机很麻烦可以使用 <a href="https://vxposed.com/">VirtualXposed</a> （不支持模拟器、资源 Hook 和修改系统应用的模块）进行开发测试，具体教程参考 <a href="https://github.com/android-hacker/VirtualXposed/wiki/Utilities-For-Xposed-Module-Developer">Utilities For Xposed Module Developer&#x2F;VirtualXposed Wiki</a> ，如果你还不了解什么是 VirtualXposed 可以看看这些文章：<a href="https://zhuanlan.zhihu.com/p/31620013">无需Root也能使用Xposed！</a> 、<a href="https://www.coolapk.com/feed/6693622">在Android手机不进行刷机操作的情况下实现Xposed——VirtualXposed（小白篇）</a> 。</p>
+</blockquote>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://github.com/rovo89/XposedBridge/wiki/Development-tutorial">Development tutorial</a> </li>
+<li><a href="http://api.xposed.info/">Xposed Framework API </a></li>
+<li><a href="https://vxposed.com/">VirtualXposed</a></li>
+<li><a href="https://github.com/android-hacker/VirtualXposed/wiki">VirtualXposed Wiki</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Xposed 开发</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Xposed</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java 中的 Collection</title>
+    <url>/2018/11/15/java-collection/</url>
+    <content><![CDATA[<p>Java 中的集合包括三大类，分别是 Set(集)、List(列表)、Map(映射)，它们都位于 <code>java.util</code> 包下，Set、List 和 Map 都是接口，各有各自的实现类。Set 的常用实现类有 TreeSet 和 HashSet，List 的常用实现类有 ArrayList 和 LinkedList，Map 的常用实现类有 HashMap 和 TreeMap 等。</p>
+<span id="more"></span>
+
+<h2 id="Collection"><a href="#Collection" class="headerlink" title="Collection"></a>Collection</h2><p>Collection 是最基本的集合接口，声明了适用于 Java 集合的通用方法，Set 和 List 都继承自 Collection 接口。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">---|Collection&lt;E&gt;</span><br><span class="line">    ---|Set&lt;E&gt;</span><br><span class="line">        ---|TreeSet&lt;E&gt;</span><br><span class="line">        ---|HashSet&lt;E&gt;</span><br><span class="line">    ---|List&lt;E&gt;</span><br><span class="line">        ---|ArrayList&lt;E&gt;</span><br><span class="line">        ---|LinkedList&lt;E&gt;</span><br></pre></td></tr></table></figure>
+
+<p>下面是 Collection 接口中一些常用的 API: </p>
+<table>
+<thead>
+<tr>
+<th>Return Type</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean</td>
+<td>add(E e)</td>
+<td>确保集合中包含指定的元素</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>addAll(Collection&lt;? extends E&gt; c)</td>
+<td>将指定集合中的所有元素添加到此集合中</td>
+</tr>
+<tr>
+<td>void</td>
+<td>clear()</td>
+<td>从此集合中删除所有元素</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>contains(Object o)</td>
+<td>如果此集合中包含指定的元素则返回 true</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>containsAll(Collection&lt;?&gt; c)</td>
+<td>如果此集合包含指定集合中的所有元素则返回 true</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>isEmpty()</td>
+<td>如果此集合不包含元素则返回 true</td>
+</tr>
+<tr>
+<td>Iterator<E></td>
+<td>iterator()</td>
+<td>返回此集合中的元素的迭代器</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>remove(Object o)</td>
+<td>从此集合中删除指定元素</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>removeAll(Collection&lt;?&gt; c)</td>
+<td>从此集合中删除指定集合包含的所有元素</td>
+</tr>
+<tr>
+<td>int</td>
+<td>size()</td>
+<td>返回此集合中的元素数量</td>
+</tr>
+<tr>
+<td>Object[]</td>
+<td>toArray()</td>
+<td>返回一个包含此集合中所有元素的数组</td>
+</tr>
+</tbody></table>
+<h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><p>Set 具有与 Collection 完全一样的接口，因此没有任何额外的功能。实际上 Set 就是 Collection，只是行为不同。</p>
+<p>Set: 存入 Set 的每个元素都必须是唯一的，因为 Set 不保存重复元素。加入 Set 的元素必须重写 equals() 方法以确保对象的唯一性。Set 接口不保证维护元素的次序。</p>
+<p>TreeSet: 保存次序的 Set，底层为树结构。使用它可以从Set中提取有序的序列。</p>
+<p>HashSet: 为快速查找设计的 Set。存入 HashSet 的对象必须重写 hashCode() 方法。</p>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><p>List: 次序是 List 最大的特点，它保证元素可以按照特定的顺序排列。下面是 List 新增的一些常用 API: </p>
+<table>
+<thead>
+<tr>
+<th>Return Type</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean</td>
+<td>add(E e)</td>
+<td>将指定元素添加到此列表的末尾</td>
+</tr>
+<tr>
+<td>void</td>
+<td>add(int index, E element)</td>
+<td>将指定元素添加到此列表中的指定位置</td>
+</tr>
+<tr>
+<td>E</td>
+<td>get(int index)</td>
+<td>返回此列表中指定位置的元素</td>
+</tr>
+<tr>
+<td>int</td>
+<td>indexOf(Object o)</td>
+<td>返回此列表中指定元素第一次出现的索引，如果此列表不包含该元素则返回 -1</td>
+</tr>
+<tr>
+<td>int</td>
+<td>lastIndexOf(Object o)</td>
+<td>返回此列表中指定元素最后一次出现的索引，如果此列表不包含该元素则返回 -1</td>
+</tr>
+<tr>
+<td>E</td>
+<td>remove(int index)</td>
+<td>从此列表中删除指定位置的元素</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>remove(Object o)</td>
+<td>从此列表中删除第一次出现的指定元素</td>
+</tr>
+<tr>
+<td>E</td>
+<td>set(int index, E element)</td>
+<td>用指定的元素替换此列表中指定位置的元素</td>
+</tr>
+<tr>
+<td>void</td>
+<td>sort(Comparator&lt;? super E&gt; c)</td>
+<td>使用 Comparator 比较器将此列表中的元素重新排序</td>
+</tr>
+</tbody></table>
+<p>ArrayList: 由数组实现的 List，实现了随机访问的接口，允许对元素进行快速随机访问，但是向 List 中间插入与移除元素的速度比较慢。</p>
+<p>LinkedList: 基于链表实现的 List，对顺序访问进行了优化，向 List 中间插入与删除的开销并不大，但随机访问则相对较慢。除了上面的方法以外 LinkedList 还有下列常用 API: </p>
+<table>
+<thead>
+<tr>
+<th>Return Type</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean</td>
+<td>add(E e)&#x2F;offer(E e)</td>
+<td>将指定元素添加到此列表的末尾</td>
+</tr>
+<tr>
+<td>void&#x2F;boolean&#x2F;void</td>
+<td>addFirst(E e)&#x2F;offerFirst(E e)&#x2F;push(E e)</td>
+<td>在此列表开头插入指定的元素</td>
+</tr>
+<tr>
+<td>void&#x2F;boolean</td>
+<td>addLast(E e)&#x2F;offerLast(E e)</td>
+<td>将指定的元素追加到此列表的末尾</td>
+</tr>
+<tr>
+<td>E</td>
+<td>getFirst()</td>
+<td>返回此列表中的第一个元素</td>
+</tr>
+<tr>
+<td>E</td>
+<td>getLast()</td>
+<td>返回此列表中的最后一个元素</td>
+</tr>
+<tr>
+<td>E</td>
+<td>removeFirst()&#x2F;pop()</td>
+<td>删除并返回此列表中第一个元素</td>
+</tr>
+<tr>
+<td>E</td>
+<td>removeLast()</td>
+<td>删除并返回此列表中最后一个元素</td>
+</tr>
+</tbody></table>
+<p>如果对于 LinkedList 中多个方法都是同一个功能感到疑惑，看一下 LinkedList 的源码你就懂了：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> java.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LinkedList</span>&lt;E&gt; <span class="keyword">extends</span> <span class="title class_">AbstractSequentialList</span>&lt;E&gt;</span><br><span class="line">    <span class="keyword">implements</span> <span class="title class_">List</span>&lt;E&gt;, Deque&lt;E&gt;, Cloneable, java.io.Serializable &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 省略其它代码</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">offer</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> add(e);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">offerFirst</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        addFirst(e);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">offerLast</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        addLast(e);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">push</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        addFirst(e);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">pop</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> removeFirst();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><table>
+<thead>
+<tr>
+<th align="center">集合</th>
+<th align="center">使用场景</th>
+<th align="center">线程安全</th>
+<th align="center">可否添加 null</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Set</td>
+<td align="center">不需要保留存储顺序，并且需要去掉重复元素</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">TreeSet</td>
+<td align="center">需要将元素排序</td>
+<td align="center">×</td>
+<td align="center">×</td>
+</tr>
+<tr>
+<td align="center">HashSet</td>
+<td align="center">不需要将元素排序</td>
+<td align="center">×</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">List</td>
+<td align="center">需要保留存储顺序，并且保留重复元素</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">ArrayList</td>
+<td align="center">查询多，增删少</td>
+<td align="center">×</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">LinkedList</td>
+<td align="center">增删多，查询少</td>
+<td align="center">×</td>
+<td align="center">√</td>
+</tr>
+</tbody></table>
+<h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><p>Map 是一种使用「键值对」的方式来存储数据的集合，每个「键」映射一个「值」，可以通过「键」来获取对应的「值」。下面是 Map 接口中常用的一些 API: </p>
+<table>
+<thead>
+<tr>
+<th align="left">Return Type</th>
+<th align="left">Method</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">void</td>
+<td align="left">clear()</td>
+<td align="left">删除该 Map 中所有的映射</td>
+</tr>
+<tr>
+<td align="left">boolean</td>
+<td align="left">containsKey(Object key)</td>
+<td align="left">如果此 Map 包含指定键的映射，则返回 true</td>
+</tr>
+<tr>
+<td align="left">boolean</td>
+<td align="left">containsValue(Object value)</td>
+<td align="left">如果此 Map 将一个或多个键映射到指定的值，则返回 true</td>
+</tr>
+<tr>
+<td align="left">V</td>
+<td align="left">get(Object key)</td>
+<td align="left">返回此 Map 指定键对应的值，如果不存在返回 null</td>
+</tr>
+<tr>
+<td align="left">Set<K></td>
+<td align="left">keySet()</td>
+<td align="left">返回此 Map 中包含的键的 Set 集合</td>
+</tr>
+<tr>
+<td align="left">V</td>
+<td align="left">put(K key, V value)</td>
+<td align="left">将指定的值与指定键相关联</td>
+</tr>
+<tr>
+<td align="left">V</td>
+<td align="left">remove(Object key)</td>
+<td align="left">从此 Map 中删除指定键的映射</td>
+</tr>
+<tr>
+<td align="left">int</td>
+<td align="left">size()</td>
+<td align="left">返回此 Map 中键值映射的数量</td>
+</tr>
+<tr>
+<td align="left">Collection<V></td>
+<td align="left">values()</td>
+<td align="left">返回此 Map 中包含的值的 Collection 集合</td>
+</tr>
+</tbody></table>
+<p>HashMap: 基于散列表的实现。插入和查询「键值对」的开销是固定的。</p>
+<p>TreeMap: 基于红黑树数据结构的实现。查看「键」或「键值对」时，它们会被排序(次序由 Comparabel 或 Comparator 决定)。TreeMap 的特点在于，得到的结果是经过排序的。TreeMap 是唯一的带有 subMap() 方法的 Map，它可以返回一个子树。</p>
+<p>Hashtable: 和 HashMap 一样也是一个散列表，不过它的函数都是同步的，这意味着它是线程安全的。它的 key、value 都不可以为 null。此外，Hashtable 中的映射不是有序的。 </p>
+<h3 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h3><table>
+<thead>
+<tr>
+<th align="center">Map</th>
+<th align="center">使用场景</th>
+<th align="center">线程安全</th>
+<th align="center">键可否为 null</th>
+<th align="center">值可否为 null</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">HashMap</td>
+<td align="center">适用于 Map 中插入、删除和定位元素</td>
+<td align="center">×</td>
+<td align="center">√</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">TreeMap</td>
+<td align="center">适用于按自然顺序或自定义顺序遍历键(key)</td>
+<td align="center">×</td>
+<td align="center">×</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">Hashtable</td>
+<td align="center">适用于多线程时保证线程安全</td>
+<td align="center">√</td>
+<td align="center">×</td>
+<td align="center">×</td>
+</tr>
+</tbody></table>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://blog.csdn.net/weixin_36380516/article/details/54908418">《List,Set和Map详解及其区别和他们分别适用的场景》</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Java 基础</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows 10 安装 Dolby 音效</title>
+    <url>/2018/11/17/win10-dolby/</url>
+    <content><![CDATA[<p>由于系统升级给我把我的逗比 (Dolby) 音效搞没了，搞得我又花时间折腾了一会，为了以后折腾能节约些时间，在此记个小笔记。</p>
+<span id="more"></span>
+
+<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><p>Windows 10.0 x64(17134) （声卡支持）</p>
+<p>dolby home theater v4.1 32 x64</p>
+<h2 id="安装逗比"><a href="#安装逗比" class="headerlink" title="安装逗比"></a>安装逗比</h2><h3 id="卸载逗比"><a href="#卸载逗比" class="headerlink" title="卸载逗比"></a>卸载逗比</h3><p>打开 <code>C:\DRIVERS\WIN\DOLBY\x64\DTPC.msi</code> (因实际情况而异)然后选择 <code>remove</code> 移除以前安装过的逗比音效。</p>
+<blockquote>
+<p>一般用于修复逗比音效，如果电脑之前没有安装过逗比音效这一步可以省略跳过。</p>
+</blockquote>
+<h3 id="卸载驱动"><a href="#卸载驱动" class="headerlink" title="卸载驱动"></a>卸载驱动</h3><p>打开<strong>设备管理器</strong>找到<strong>声音、视频和游戏控制器</strong>(不是下面的<strong>音频输入和输出</strong>)，然后卸载系统自带的声卡驱动。</p>
+<h3 id="开启安装限制"><a href="#开启安装限制" class="headerlink" title="开启安装限制"></a>开启安装限制</h3><p><strong>win + R</strong> 运行 <code>gpedit.msc</code> 打开<strong>本地组策略编辑器</strong>，找到<strong>计算机配置 - 管理模板 - 系统 - 设备安装 - 设备安装限制 - 禁止安装未由其他策略设置描述的设备</strong>，然后改成<strong>已启用</strong>。</p>
+<blockquote>
+<p>防止电脑重启自动安装声卡驱动。</p>
+</blockquote>
+<h3 id="禁用签名"><a href="#禁用签名" class="headerlink" title="禁用签名"></a>禁用签名</h3><p><strong>Shift + 重启</strong> 或 <strong>设置 - 更新和安全 - 恢复 - 高级启动 - 立即重新启动</strong>，然后 <strong>疑难解答 - 启动设置 - 7)禁用驱动程序强制签名</strong>，然后坐等开机。</p>
+<blockquote>
+<p>不禁用签名无法安装逗比音效！</p>
+</blockquote>
+<h3 id="关闭安装限制"><a href="#关闭安装限制" class="headerlink" title="关闭安装限制"></a>关闭安装限制</h3><p>按照上面<strong>开启安装限制</strong>的方法修改回<strong>已禁用</strong>或<strong>未配置</strong>。</p>
+<blockquote>
+<p>刚才是因为禁止电脑自动安装声卡驱动所以开启安装限制，现在需要安装逗比音效所以需要关闭安装限制。</p>
+</blockquote>
+<h3 id="安装逗比-1"><a href="#安装逗比-1" class="headerlink" title="安装逗比"></a>安装逗比</h3><p>找到 <code>DTPC.msi</code> 安装逗比音效，安装时在 <strong>Install driver</strong> 那里只勾 **DHT(Release)**，然后询问重启电脑点击 Yes 开机后即可使用逗比音效。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://blog.csdn.net/u012348774/article/details/74931117">Win10x64安装Dolby</a></li>
+<li><a href="http://tieba.baidu.com/p/4912839505">我的win10专业版安装杜比音效软件的过程</a></li>
+<li><a href="http://tieba.baidu.com/p/3143778216">杜比音效安装教程</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>音效</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Java 解析 apk 信息</title>
+    <url>/2018/11/23/java-apk-parser/</url>
+    <content><![CDATA[<p><a href="https://github.com/xiaxiaocao/apk-parser">apk-parser</a>，一个纯 Java 实现的解析 Apk 的 lib，用于解码二进制 xml 文件，获取 Apk 信息。</p>
+<h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><ul>
+<li> 查看 Apk 的信息，如应用名、图标、包名、SDK 版本、权限、版本等</li>
+<li>将二进制 xml 文件解析并转换为文本</li>
+<li>从 dex 文件中获取类</li>
+<li>获取签名信息</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="Get-apk-parser"><a href="#Get-apk-parser" class="headerlink" title="Get apk-parser"></a>Get apk-parser</h2><h3 id="Maven"><a href="#Maven" class="headerlink" title="Maven"></a>Maven</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>net.dongliu<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>apk-parser<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6.10<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://mvnrepository.com/artifact/net.dongliu/apk-parser">Maven Repository: net.dongliu » apk-parser</a></p>
+<h3 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h3><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"><span class="comment">// compile group: &#x27;net.dongliu&#x27;, name: &#x27;apk-parser&#x27;, version: &#x27;2.6.10&#x27;</span></span><br><span class="line"><span class="keyword">compile</span> <span class="string">&#x27;net.dongliu:apk-parser:2.6.10&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h3><p><a href="https://github.com/hsiafan/apk-parser/releases">Releases · hsiafan&#x2F;apk-parser</a></p>
+<h3 id="Jar"><a href="#Jar" class="headerlink" title="Jar"></a>Jar</h3><p><a href="http://central.maven.org/maven2/net/dongliu/apk-parser/">Central Repository: net&#x2F;dongliu&#x2F;apk-parser</a></p>
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><p>使用 ApkFile 类来获取 AndroidManifest.xml、apk 的信息。</p>
+<h3 id="Apk-info"><a href="#Apk-info" class="headerlink" title="Apk info"></a>Apk info</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">ApkFile</span> <span class="variable">apkFile</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    apkFile = <span class="keyword">new</span> <span class="title class_">ApkFile</span>(<span class="keyword">new</span> <span class="title class_">File</span>(apkPath));</span><br><span class="line">    <span class="type">ApkMeta</span> <span class="variable">apkMeta</span> <span class="operator">=</span> apkFile.getApkMeta();</span><br><span class="line">    <span class="comment">// System.out.println(apkMeta);</span></span><br><span class="line">    System.out.println(<span class="string">&quot;应用名：&quot;</span> + apkMeta.getLabel());</span><br><span class="line">    System.out.println(<span class="string">&quot;包名：&quot;</span> + apkMeta.getPackageName());</span><br><span class="line">    System.out.println(<span class="string">&quot;版本：&quot;</span> + apkMeta.getVersionName());</span><br><span class="line">    System.out.println(<span class="string">&quot;版本号：&quot;</span> + apkMeta.getVersionCode());</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// TODO close apkFile</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>ApkFile 使用完后记得释放资源。</p>
+</blockquote>
+<h3 id="Get-binary-xml-and-manifest-xml-file"><a href="#Get-binary-xml-and-manifest-xml-file" class="headerlink" title="Get binary xml and manifest xml file"></a>Get binary xml and manifest xml file</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">ApkFile</span> <span class="variable">apkFile</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    apkFile = <span class="keyword">new</span> <span class="title class_">ApkFile</span>(<span class="keyword">new</span> <span class="title class_">File</span>(apkPath));</span><br><span class="line">    <span class="type">String</span> <span class="variable">manifestXml</span> <span class="operator">=</span> apkFile.getManifestXml();</span><br><span class="line">    <span class="type">String</span> <span class="variable">menuXml</span> <span class="operator">=</span> apkFile.transBinaryXml(<span class="string">&quot;res/menu/main.xml&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// TODO close apkFile</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Get-dex-classes"><a href="#Get-dex-classes" class="headerlink" title="Get dex classes"></a>Get dex classes</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">ApkFile</span> <span class="variable">apkFile</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    apkFile = <span class="keyword">new</span> <span class="title class_">ApkFile</span>(<span class="keyword">new</span> <span class="title class_">File</span>(apkPath));</span><br><span class="line">    DexClass[] classes = apkFile.getDexClasses();</span><br><span class="line">    <span class="keyword">for</span> (DexClass dexClass : classes) &#123;</span><br><span class="line">        System.out.println(dexClass);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// TODO close apkFile</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Get-Apk-Sign-info"><a href="#Get-Apk-Sign-info" class="headerlink" title="Get Apk Sign info"></a>Get Apk Sign info</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">ApkFile</span> <span class="variable">apkFile</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    apkFile = <span class="keyword">new</span> <span class="title class_">ApkFile</span>(<span class="keyword">new</span> <span class="title class_">File</span>(apkPath));</span><br><span class="line">    List&lt;ApkSigner&gt; signers = apkFile.getApkSingers(); <span class="comment">// apk v1 signers</span></span><br><span class="line">    List&lt;ApkV2Signer&gt; v2signers = apkFile.getApkV2Singers(); <span class="comment">// apk v2 signers</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// TODO close apkFile</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Save-icon"><a href="#Save-icon" class="headerlink" title="Save icon"></a>Save icon</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">ApkFile</span> <span class="variable">apkFile</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="type">String</span> <span class="variable">apkPath</span> <span class="operator">=</span> <span class="string">&quot;C:/test.apk&quot;</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        apkFile = <span class="keyword">new</span> <span class="title class_">ApkFile</span>(<span class="keyword">new</span> <span class="title class_">File</span>(apkPath));</span><br><span class="line">        <span class="comment">// 保存所有 icon</span></span><br><span class="line">        <span class="keyword">for</span> (IconFace iconFace : apkFile.getAllIcons()) &#123;</span><br><span class="line">            saveIcon(savePath, iconFace);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 保存主 icon</span></span><br><span class="line">        <span class="comment">// saveIcon(savePath, apkFile.getIconFile());</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="comment">// TODO close apkFile</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 保存 apk 的 icon</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> savePath 保存的目录</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> icon</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">saveIcon</span><span class="params">(String savePath, IconFace iconFace)</span></span><br><span class="line">        <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">iconPath</span> <span class="operator">=</span> iconFace.getPath();</span><br><span class="line">    <span class="type">String</span> <span class="variable">iconName</span> <span class="operator">=</span> iconPath.substring(iconPath.lastIndexOf(<span class="string">&quot;/&quot;</span>) + <span class="number">1</span>);</span><br><span class="line">    <span class="type">File</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(savePath + iconName);</span><br><span class="line">    <span class="keyword">if</span> (!file.exists()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!file.getParentFile().exists()) &#123;</span><br><span class="line">             file.getParentFile().mkdirs();</span><br><span class="line">        &#125;</span><br><span class="line">        file.createNewFile();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">FileOutputStream</span> <span class="variable">fos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(file);</span><br><span class="line">    fos.write(iconFace.getData());</span><br><span class="line">    fos.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Android 开发</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Java</tag>
+        <tag>开源项目</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java 设计模式之单例模式</title>
+    <url>/2018/11/24/java-design-singleton/</url>
+    <content><![CDATA[<p>单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。</p>
+<p>这种模式涉及到一个单一的类，该类负责创建自己的对象，同时确保只有单个对象被创建。这个类提供了一种访问其唯一的对象的方式，可以直接访问，不需要实例化该类的对象。</p>
+<span id="more"></span>
+
+<p><strong>注意：</strong></p>
+<ul>
+<li>单例类只能有一个实例</li>
+<li>单例类必须自己创建自己的唯一实例</li>
+<li>单例类必须给所有其他对象提供这一实例</li>
+</ul>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>从具体的实现角度来说就是以下三点：</p>
+<ol>
+<li>单例模式的类只提供私有的构造函数</li>
+<li>类定义中含有一个该类的静态私有对象 </li>
+<li>该类提供了一个静态的公有的函数用于创建或获取它本身的静态私有对象</li>
+</ol>
+<p>下面是单例模式的几种常见写法：</p>
+<h3 id="1、懒汉式-单线程"><a href="#1、懒汉式-单线程" class="headerlink" title="1、懒汉式(单线程)"></a>1、懒汉式(单线程)</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优点：延迟加载。</p>
+<p>缺点：这种写法只适用于单线程，如果在多线程下可能会产生多个实例。</p>
+<hr>
+<p><strong>下面介绍的几种方式都支持多线程但在性能上有所差异</strong></p>
+<h3 id="2、懒汉式-多线程"><a href="#2、懒汉式-多线程" class="headerlink" title="2、懒汉式(多线程)"></a>2、懒汉式(多线程)</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优点：第一次调用才初始化，避免内存浪费。</p>
+<p>缺点：必须加锁 <code>synchronized</code> 才能保证单例，但加锁会影响效率。</p>
+<h3 id="3、饿汉式"><a href="#3、饿汉式" class="headerlink" title="3、饿汉式"></a>3、饿汉式</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优点：写法简单，没有加锁，执行效率会提高。</p>
+<p>缺点：如果从始至终未使用过这个实例，则会造成资源的浪费。</p>
+<h3 id="4、双重检查-推荐用"><a href="#4、双重检查-推荐用" class="headerlink" title="4、双重检查(推荐用)"></a>4、双重检查(推荐用)</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优点：线程安全，延迟加载，效率高。</p>
+<h3 id="5、静态内部类-推荐用"><a href="#5、静态内部类-推荐用" class="headerlink" title="5、静态内部类(推荐用)"></a>5、静态内部类(推荐用)</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SingletonInstance</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonInstance.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方式类似于饿汉式，但又有不同。这种方式同样利用了 Classloader 机制来保证初始化 instance 时只有一个线程 ，不同的是饿汉式只要 <code>Singleton</code> 类被装载就会实例化，不会延迟加载，而静态内部类在 <code>Singleton</code> 类被装载时不会立即实例化，而是在调用 <code>getInstance()</code> 方法时才会装载 <code>SingletonInstance</code> 这个内部类完成 <code>Singleton</code> 的实例化。</p>
+<p>优点：线程安全，延迟加载，效率高。</p>
+<h3 id="6、枚举-推荐用"><a href="#6、枚举-推荐用" class="headerlink" title="6、枚举(推荐用)"></a>6、枚举(推荐用)</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">whateverMethod</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种实现方式还没有被广泛采用，但这是实现单例模式的最佳方法。它更简洁，自动支持序列化机制，绝对防止多次实例化，也不能通过 reflection attack 来调用私有构造方法。这种方式是 Effective Java 作者 Josh Bloch 提倡的方式，它不仅能避免多线程同步问题，而且还自动支持序列化机制，防止反序列化重新创建新的对象，绝对防止多次实例化。不过，由于 JDK1.5 之后才加入 enum 特性，用这种方式写不免让人感觉生疏，在实际工作中，也很少用。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一般情况下，不建议使用第 1 种和第 2 种懒汉方式，建议使用第 3 种饿汉方式。只有在要明确实现 lazy loading 效果时，才会使用第 5 种静态内部类的方式。如果涉及到反序列化创建对象时，可以尝试使用第 6 种枚举方式。如果有其他特殊的需求，可以考虑使用第 4 种双重检查。</p>
+]]></content>
+      <categories>
+        <category>Java 设计模式</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Xposed 开发之 UiAutomatorViewer 扩展</title>
+    <url>/2019/07/01/xposed-uiautomator/</url>
+    <content><![CDATA[<p>UI Automator Viewer 是一个 Android SDK 自带的工具，通过它我们可以非常方便的查看和分析 App 的 View Tree，这么好的一个工具，可惜五年没更新了，不过 这个工具是开源的，所以我们可以使用源码进行二次开发。</p>
+<span id="more"></span>
+
+<h2 id="准备工具"><a href="#准备工具" class="headerlink" title="准备工具"></a>准备工具</h2><ul>
+<li><a href="https://android.googlesource.com/platform/tools/swt/+/refs/heads/master/uiautomatorviewer/">UiAutomatorViewer源码</a>(Eclipse)</li>
+<li><a href="https://www.eclipse.org/downloads/">Eclipse</a></li>
+<li><a href="https://zpp0196.me/2018/06/23/xposed-init">Xposed开发环境</a></li>
+</ul>
+<h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><p>使用 Eclipse 导入项目，然后发现大片的报错，原因是找不到对应的依赖包，问题不大。</p>
+<p>删除 <code>build.gradle</code> 里面 <code>dependencies</code> 的项目。</p>
+<p>打开 <code>SDK/tools/lib/</code> 目录，会发现有一堆 jar 包，我们需要的依赖包全都可以在这里面找到，但是这么多不可能全都是我们需要的，那么怎么知道我们需要哪些呢？</p>
+<p>在这个目录下面找到 <code>uiautomatorviewer-26.0.0-dev.jar</code> 并以 zip 方式打开，找到  <code>META-INF/MANIFEST.MF</code> 这个文件并打开，将 <code>Class-Path</code> 里面的所有 jar 包和 <code>SDK/tools/lib/x86_64/swt.jar</code> (如果是 32 位系统则找 <code>x86</code> 目录)添加到项目的环境变量里面。</p>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>我们觉得 Node Detail 里面的属性太少了，我们想往里面添加一些属性怎么搞呢？</p>
+<p>从 <code>MANIFEST.MF</code> 文件里面可以得知入口类为 <code>com.android.uiautomator.UiAutomatorViewer</code>，找到该类的 main 方法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String args[])</span> &#123;</span><br><span class="line">    <span class="comment">// 如果在测试时提示找不到 adb，可以在该类里面的 getAdbLocation() 方法里面手动修改 toolsDir</span></span><br><span class="line">    DebugBridge.init();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">UiAutomatorViewer</span> <span class="variable">window</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UiAutomatorViewer</span>();</span><br><span class="line">        window.setBlockOnOpen(<span class="literal">true</span>);</span><br><span class="line">        window.open();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        DebugBridge.terminate();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在该类的 <code>createContents</code> 方法里面可以找到该 Window 里面的 Actions</p>
+<p>省略分析过程，最后找到 <code>com.android.uiautomator.tree.UiHierarchyXmlLoader</code> 这个类，里面的 <code>parseXml</code> 就是解析 xml 的地方，找到这个地方干什么呢？</p>
+<p>我们知道 UiAutomatorViewer 的原理是执行 <code>/system/bin/uiautomator dump [--compressed] /data/local/tmp/uidump.xml</code> 这个命令，然后将这个 dump 出来的 xml 文件 pull 到电脑上解析，然后再配上一张截图就可以展示出一个 View Tree。</p>
+<p>如果这个文件已经 pull 到电脑上了，我们再想改变里面的数据就比较难了，我们可以在它执行 dump 命令的时候修改里面的属性，然后 pull 到电脑上只负责解析就行了。</p>
+<p>仔细查看源码会发现，Node Detail 里面的属性并不是直接定义在 Java 代码里面的，是从 xml 里面循环读出来的，xml 里面有什么就展示什么，那么这些 xml 又是谁写的呢？</p>
+<p>顺着 <code>/system/bin/uiautomator</code> 往下找，dump 命令对应的类为 <a href="http://androidxref.com/9.0.0_r3/xref/frameworks/base/cmds/uiautomator/cmds/uiautomator/src/com/android/commands/uiautomator/DumpCommand.java">DumpCommand</a>，主要代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="type">UiAutomation</span> <span class="variable">uiAutomation</span> <span class="operator">=</span> automationWrapper.getUiAutomation();</span><br><span class="line">    uiAutomation.waitForIdle(<span class="number">1000</span>, <span class="number">1000</span> * <span class="number">10</span>);</span><br><span class="line">    <span class="type">AccessibilityNodeInfo</span> <span class="variable">info</span> <span class="operator">=</span> uiAutomation.getRootInActiveWindow();</span><br><span class="line">    <span class="keyword">if</span> (info == <span class="literal">null</span>) &#123;</span><br><span class="line">        System.err.println(<span class="string">&quot;ERROR: null root node returned by UiTestAutomationBridge.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">Display</span> <span class="variable">display</span> <span class="operator">=</span></span><br><span class="line">                    DisplayManagerGlobal.getInstance().getRealDisplay(Display.DEFAULT_DISPLAY);(Display.DEFAULT_DISPLAY);</span><br><span class="line">    <span class="type">int</span> <span class="variable">rotation</span> <span class="operator">=</span> display.getRotation();</span><br><span class="line">    <span class="type">Point</span> <span class="variable">size</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Point</span>();</span><br><span class="line">    display.getSize(size);</span><br><span class="line">    <span class="comment">// 看这里</span></span><br><span class="line">    AccessibilityNodeInfoDumper.dumpWindowToFile(info, dumpFile, rotation, size.x, size.y);</span><br><span class="line">&#125; <span class="keyword">catch</span> (TimeoutException re) &#123;</span><br><span class="line">    System.err.println(<span class="string">&quot;ERROR: could not get idle state.&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    automationWrapper.disconnect();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>继续找 <a href="http://androidxref.com/9.0.0_r3/xref/frameworks/base/cmds/uiautomator/library/core-src/com/android/uiautomator/core/AccessibilityNodeInfoDumper.java#75">AccessibilityNodeInfoDumper.dumpWindowToFile</a>：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Using &#123;<span class="doctag">@link</span> AccessibilityNodeInfo&#125; this method will walk the layout hierarchy</span></span><br><span class="line"><span class="comment"> * and generates an xml dump to the location specified by &lt;code&gt;dumpFile&lt;/code&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> root The root accessibility node.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> dumpFile The file to dump to.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> rotation The rotaion of current display</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> width The pixel width of current display</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> height The pixel height of current display</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">dumpWindowToFile</span><span class="params">(AccessibilityNodeInfo root, File dumpFile, <span class="type">int</span> rotation,</span></span><br><span class="line"><span class="params">        <span class="type">int</span> width, <span class="type">int</span> height)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> <span class="type">long</span> <span class="variable">startTime</span> <span class="operator">=</span> SystemClock.uptimeMillis();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">FileWriter</span> <span class="variable">writer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileWriter</span>(dumpFile);</span><br><span class="line">        <span class="type">XmlSerializer</span> <span class="variable">serializer</span> <span class="operator">=</span> Xml.newSerializer();</span><br><span class="line">        <span class="type">StringWriter</span> <span class="variable">stringWriter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringWriter</span>();</span><br><span class="line">        serializer.setOutput(stringWriter);</span><br><span class="line">        serializer.startDocument(<span class="string">&quot;UTF-8&quot;</span>, <span class="literal">true</span>);</span><br><span class="line">        serializer.startTag(<span class="string">&quot;&quot;</span>, <span class="string">&quot;hierarchy&quot;</span>);</span><br><span class="line">        serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;rotation&quot;</span>, Integer.toString(rotation));</span><br><span class="line">        <span class="comment">// 看这里</span></span><br><span class="line">        dumpNodeRec(root, serializer, <span class="number">0</span>, width, height);</span><br><span class="line">        serializer.endTag(<span class="string">&quot;&quot;</span>, <span class="string">&quot;hierarchy&quot;</span>);</span><br><span class="line">        serializer.endDocument();</span><br><span class="line">        writer.write(stringWriter.toString());</span><br><span class="line">        writer.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        Log.e(LOGTAG, <span class="string">&quot;failed to dump window to file&quot;</span>, e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> <span class="type">long</span> <span class="variable">endTime</span> <span class="operator">=</span> SystemClock.uptimeMillis();</span><br><span class="line">    Log.w(LOGTAG, <span class="string">&quot;Fetch time: &quot;</span> + (endTime - startTime) + <span class="string">&quot;ms&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">dumpNodeRec</span><span class="params">(AccessibilityNodeInfo node, XmlSerializer serializer,<span class="type">int</span> index,</span></span><br><span class="line"><span class="params">        <span class="type">int</span> width, <span class="type">int</span> height)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    serializer.startTag(<span class="string">&quot;&quot;</span>, <span class="string">&quot;node&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (!nafExcludedClass(node) &amp;&amp; !nafCheck(node))</span><br><span class="line">        serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;NAF&quot;</span>, Boolean.toString(<span class="literal">true</span>));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;index&quot;</span>, Integer.toString(index));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;text&quot;</span>, safeCharSeqToString(node.getText()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;resource-id&quot;</span>, safeCharSeqToString(node.getViewIdResourceName()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;class&quot;</span>, safeCharSeqToString(node.getClassName()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;package&quot;</span>, safeCharSeqToString(node.getPackageName()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;content-desc&quot;</span>, safeCharSeqToString(node.getContentDescription()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;checkable&quot;</span>, Boolean.toString(node.isCheckable()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;checked&quot;</span>, Boolean.toString(node.isChecked()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;clickable&quot;</span>, Boolean.toString(node.isClickable()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;enabled&quot;</span>, Boolean.toString(node.isEnabled()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;focusable&quot;</span>, Boolean.toString(node.isFocusable()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;focused&quot;</span>, Boolean.toString(node.isFocused()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;scrollable&quot;</span>, Boolean.toString(node.isScrollable()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;long-clickable&quot;</span>, Boolean.toString(node.isLongClickable()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;password&quot;</span>, Boolean.toString(node.isPassword()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;selected&quot;</span>, Boolean.toString(node.isSelected()));</span><br><span class="line">    serializer.attribute(<span class="string">&quot;&quot;</span>, <span class="string">&quot;bounds&quot;</span>, AccessibilityNodeInfoHelper.getVisibleBoundsInScreen(</span><br><span class="line">            node, width, height).toShortString());</span><br><span class="line">    <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> node.getChildCount();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">        <span class="type">AccessibilityNodeInfo</span> <span class="variable">child</span> <span class="operator">=</span> node.getChild(i);</span><br><span class="line">        <span class="keyword">if</span> (child != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (child.isVisibleToUser()) &#123;</span><br><span class="line">                dumpNodeRec(child, serializer, i, width, height);</span><br><span class="line">                child.recycle();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                Log.i(LOGTAG, String.format(<span class="string">&quot;Skipping invisible child: %s&quot;</span>, child.toString()));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Log.i(LOGTAG, String.format(<span class="string">&quot;Null child %d/%d, parent: %s&quot;</span>,</span><br><span class="line">                    i, count, node.toString()));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    serializer.endTag(<span class="string">&quot;&quot;</span>, <span class="string">&quot;node&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>index</code>、<code>text</code>、<code>resource-id</code> 这些不就是 Node Detail 里面的属性么，我们要改变或者往里面新增一个属性怎么办，添加一行 <code>serializer.attribute(&quot;&quot;, &quot;background-id&quot;, &quot;value&quot;);</code>？那么问题来了，怎么添加？这里可是 framework 层的代码，虽然知道这部分代码在 <code>/system/framework/uiautomator.jar</code> 里面，但是代码被转成了 vdex 咋整啊，而且就算解决了这个问题那这个属性的值去哪里找？这一套整下来小白可吃不消，所以我们可以换一种思路。</p>
+<p>参考其他的属性，发现基本上都是 <code>node.getXXX</code>，找到对应的 <code>setXXX</code> 方法，这里使用 Xposed 打印堆栈：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">at android.view.accessibility.AccessibilityNodeInfo.setViewIdResourceName(Unknown Source:<span class="number">9</span>)</span><br><span class="line">at android.view.View.onInitializeAccessibilityNodeInfoInternal(View.java:<span class="number">8693</span>)</span><br><span class="line">at android.view.View.onInitializeAccessibilityNodeInfo(View.java:<span class="number">7699</span>)</span><br><span class="line">at android.view.View.createAccessibilityNodeInfoInternal(View.java:<span class="number">7658</span>)</span><br><span class="line">at android.view.View.createAccessibilityNodeInfo(View.java:<span class="number">7643</span>)</span><br></pre></td></tr></table></figure>
+
+<p>多次测试后可以确定：那些 <code>node.getXXX</code> 获取到的值就是在 <code>View.onInitializeAccessibilityNodeInfoInternal</code> 这个方法里面设置的，这样一来就解决了如何获取自定义属性值的问题，我们有了这个 View 的对象实例，什么属性获取不到？</p>
+<p>那么最后一个问题，我们怎么把它显示出来呢？</p>
+<p>在不修改系统代码的情况下，我们可以这么玩，还记得上面留着一个坑么，UiAutomatorViewer 的源码我们不是还没动过吗，这下就该动手了。</p>
+<h2 id="源码修改"><a href="#源码修改" class="headerlink" title="源码修改"></a>源码修改</h2><p>在修改源码前，我们需要明确我们要改什么？怎么改？</p>
+<p>目的很明确，我们需要添加一些自定义的属性到 Node Detail 里面，怎么添加呢？比如用 json 再包一层：</p>
+<p>首先编写 Xposed 模块将我们需要的属性和值添加进去：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">XposedHelpers.findAndHookMethod(View.class, <span class="string">&quot;onInitializeAccessibilityNodeInfoInternal&quot;</span>, AccessibilityNodeInfo.class, <span class="keyword">new</span> <span class="title class_">XC_MethodHook</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">afterHookedMethod</span><span class="params">(XC_MethodHook.MethodHookParam param)</span> &#123;</span><br><span class="line">        <span class="type">View</span> <span class="variable">view</span> <span class="operator">=</span> (View) param.thisObject;</span><br><span class="line">        <span class="type">AccessibilityNodeInfo</span> <span class="variable">node</span> <span class="operator">=</span> (AccessibilityNodeInfo) param.args[<span class="number">0</span>];</span><br><span class="line">        node.setClassName(view.getClass().getCanonicalName());</span><br><span class="line">        node.setVisibleToUser(<span class="literal">true</span>);</span><br><span class="line">        <span class="comment">// 其他属性自行研究</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">JSONObject</span> <span class="variable">json</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">            <span class="type">long</span> <span class="variable">viewId</span> <span class="operator">=</span> view.getId();</span><br><span class="line">            <span class="keyword">if</span> (viewId &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                json.put(<span class="string">&quot;resource-id&quot;</span>, id2Hex(viewId));</span><br><span class="line">                json.put(<span class="string">&quot;resource-name&quot;</span>, node.getViewIdResourceName());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">int</span> <span class="variable">backgroundRes</span> <span class="operator">=</span> (<span class="type">int</span>) XposedHelpers.getObjectField(view, <span class="string">&quot;mBackgroundResource&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (backgroundRes &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                json.put(<span class="string">&quot;background-id&quot;</span>, id2Hex(backgroundRes));</span><br><span class="line">                json.put(<span class="string">&quot;background-name&quot;</span>, view.getContext().getResources().getResourceName(backgroundRes));</span><br><span class="line">            &#125;</span><br><span class="line">            node.setViewIdResourceName(json.toString());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable th) &#123;</span><br><span class="line">            th.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String <span class="title function_">id2Hex</span><span class="params">(<span class="type">long</span> id)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;0x&quot;</span> + Long.toHexString(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>然后稍稍修改一下 UiAutomatorViewer 解析 xml 的代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">UiNode</span> <span class="variable">tmpNode</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UiNode</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; attributes.getLength(); i++) &#123;</span><br><span class="line">    tmpNode.addAtrribute(attributes.getQName(i), attributes.getValue(i));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改后：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">UiNode</span> <span class="variable">tmpNode</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UiNode</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; attributes.getLength(); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="string">&quot;resource-id&quot;</span>.equals(attributes.getQName(i)) &amp;&amp; addExtNodeDetail(tmpNode, attributes.getValue(i))) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    tmpNode.addAtrribute(attributes.getQName(i), attributes.getValue(i));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">addExtNodeDetail</span><span class="params">(UiNode tmpNode, String extNodeDetail)</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">JSONObject</span> <span class="variable">json</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>(extNodeDetail);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 排序（可选）</span></span><br><span class="line">        Iterator&lt;String&gt; iteratorKeys = json.keys();</span><br><span class="line">        SortedMap&lt;String, Object&gt; map = <span class="keyword">new</span> <span class="title class_">TreeMap</span>&lt;String, Object&gt;();</span><br><span class="line">        <span class="keyword">while</span> (iteratorKeys.hasNext()) &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> iteratorKeys.next().toString();</span><br><span class="line">            <span class="type">String</span> <span class="variable">vlaue</span> <span class="operator">=</span> json.optString(key);</span><br><span class="line">            map.put(key, vlaue);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 添加自定义的属性</span></span><br><span class="line">        Iterator&lt;String&gt; keys = map.keySet().iterator();</span><br><span class="line">        <span class="keyword">while</span>(keys.hasNext()) &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> keys.next();</span><br><span class="line">            tmpNode.addAtrribute(key, String.valueOf(json.get(key)));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception ignored) &#123;&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>手机安装对应的模块，然后再使用这个二次编译的 UiAutomatorViewer 查看布局就行了，效果对比图（点击图片放大）：</p>
+<table>
+<thead>
+<tr>
+<th>修改前</th>
+<th>修改后</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="/images/xposed-uiautomator/unmodified.png" alt="unmodified"></td>
+<td><img src="/images/xposed-uiautomator/modified.png" alt="modified"></td>
+</tr>
+</tbody></table>
+<h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><ul>
+<li>听说用 idea 也可以编译，这个没试过，懒得折腾了。</li>
+<li>没有下载链接，代码都在这里了，自己动手丰衣足食。</li>
+<li>虽然还有一点点不优雅，但是起码实现了想要的功能，在别的优雅解决方案出来之前先凑合用吧。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Xposed 开发</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Xposed</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Xposed 开发之模块调试篇</title>
+    <url>/2019/07/25/xposed-debug/</url>
+    <content><![CDATA[<p><a href="https://www.baidu.com/baidu?ie=utf-8&wd=Xposed%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95">百度搜索 Xposed断点调试</a>，会发现关于这方面的教程几乎约等于没有，也有很多人说 Xposed 模块没法断点调试，但是经过我一番实践，确定 Xposed 模块是可以断点调试的，不信请往下看。</p>
+<span id="more"></span>
+
+<h2 id="简单示例"><a href="#简单示例" class="headerlink" title="简单示例"></a>简单示例</h2><p>举一个最简单的例子，创建一个空模块，里面包含一个 Activity 和 hook 代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleLoadPackage</span><span class="params">(XC_LoadPackage.LoadPackageParam lpparam)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    XposedHelpers.findAndHookMethod(MainActivity.class.getName(), lpparam.classLoader, <span class="string">&quot;onCreate&quot;</span>, Bundle.class, <span class="keyword">new</span> <span class="title class_">XC_MethodHook</span>() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">beforeHookedMethod</span><span class="params">(MethodHookParam param)</span> &#123;</span><br><span class="line">            Log.i(TAG, <span class="string">&quot;onCreate in hook&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后安装运行(Shift+F10)，确保模块已经正常生效，然后在 <code>Log.i</code> 那一行打上断点，然后再以 Debug 模式启动(Shift + F9)。</p>
+<p><img src="/images/xposed-debug/1.png"></p>
+<p>可以看到确实是可以调试的，但是这里调试的是我们自己写的应用，然而在实际开发中，我们一般 hook 的都是别人的应用，所以我们来创建一个新的 hookme 来试一下。</p>
+<h2 id="跨应用调试"><a href="#跨应用调试" class="headerlink" title="跨应用调试"></a>跨应用调试</h2><p>运行 hookme 发现 hook 代码的确是执行了，但是断点形同虚设，原因很简单，因为我们少了一步 Shift + F9，在没有 hookme 源码的情况下，我们虽然不能直接 Shift + F9 (即使你有源码也没用)，但是我们可以手动搞一个出来</p>
+<p>Shift + F9 先后干了两件事情：</p>
+<ol>
+<li>adb shell am start -n package&#x2F;activity -D</li>
+<li>Attach Debugger to Android Process</li>
+</ol>
+<p>我们只需要把里面的包名和 Activity 换成 hookme 的就行了，首先用执行命令以 debug 模式启动 hookme: </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">adb shell am start -D -n me.zpp0196.library.hookme/.MainActivity</span></span><br></pre></td></tr></table></figure>
+
+<p>接着手机上会出现一个 <strong>Waiting For Debugger</strong> 的对话框提示正在等待调试器连接。</p>
+<p><img src="/images/xposed-debug/2.png"></p>
+<p>接下来我们手动让 Debugger attach 到这个进程上，点击 Android Studio 右上角的这个小虫子。</p>
+<p><img src="/images/xposed-debug/3.png"></p>
+<p>在弹出来的对话框里面选择我们的 hookme 进程。</p>
+<p><img src="/images/xposed-debug/4.png"></p>
+<p>点击 OK，可以看到也是可以调试的。</p>
+<p><img src="/images/xposed-debug/5.png"></p>
+<p><del>萌新看了一眼进度条发现事情并不简单。</del></p>
+<hr>
+<h2 id="正文开始"><a href="#正文开始" class="headerlink" title="正文开始"></a>正文开始</h2><p>使用上面的 hookme 来测试还不够严谨，因为这个 hookme 是我们自己创建的，我们啥都没有干直接运行， 这个时候安装的默认是 debug 版，正是因为是 debug 版所以可以调试，但其实我们 hook 的应用一般都是 release 版，可以试一下安装 release 版并执行 <code>am start -D -n</code> 命令后并不会出现 <strong>Waiting For Debugger</strong> 这个对话框，debugger 也 attach 不到它的任何进程，这时候我们有两种做法：</p>
+<ol>
+<li><p>adb shell &amp;&amp; su &amp;&amp; resetprop ro.debuggable 1 &amp;&amp; setprop ctl.restart zygote_secondary</p>
+</li>
+<li><p>反编译 hookme 并在 <code>AndroidManifest.xml</code> 里面的 <code>&lt;application&gt;</code> 节点中添加 <code>android:debuggable=&quot;true&quot;</code>。</p>
+</li>
+</ol>
+<p>这里先采用第一种开启全局调试开关的方式，修改完 <code>ro.debuggable</code> 后按照上面的步骤再试一次，你会发现，这并没有什么用，至于原因嘛我也不知道(是我太菜了)。</p>
+<p>接下来是第二种，如果直接反编译修改重新打包安装的话，可能会出现意想不到的惊喜，而且那个时代已经过去了，在 2014 年那会还都是直接反编译改 apk，那会的 apk 基本也都没有签名校验什么的，但是这都过去五年多了，这条路基本已经走不通了。别灰心，上帝为我们关上了一扇门，但也为我们打开了一扇窗，反编译不行了我们还有 Xposed 啊：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">XposedBridge.hookAllMethods(android.os.Process.class, <span class="string">&quot;start&quot;</span>, <span class="keyword">new</span> <span class="title class_">XC_MethodHook</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">beforeHookedMethod</span><span class="params">(MethodHookParam param)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">niceName</span> <span class="operator">=</span> (String) param.args[<span class="number">1</span>];</span><br><span class="line">        <span class="type">int</span> <span class="variable">runtimeFlags</span> <span class="operator">=</span> (<span class="type">int</span>) param.args[<span class="number">5</span>];</span><br><span class="line">        <span class="keyword">if</span> (!niceName.equals(packageName)) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        param.args[<span class="number">5</span>] = runtimeFlags | <span class="number">1</span> | <span class="number">1</span> &lt;&lt; <span class="number">7</span> | <span class="number">1</span> &lt;&lt; <span class="number">8</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>重启手机后再按上面的步骤试一下，这下应该没问题了吧，不用自己写的 hookme，换一个其他应用试一下也是没有问题的。</p>
+<p><img src="/images/xposed-debug/6.png"></p>
+]]></content>
+      <categories>
+        <category>Xposed 开发</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Xposed</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android 10 安装 ViPER4Android 音效</title>
+    <url>/2019/11/24/android10-v4a/</url>
+    <content><![CDATA[<h2 id="Prepare"><a href="#Prepare" class="headerlink" title="Prepare"></a>Prepare</h2><h3 id="Magisk"><a href="#Magisk" class="headerlink" title="Magisk"></a>Magisk</h3><p><a href="https://github.com/topjohnwu/Magisk">https://github.com/topjohnwu/Magisk</a></p>
+<h3 id="ViPER4Android-FX"><a href="#ViPER4Android-FX" class="headerlink" title="ViPER4Android FX"></a>ViPER4Android FX</h3><p><a href="https://labs.xda-developers.com/store/app/com.pittvandewitt.viperfx">https://labs.xda-developers.com/store/app/com.pittvandewitt.viperfx</a></p>
+<span id="more"></span>
+
+<h3 id="V4A-Profile-Converter"><a href="#V4A-Profile-Converter" class="headerlink" title="V4A-Profile-Converter"></a>V4A-Profile-Converter</h3><p><a href="https://github.com/Zackptg5/V4A-Profile-Converter">https://github.com/Zackptg5/V4A-Profile-Converter</a><br><a href="https://zackptg5.com/downloads/V4A-Profile-Converter.zip">https://zackptg5.com/downloads/V4A-Profile-Converter.zip</a></p>
+<h2 id="Guide"><a href="#Guide" class="headerlink" title="Guide"></a>Guide</h2><p><a href="https://www.thecustomdroid.com/install-viper4android-android-10-guide/">https://www.thecustomdroid.com/install-viper4android-android-10-guide/</a></p>
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><table>
+<thead>
+<tr>
+<th>Android version</th>
+<th>V4A Config</th>
+<th>Driver status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="/images/android10-v4a/1.jpg"></td>
+<td><img src="/images/android10-v4a/2.jpg"></td>
+<td><img src="/images/android10-v4a/3.jpg"></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Only used before official support for Android 10.</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>音效</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Gradle 插件升级注意事项</title>
+    <url>/2020/11/20/note-for-gradle-plugin-upgrade/</url>
+    <content><![CDATA[<p>一些在升级 Gradle 插件时可能遇到的问题。</p>
+<span id="more"></span>
+
+<h2 id="3-6-0"><a href="#3-6-0" class="headerlink" title="3.6.0+"></a>3.6.0+</h2><p>测试代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> <span class="string">&quot;admin&quot;</span>;</span><br><span class="line">    Assert.assertEquals(name, createUserWithName(name).getName());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> User <span class="title function_">createUserWithName</span><span class="params">(String name)</span> <span class="keyword">throws</span> IllegalAccessException &#123;</span><br><span class="line">    <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">    Field[] fields = user.getClass().getDeclaredFields();</span><br><span class="line">    <span class="keyword">if</span> (fields.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> fields[<span class="number">0</span>];</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(user, name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>升级之前的环境：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    classpath <span class="string">&quot;com.android.tools.build:gradle:3.5.4&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">buildTypes &#123;</span><br><span class="line">    debug &#123;</span><br><span class="line">        minifyEnabled <span class="literal">true</span></span><br><span class="line">        proguardFiles <span class="title function_">getDefaultProguardFile</span><span class="params">(<span class="string">&#x27;proguard-android-optimize.txt&#x27;</span>)</span>, <span class="string">&#x27;proguard-rules.pro&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这时运行上面的测试代码是没有问题的，接下来升级一下 Gradle 插件版本，其它环境不变：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    classpath <span class="string">&quot;com.android.tools.build:gradle:3.6.0&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">com.android.example E/AndroidRuntime: FATAL EXCEPTION: main</span><br><span class="line">    Process: com.android.example, PID: 19544</span><br><span class="line">    java.lang.AssertionError: expected:&lt;admin&gt; but was:&lt;null&gt;</span><br><span class="line">        at c.a.a.a(Assert.java:89)</span><br><span class="line">        at c.a.a.b(Assert.java:835)</span><br><span class="line">        at c.a.a.a(Assert.java:120)</span><br><span class="line">        at c.a.a.a(Assert.java:146)</span><br></pre></td></tr></table></figure>
+
+<p>为什么运行结果是 null ?，在 Android Studio 中打开 <code>app/build/outputs/apk/debug/app-debug.apk</code>，看一下 dex 中混淆后的 <code>User</code> 类反编译出来的 smali:</p>
+<figure class="highlight smali"><table><tr><td class="code"><pre><span class="line"><span class="keyword">.class</span><span class="keyword"> public</span> <span class="class">Lcom/android/example/a;</span></span><br><span class="line"><span class="keyword">.super</span> <span class="class">Ljava/lang/Object;</span></span><br><span class="line"><span class="keyword">.source</span> <span class="string">&quot;User.java&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># direct methods</span></span><br><span class="line"><span class="keyword">.method</span><span class="keyword"> public</span><span class="keyword"> constructor</span> &lt;init&gt;()V</span><br><span class="line"><span class="keyword">    .registers</span> 1</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 3</span><br><span class="line">   <span class="built_in"> invoke-direct </span>&#123;p0&#125;, <span class="class">Ljava/lang/Object;</span>-&gt;&lt;init&gt;()V</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> return-void</span></span><br><span class="line"><span class="built_in"></span><span class="keyword">.end method</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># virtual methods</span></span><br><span class="line"><span class="keyword">.method</span><span class="keyword"> public</span> a()<span class="class">Ljava/lang/String;</span></span><br><span class="line"><span class="keyword">    .registers</span> 2</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 8</span><br><span class="line">   <span class="built_in"> const/4 </span>v0, 0x0</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> return-object </span>v0<span class="keyword"></span></span><br><span class="line"><span class="keyword">.end method</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>name</code> 这个属性直接被优化移除了，<code>getName</code> 虽然还在，但是直接返回了 <code>null</code> 。</p>
+<p>解决办法：</p>
+<ul>
+<li><p><strong>添加混淆规则</strong></p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-keepclassmembers, allowobfuscation class com.android.example.User &#123;*;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>回退 Gradle 插件版本</strong></p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    classpath <span class="string">&quot;com.android.tools.build:gradle:3.5.4&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://developer.android.com/studio/releases/gradle-plugin">Gradle 插件历史版本更新日志</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android 开发</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Gradle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>adb 使用技巧和常见问题解决方案</title>
+    <url>/2021/04/12/android-adb-skill-and-faq/</url>
+    <content><![CDATA[<p>记录一些使用 adb 时的技巧和常见问题解决方案。</p>
+<span id="more"></span>
+
+<h2 id="adb-经常断开"><a href="#adb-经常断开" class="headerlink" title="adb 经常断开"></a>adb 经常断开</h2><p>一般在 Windows 平台上比较常见，一些工具包里面会自带一个 adb，这个 adb 的版本跟平时主要用的 adb 版本不一致，跨版本使用 adb 可能会导致 adb 服务重启，解决办法就是统一 adb 版本。</p>
+<p>WSL 用户也要确保 adb 版本和 Windows 平台的一致。</p>
+<p>顺带附上 <a href="https://developer.android.com/studio/releases/platform-tools">adb 最新版下载地址及更新日志</a>。</p>
+<h3 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h3><p>关闭 Android Studio 项目后也会导致其它进程使用的 adb 断开，尽管使用的是同一个 adb 和端口。</p>
+<h3 id="ROM-adb-不兼容"><a href="#ROM-adb-不兼容" class="headerlink" title="ROM adb 不兼容"></a>ROM adb 不兼容</h3><p>也可能和系统版本有关，参考 <a href="https://www.bilibili.com/video/BV1vT4y1o7BX">BV1vT4y1o7BX</a></p>
+<blockquote>
+<p>From M2011K2C MIUI 12.5.13.0 稳定版</p>
+</blockquote>
+<h2 id="同时连接多台设备"><a href="#同时连接多台设备" class="headerlink" title="同时连接多台设备"></a>同时连接多台设备</h2><p>连接了多台设备时执行 adb 命令：</p>
+<ul>
+<li><p><del>断开其它不用的设备。</del></p>
+</li>
+<li><p>执行命令时指定设备序列号: </p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">adb -s &lt;serial&gt; shell</span><br><span class="line">adb -s &lt;serial&gt; ...</span><br></pre></td></tr></table></figure></li>
+<li><p><del>使用别名：</del></p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">alias</span> adb=<span class="string">&quot;adb -s <span class="subst">$(adbs serial)</span>&quot;</span></span><br><span class="line">adb shell ...</span><br><span class="line">adb ...</span><br></pre></td></tr></table></figure></li>
+<li><p>指定环境变量：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ANDROID_SERIAL=$(adbs serial)</span><br><span class="line">adb shell ...</span><br><span class="line">adb ...</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>注：<a href="https://github.com/zpp0196/adbs#serial">adbs</a> 脚本仅供参考。</p>
+</blockquote>
+<h2 id="WSL-2-使用-adb"><a href="#WSL-2-使用-adb" class="headerlink" title="WSL 2 使用 adb"></a>WSL 2 使用 adb</h2><p>WSL 2 自带了一个虚拟网卡，无法像 WSL 1 那样直接使用 adb 命令，民间有两种解决方案：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">alias</span> adb=<span class="string">&#x27;adb.exe&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这种方法兼容性很差，不建议使用，看看另一种方法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># win</span></span><br><span class="line">adb -a -P 5037 nodaemon server</span><br><span class="line"></span><br><span class="line"><span class="comment"># WSL 2</span></span><br><span class="line"><span class="built_in">export</span> ADB_SERVER_SOCKET=tcp:192.168.100.5:5037</span><br><span class="line">adb devices</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>具体实现参考 <a href="https://github.com/microsoft/WSL/issues/4619#issuecomment-596990676">WSL#4619</a>.</p>
+</blockquote>
+<h2 id="远程服务器使用-adb"><a href="#远程服务器使用-adb" class="headerlink" title="远程服务器使用 adb"></a>远程服务器使用 adb</h2><p>使用 ssh 将本地端口转发到服务器：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 单人使用：</span></span><br><span class="line">ssh -R 0.0.0.0:5037:localhost:5037 &lt;user&gt;@&lt;ip&gt; -Nf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 多人使用：</span></span><br><span class="line">ssh -R 0.0.0.0:&lt;port&gt;:localhost:5037 &lt;user&gt;@&lt;ip&gt; -Nf</span><br></pre></td></tr></table></figure>
+
+<p>当有多个人都需要转发时，避免端口冲突请修改 <code>&lt;port&gt;</code> 为自己喜欢的端口。</p>
+<p>登录服务器后执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 不推荐使用别名，可能会跟自动补全冲突</span></span><br><span class="line"><span class="comment"># alias adb=&quot;adb -P &lt;port&gt;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 这个是我目前在用的</span></span><br><span class="line"><span class="built_in">export</span> ADB=<span class="string">&quot;/usr/bin/adb -P &lt;port&gt;&quot;</span> &amp;&amp; <span class="built_in">alias</span> adb=<span class="string">&quot;adbs&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这个命令可以想办法在登录后自动执行，例如 Xshell 用户可以使用「登录脚本」功能来自动执行命令。</p>
+</blockquote>
+<h2 id="adb-shell-搜索结果高亮显示"><a href="#adb-shell-搜索结果高亮显示" class="headerlink" title="adb shell 搜索结果高亮显示"></a>adb shell 搜索结果高亮显示</h2><p>在 <code>adb shell</code> 打开的终端里面使用 <code>grep</code> 等命令不会有高亮显示，可以用 <code>adb shell &lt;cmd&gt; | grep &lt;regex&gt;</code>，例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 无高亮</span></span><br><span class="line">adb shell <span class="string">&quot;ls /sdcard/ | grep Android&quot;</span></span><br><span class="line"><span class="comment"># 有高亮</span></span><br><span class="line">adb shell <span class="built_in">ls</span> /sdcard/ | grep Android</span><br></pre></td></tr></table></figure>
+
+<h2 id="logcat-刷屏"><a href="#logcat-刷屏" class="headerlink" title="logcat 刷屏"></a>logcat 刷屏</h2><p>当遇到 logcat 有大量重复且无意义的日志时，可以暂时屏蔽对应的 TAG:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">adb shell setprop log.tag.&lt;TAG&gt; A</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>更多详情请参考<a href="https://developer.android.com/reference/android/util/Log.html#isLoggable(java.lang.String,%20int)">这里</a>。</p>
+</blockquote>
+<h2 id="无线调试提示未授权"><a href="#无线调试提示未授权" class="headerlink" title="无线调试提示未授权"></a>无线调试提示未授权</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ adb connect 192.168.1.196</span><br><span class="line">failed to authenticate to adb connect 192.168.1.196</span><br></pre></td></tr></table></figure>
+
+<p>在看这个问题之前先复习一下无线调试，在 Android 11 之前无线调试有两种办法：</p>
+<ol>
+<li><p>无 root 版，需要先用数据线连接一次电脑：</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ adb devices</span><br><span class="line">List of devices attached</span><br><span class="line">e4955074        device</span><br><span class="line">$ adb tcpip 5555</span><br><span class="line"><span class="comment"># 拔掉数据线</span></span><br><span class="line">$ adb connect 192.168.1.196</span><br><span class="line">$ adb devices</span><br><span class="line">List of devices attached</span><br><span class="line">192.168.1.196:5555       device</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>有 root 版，无需用数据线连接电脑：</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">su</span><br><span class="line">setprop service.adb.tcp.port 5555</span><br><span class="line">stop adbd &amp;&amp; start adbd</span><br><span class="line"></span><br><span class="line">adb connect 192.168.1.196</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>在 Android 11 以后可以免 root 开启无线调试，有需要的小伙伴可以看<a href="https://developer.android.com/studio/command-line/adb#connect-to-a-device-over-wi-fi-android-11+">这里</a>。</p>
+<p>回到刚才那个问题，看起来是个很常见也很好解决的问题，直接在手机上点击授权按钮即可。</p>
+<p><del>就这？</del></p>
+<p>那如果手机屏幕坏了没法点击授权，或者手机压根没有显示屏只是一块开发板，或者系统有 bug 不弹出授权框，这种情况下怎么授权？</p>
+<p>手动授权大法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> ~/.android/adbkey.pub | xclip</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据线连接或其它方式</span></span><br><span class="line">adb shell</span><br><span class="line">su</span><br><span class="line"><span class="built_in">mkdir</span> -p /data/misc/adb</span><br><span class="line"><span class="comment"># 把 &#x27;&#x27; 中的内容替换为 adbkey.pub 的内容</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;ADB_KEY_PUB&#x27;</span> &gt;&gt; /data/misc/adb/adb_keys</span><br><span class="line">setprop service.adb.tcp.port 5555</span><br><span class="line">stop adbd &amp;&amp; stop adbd</span><br><span class="line"><span class="comment"># 改权限（可选）</span></span><br><span class="line"><span class="built_in">chmod</span> 640 /data/misc/adb/adb_keys</span><br><span class="line"><span class="built_in">chown</span> system:shell /data/misc/adb/adb_keys</span><br><span class="line"><span class="built_in">chcon</span> u:object_r:adb_keys_file:s0 /data/misc/adb/adb_keys</span><br><span class="line"></span><br><span class="line">adb connect 192.168.1.196</span><br></pre></td></tr></table></figure>
+
+<p>如果没有找到 adbkey.pub 文件可以手动生成一个：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ adb keygen <span class="built_in">test</span></span><br><span class="line">... generate_key(<span class="built_in">test</span>)...</span><br><span class="line">$ <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">test</span> test.pub</span><br></pre></td></tr></table></figure>
+
+<p>如果是用别人提供的 key 但是又不想覆盖原有的 key，这种情况可以使用 <a href="https://source.android.google.cn/setup/develop/new-device#ANDROID_VENDOR_KEYS">ADB_VENDOR_KEYS</a> 环境变量解决：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ADB_VENDOR_KEYS=<span class="variable">$PWD</span>/test</span><br><span class="line">adb kill-server</span><br><span class="line">adb connect 192.168.1.196</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Android 开发</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>禁用 Windows Shift + Space 快捷键</title>
+    <url>/2021/07/08/win-kill-shift-space/</url>
+    <content><![CDATA[<p>之前在遇到过几次打出来的英文是全角的，例如 <code>Hello World</code> 变成了 <code>Ｈｅｌｌｏ　Ｗｏｒｌｄ</code>，设置里面的切换全&#x2F;半角切换的快捷键是关闭的，害的我每次都要手动去切换回来。</p>
+<p>就在最近，我发现了这是 Win 10 输入法的一个 bug，具体复现步骤是这样的：</p>
+<span id="more"></span>
+
+<p>首先确保在输入法设置里面关闭了切换全&#x2F;半角切换的快捷键，然后切换到中文输入法的中文输入状态。</p>
+<p>在中文输入状态下随便打几个字母，但是不要按空格或数字 1-9，就让候选词一直停留在那。</p>
+<p>然后按下 <code>Shift + Space</code>，这个时候选词还停留在那，这时再切换到中文输入法的英文输入状态，接下来开始在英文状态下输入的内容都会变成全角字符。</p>
+<p>这应该算是个 bug 吧。嗯，肯定是个 bug，那怎么解决呢？</p>
+<p><del>去提交 bug 等修复。</del>（Windows 11 中文输入法已经修复)</p>
+<p><del><a href="https://github.com/Svtter/Kill-Shift-Space">Svtter &#x2F; Kill-Shift-Space</a></del> 还是会有机率切换到全角！</p>
+<p>目前已换输入法，推荐 Rime 系列：<a href="https://rime.im/">RIME</a></p>
+]]></content>
+  </entry>
+</search>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-material.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zpp0196.me","root":"/","images":"/images","scheme":"Gemini","darkmode":"auto","version":"8.15.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="如果你对 Xposed 有一定了解并可以熟悉使用 Xposed，同时你又是一名 具有 Android 开发经验 的 Programmer ，而你又对开发 Xposed 模块产生了兴趣但是又不知道该怎么做，下面的内容会告诉你如何在 Android Studio 上搭建 Xposed 模块的开发环境，即 Create New Xposed Module Project 时必须要做的事。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xposed 开发之搭建开发环境">
+<meta property="og:url" content="https://zpp0196.me/2018/06/23/xposed-init/index.html">
+<meta property="og:site_name" content="zpp0196&#39;s Blog">
+<meta property="og:description" content="如果你对 Xposed 有一定了解并可以熟悉使用 Xposed，同时你又是一名 具有 Android 开发经验 的 Programmer ，而你又对开发 Xposed 模块产生了兴趣但是又不知道该怎么做，下面的内容会告诉你如何在 Android Studio 上搭建 Xposed 模块的开发环境，即 Create New Xposed Module Project 时必须要做的事。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zpp0196.me/images/xposed-init/create_project.png">
+<meta property="og:image" content="https://zpp0196.me/images/xposed-init/hello_world.png">
+<meta property="og:image" content="https://zpp0196.me/images/xposed-init/module_not_active.png">
+<meta property="og:image" content="https://zpp0196.me/images/xposed-init/module_active.png">
+<meta property="article:published_time" content="2018-06-23T00:00:00.000Z">
+<meta property="article:modified_time" content="2018-06-24T00:00:00.000Z">
+<meta property="article:author" content="zpp0196">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="Xposed">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zpp0196.me/images/xposed-init/create_project.png">
+
+
+<link rel="canonical" href="https://zpp0196.me/2018/06/23/xposed-init/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://zpp0196.me/2018/06/23/xposed-init/","path":"2018/06/23/xposed-init/","title":"Xposed 开发之搭建开发环境"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Xposed 开发之搭建开发环境 | zpp0196's Blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1733106d19266620cbe7fcfa32eef010"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">zpp0196's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">7</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E4%BE%9D%E8%B5%96"><span class="nav-number">2.</span> <span class="nav-text">添加依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#build-gradle"><span class="nav-number">2.1.</span> <span class="nav-text">build.gradle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AndroidManifest-xml"><span class="nav-number">2.2.</span> <span class="nav-text">AndroidManifest.xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xposed-init"><span class="nav-number">2.3.</span> <span class="nav-text">xposed_init</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">编写代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zpp0196"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">zpp0196</p>
+  <div class="site-description" itemprop="description">欢迎来到本萌新的博客</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zpp0196" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zpp0196" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zpp0196@gmail.com" title="Mail → mailto:zpp0196@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zpp0196.me/2018/06/23/xposed-init/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="zpp0196">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zpp0196's Blog">
+      <meta itemprop="description" content="欢迎来到本萌新的博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Xposed 开发之搭建开发环境 | zpp0196's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Xposed 开发之搭建开发环境
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018/06/23 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-23T00:00:00+00:00">2018/06/23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2018/06/24 00:00:00" itemprop="dateModified" datetime="2018-06-24T00:00:00+00:00">2018/06/24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Xposed-%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Xposed 开发</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/06/23/xposed-init/" class="post-meta-item leancloud_visitors" data-flag-title="Xposed 开发之搭建开发环境" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>如果你对 Xposed <strong>有一定了解并可以熟悉使用 Xposed</strong>，同时你又是一名 <strong>具有 Android 开发经验</strong> 的 Programmer ，而你又对开发 Xposed 模块产生了兴趣但是又不知道该怎么做，下面的内容会告诉你如何在 Android Studio 上搭建 Xposed 模块的开发环境，即 Create New Xposed Module Project 时必须要做的事。</p>
+<span id="more"></span>
+
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>Xposed 模块说到底也只是一个 apk 文件，也就是 <strong>Android Project</strong>，所以先 Create Android Project：</p>
+<p><img src="/images/xposed-init/create_project.png" alt="create_project"></p>
+<p>后面接着一路 Next 到后面选模板时选择 <strong>Empty Activity</strong> 然后其他什么都默认即可。</p>
+<p>为了确保 Android Project 创建成功可以先安装到模拟器上试一下确保这个 App 可以正常运行：</p>
+<p><img src="/images/xposed-init/hello_world.png" alt="hello_world"></p>
+<blockquote>
+<p>Xposed 模块开发不支持 <strong>Instant Run</strong>，请在 <strong>File - Settings - Build, Execution, Deployment - Instant Run</strong> 找到 <strong>Enable Instant Run to hot swap code….</strong> 并关闭这个开关！</p>
+</blockquote>
+<h2 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h2><p>下面开始做一些初始化工作。</p>
+<h3 id="build-gradle"><a href="#build-gradle" class="headerlink" title="build.gradle"></a>build.gradle</h3><p>在下面的 <strong>dependencies</strong> 里面添加 <code>compileOnly &#39;de.robv.android.xposed:api:82&#39;</code> ，注意前面必须是 <strong>compileOnly</strong> ，具体参考 <a target="_blank" rel="noopener" href="https://github.com/rovo89/XposedBridge/wiki/Using-the-Xposed-Framework-API#android-studio-gradle-based">Using the Xposed Framework API</a></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compileOnly <span class="string">&#x27;de.robv.android.xposed:api:82&#x27;</span> <span class="comment">// 添加这一行且必须是 compileOnly</span></span><br><span class="line">    implementation fileTree(<span class="attr">dir:</span> <span class="string">&#x27;libs&#x27;</span>, <span class="attr">include:</span> [<span class="string">&#x27;*.jar&#x27;</span>])</span><br><span class="line">    implementation <span class="string">&#x27;com.android.support:appcompat-v7:26.1.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;com.android.support.constraint:constraint-layout:1.1.2&#x27;</span></span><br><span class="line">    testImplementation <span class="string">&#x27;junit:junit:4.12&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;com.android.support.test:runner:1.0.2&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;com.android.support.test.espresso:espresso-core:3.0.2&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>配置完了以后点击 <strong>Build - Make Project</strong> 让 Gradle 修改过的内容生效，如果是第一次配置会先下载 Xposed 的 jar 包。</p>
+<blockquote>
+<p>也可以选择手动<a target="_blank" rel="noopener" href="https://jcenter.bintray.com/de/robv/android/xposed/api/">下载 jar 包</a>然后添加到项目中。</p>
+</blockquote>
+<h3 id="AndroidManifest-xml"><a href="#AndroidManifest-xml" class="headerlink" title="AndroidManifest.xml"></a>AndroidManifest.xml</h3><p>为了让 Xposed Installer 认为你的 App 是一个 Xposed 模块，你需要在 <code>AndroidManifest.xml</code> 中的 <strong>application</strong> 节点下添加以下代码：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">application</span></span></span><br><span class="line"><span class="tag">    &lt;!<span class="attr">--</span> <span class="attr">省略</span> <span class="attr">application</span> <span class="attr">代码</span> <span class="attr">--</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">&quot;.MainActivity&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 省略 activity 代码 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">&quot;xposedmodule&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">&quot;xposeddescription&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:value</span>=<span class="string">&quot;This is a Xposed Module Demo&quot;</span> /&gt;</span> <span class="comment">&lt;!-- 这里写模块描述 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">&quot;xposedminversion&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:value</span>=<span class="string">&quot;82&quot;</span> /&gt;</span> <span class="comment">&lt;!-- 最低支持的API版本 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="xposed-init"><a href="#xposed-init" class="headerlink" title="xposed_init"></a>xposed_init</h3><p>在 <code>Project/app/src/main/</code> 下面创建 <code>assets</code>文件夹，然后在这个文件夹下面创建一个名为 <code>xposed_init</code> 的文件（没有任何后缀），里面先什么都不写，后面会用到。</p>
+<h2 id="编写代码"><a href="#编写代码" class="headerlink" title="编写代码"></a>编写代码</h2><p>修改 <code>MainActivity.java</code> 里面的内容为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> me.zpp0196.xposed.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.support.v7.app.AppCompatActivity;</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.widget.Toast;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MainActivity</span> <span class="keyword">extends</span> <span class="title class_">AppCompatActivity</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onCreate</span><span class="params">(Bundle savedInstanceState)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        Toast.makeText(<span class="built_in">this</span>, isModuleActive() ? <span class="string">&quot;module is active&quot;</span> : <span class="string">&quot;module not active&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isModuleActive</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在默认包目录下面新建一个 <code>MainHook.java</code> 参考代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> me.zpp0196.xposed.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> de.robv.android.xposed.IXposedHookLoadPackage;</span><br><span class="line"><span class="keyword">import</span> de.robv.android.xposed.XC_MethodReplacement;</span><br><span class="line"><span class="keyword">import</span> de.robv.android.xposed.XposedHelpers;</span><br><span class="line"><span class="keyword">import</span> de.robv.android.xposed.callbacks.XC_LoadPackage;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by zpp0196 on 2018/6/23 0023.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MainHook</span> <span class="keyword">implements</span> <span class="title class_">IXposedHookLoadPackage</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleLoadPackage</span><span class="params">(XC_LoadPackage.LoadPackageParam lpparam)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="keyword">if</span> (lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) &#123;</span><br><span class="line">            XposedHelpers.findAndHookMethod(MainActivity.class.getName(), lpparam.classLoader, <span class="string">&quot;isModuleActive&quot;</span>, XC_MethodReplacement.returnConstant(<span class="literal">true</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在刚才创建的 <code>xposed_init</code> 文件里面添加这个类（入口类）的完全限定名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">me.zpp0196.xposed.demo.MainHook</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果开启了代码混淆记得将该类添加到 <code>proguard-rules.pro</code> 中。</p>
+</blockquote>
+<p>然后将模块安装到模拟器上看看效果：</p>
+<p><img src="/images/xposed-init/module_not_active.png" alt="module_not_active"></p>
+<p>在 Xposed Installer 里面打勾后重启模拟器再启动看看：</p>
+<p><img src="/images/xposed-init/module_active.png" alt="module_active"></p>
+<p>Toast 显示的内容由 <code>module not active</code> 变成了 <code>module is active</code> 一般这样就可以来检测模块是否被激活。</p>
+<blockquote>
+<p>如果觉得每次重启模拟器或者手机很麻烦可以使用 <a target="_blank" rel="noopener" href="https://vxposed.com/">VirtualXposed</a> （不支持模拟器、资源 Hook 和修改系统应用的模块）进行开发测试，具体教程参考 <a target="_blank" rel="noopener" href="https://github.com/android-hacker/VirtualXposed/wiki/Utilities-For-Xposed-Module-Developer">Utilities For Xposed Module Developer&#x2F;VirtualXposed Wiki</a> ，如果你还不了解什么是 VirtualXposed 可以看看这些文章：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/31620013">无需Root也能使用Xposed！</a> 、<a target="_blank" rel="noopener" href="https://www.coolapk.com/feed/6693622">在Android手机不进行刷机操作的情况下实现Xposed——VirtualXposed（小白篇）</a> 。</p>
+</blockquote>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/rovo89/XposedBridge/wiki/Development-tutorial">Development tutorial</a> </li>
+<li><a target="_blank" rel="noopener" href="http://api.xposed.info/">Xposed Framework API </a></li>
+<li><a target="_blank" rel="noopener" href="https://vxposed.com/">VirtualXposed</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/android-hacker/VirtualXposed/wiki">VirtualXposed Wiki</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"><i class="fa fa-tag"></i> Android</a>
+              <a href="/tags/Xposed/" rel="tag"><i class="fa fa-tag"></i> Xposed</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/11/24/java-operator/" rel="prev" title="Java 中的运算符">
+                  <i class="fa fa-chevron-left"></i> Java 中的运算符
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/15/java-collection/" rel="next" title="Java 中的 Collection">
+                  Java 中的 Collection <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zpp0196</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/zpp0196" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"Ri5tyXNSjSPriqqfrPdoJnMg-gzGzoHsz","app_key":"jWpytCCWLbvDghDuIPNxA5Wp","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"zpp0196-blog","count":false,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

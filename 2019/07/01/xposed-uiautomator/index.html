@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-material.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zpp0196.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="UI Automator Viewer 是一个 Android SDK 自带的工具，通过它我们可以非常方便的查看和分析 App 的 View Tree，这么好的一个工具，可惜五年没更新了，不过 这个工具是开源的，所以我们可以使用源码进行二次开发。">
+<meta name="keywords" content="Android,Xposed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xposed 开发之 UiAutomatorViewer 扩展">
+<meta property="og:url" content="https://zpp0196.github.io/2019/07/01/xposed-uiautomator/index.html">
+<meta property="og:site_name" content="zpp0196&#39;s Blog">
+<meta property="og:description" content="UI Automator Viewer 是一个 Android SDK 自带的工具，通过它我们可以非常方便的查看和分析 App 的 View Tree，这么好的一个工具，可惜五年没更新了，不过 这个工具是开源的，所以我们可以使用源码进行二次开发。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://zpp0196.github.io/images/xposed-uiautomator/unmodified.png">
+<meta property="og:image" content="https://zpp0196.github.io/images/xposed-uiautomator/modified.png">
+<meta property="og:updated_time" content="2019-07-01T00:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Xposed 开发之 UiAutomatorViewer 扩展">
+<meta name="twitter:description" content="UI Automator Viewer 是一个 Android SDK 自带的工具，通过它我们可以非常方便的查看和分析 App 的 View Tree，这么好的一个工具，可惜五年没更新了，不过 这个工具是开源的，所以我们可以使用源码进行二次开发。">
+<meta name="twitter:image" content="https://zpp0196.github.io/images/xposed-uiautomator/unmodified.png">
+
+<link rel="canonical" href="https://zpp0196.github.io/2019/07/01/xposed-uiautomator/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Xposed 开发之 UiAutomatorViewer 扩展 | zpp0196's Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?1733106d19266620cbe7fcfa32eef010";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">zpp0196's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zpp0196.github.io/2019/07/01/xposed-uiautomator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="zpp0196">
+      <meta itemprop="description" content="欢迎来到本萌新的博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zpp0196's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Xposed 开发之 UiAutomatorViewer 扩展
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019/07/01 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-01T00:00:00+00:00">2019/07/01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Xposed-开发/" itemprop="url" rel="index"><span itemprop="name">Xposed 开发</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/07/01/xposed-uiautomator/" class="post-meta-item leancloud_visitors" data-flag-title="Xposed 开发之 UiAutomatorViewer 扩展" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/07/01/xposed-uiautomator/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/07/01/xposed-uiautomator/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>UI Automator Viewer 是一个 Android SDK 自带的工具，通过它我们可以非常方便的查看和分析 App 的 View Tree，这么好的一个工具，可惜五年没更新了，不过 这个工具是开源的，所以我们可以使用源码进行二次开发。</p>
+<a id="more"></a>
+
+<h2 id="准备工具"><a href="#准备工具" class="headerlink" title="准备工具"></a>准备工具</h2><ul>
+<li><a href="https://android.googlesource.com/platform/tools/swt/+/refs/heads/master/uiautomatorviewer/" target="_blank" rel="noopener">UiAutomatorViewer源码</a>(Eclipse)</li>
+<li><a href="https://www.eclipse.org/downloads/" target="_blank" rel="noopener">Eclipse</a></li>
+<li><a href="https://zpp0196.me/2018/06/23/xposed-init" target="_blank" rel="noopener">Xposed开发环境</a></li>
+</ul>
+<h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><p>使用 Eclipse 导入项目，然后发现大片的报错，原因是找不到对应的依赖包，问题不大。</p>
+<p>删除 <code>build.gradle</code> 里面 <code>dependencies</code> 的项目。</p>
+<p>打开 <code>SDK/tools/lib/</code> 目录，会发现有一堆 jar 包，我们需要的依赖包全都可以在这里面找到，但是这么多不可能全都是我们需要的，那么怎么知道我们需要哪些呢？</p>
+<p>在这个目录下面找到 <code>uiautomatorviewer-26.0.0-dev.jar</code> 并以 zip 方式打开，找到  <code>META-INF/MANIFEST.MF</code> 这个文件并打开，将 <code>Class-Path</code> 里面的所有 jar 包和 <code>SDK/tools/lib/x86_64/swt.jar</code> (如果是 32 位系统则找 <code>x86</code> 目录)添加到项目的环境变量里面。</p>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>我们觉得 Node Detail 里面的属性太少了，我们想往里面添加一些属性怎么搞呢？</p>
+<p>从 <code>MANIFEST.MF</code> 文件里面可以得知入口类为 <code>com.android.uiautomator.UiAutomatorViewer</code>，找到该类的 main 方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 如果在测试时提示找不到 adb，可以在该类里面的 getAdbLocation() 方法里面手动修改 toolsDir</span></span><br><span class="line">    DebugBridge.init();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        UiAutomatorViewer window = <span class="keyword">new</span> UiAutomatorViewer();</span><br><span class="line">        window.setBlockOnOpen(<span class="keyword">true</span>);</span><br><span class="line">        window.open();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        DebugBridge.terminate();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在该类的 <code>createContents</code> 方法里面可以找到该 Window 里面的 Actions</p>
+<p>省略分析过程，最后找到 <code>com.android.uiautomator.tree.UiHierarchyXmlLoader</code> 这个类，里面的 <code>parseXml</code> 就是解析 xml 的地方，找到这个地方干什么呢？</p>
+<p>我们知道 UiAutomatorViewer 的原理是执行 <code>/system/bin/uiautomator dump [--compressed] /data/local/tmp/uidump.xml</code> 这个命令，然后将这个 dump 出来的 xml 文件 pull 到电脑上解析，然后再配上一张截图就可以展示出一个 View Tree。</p>
+<p>如果这个文件已经 pull 到电脑上了，我们再想改变里面的数据就比较难了，我们可以在它执行 dump 命令的时候修改里面的属性，然后 pull 到电脑上只负责解析就行了。</p>
+<p>仔细查看源码会发现，Node Detail 里面的属性并不是直接定义在 Java 代码里面的，是从 xml 里面循环读出来的，xml 里面有什么就展示什么，那么这些 xml 又是谁写的呢？</p>
+<p>顺着 <code>/system/bin/uiautomator</code> 往下找，dump 命令对应的类为 <a href="http://androidxref.com/9.0.0_r3/xref/frameworks/base/cmds/uiautomator/cmds/uiautomator/src/com/android/commands/uiautomator/DumpCommand.java" target="_blank" rel="noopener">DumpCommand</a>，主要代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    UiAutomation uiAutomation = automationWrapper.getUiAutomation();</span><br><span class="line">    uiAutomation.waitForIdle(<span class="number">1000</span>, <span class="number">1000</span> * <span class="number">10</span>);</span><br><span class="line">    AccessibilityNodeInfo info = uiAutomation.getRootInActiveWindow();</span><br><span class="line">    <span class="keyword">if</span> (info == <span class="keyword">null</span>) &#123;</span><br><span class="line">        System.err.println(<span class="string">"ERROR: null root node returned by UiTestAutomationBridge."</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Display display =</span><br><span class="line">                    DisplayManagerGlobal.getInstance().getRealDisplay(Display.DEFAULT_DISPLAY);(Display.DEFAULT_DISPLAY);</span><br><span class="line">    <span class="keyword">int</span> rotation = display.getRotation();</span><br><span class="line">    Point size = <span class="keyword">new</span> Point();</span><br><span class="line">    display.getSize(size);</span><br><span class="line">    <span class="comment">// 看这里</span></span><br><span class="line">    AccessibilityNodeInfoDumper.dumpWindowToFile(info, dumpFile, rotation, size.x, size.y);</span><br><span class="line">&#125; <span class="keyword">catch</span> (TimeoutException re) &#123;</span><br><span class="line">    System.err.println(<span class="string">"ERROR: could not get idle state."</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    automationWrapper.disconnect();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>继续找 <a href="http://androidxref.com/9.0.0_r3/xref/frameworks/base/cmds/uiautomator/library/core-src/com/android/uiautomator/core/AccessibilityNodeInfoDumper.java#75" target="_blank" rel="noopener">AccessibilityNodeInfoDumper.dumpWindowToFile</a>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Using &#123;<span class="doctag">@link</span> AccessibilityNodeInfo&#125; this method will walk the layout hierarchy</span></span><br><span class="line"><span class="comment"> * and generates an xml dump to the location specified by &lt;code&gt;dumpFile&lt;/code&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> root The root accessibility node.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> dumpFile The file to dump to.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> rotation The rotaion of current display</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> width The pixel width of current display</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> height The pixel height of current display</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">dumpWindowToFile</span><span class="params">(AccessibilityNodeInfo root, File dumpFile, <span class="keyword">int</span> rotation,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">int</span> width, <span class="keyword">int</span> height)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">long</span> startTime = SystemClock.uptimeMillis();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        FileWriter writer = <span class="keyword">new</span> FileWriter(dumpFile);</span><br><span class="line">        XmlSerializer serializer = Xml.newSerializer();</span><br><span class="line">        StringWriter stringWriter = <span class="keyword">new</span> StringWriter();</span><br><span class="line">        serializer.setOutput(stringWriter);</span><br><span class="line">        serializer.startDocument(<span class="string">"UTF-8"</span>, <span class="keyword">true</span>);</span><br><span class="line">        serializer.startTag(<span class="string">""</span>, <span class="string">"hierarchy"</span>);</span><br><span class="line">        serializer.attribute(<span class="string">""</span>, <span class="string">"rotation"</span>, Integer.toString(rotation));</span><br><span class="line">        <span class="comment">// 看这里</span></span><br><span class="line">        dumpNodeRec(root, serializer, <span class="number">0</span>, width, height);</span><br><span class="line">        serializer.endTag(<span class="string">""</span>, <span class="string">"hierarchy"</span>);</span><br><span class="line">        serializer.endDocument();</span><br><span class="line">        writer.write(stringWriter.toString());</span><br><span class="line">        writer.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        Log.e(LOGTAG, <span class="string">"failed to dump window to file"</span>, e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">long</span> endTime = SystemClock.uptimeMillis();</span><br><span class="line">    Log.w(LOGTAG, <span class="string">"Fetch time: "</span> + (endTime - startTime) + <span class="string">"ms"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">dumpNodeRec</span><span class="params">(AccessibilityNodeInfo node, XmlSerializer serializer,<span class="keyword">int</span> index,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">int</span> width, <span class="keyword">int</span> height)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    serializer.startTag(<span class="string">""</span>, <span class="string">"node"</span>);</span><br><span class="line">    <span class="keyword">if</span> (!nafExcludedClass(node) &amp;&amp; !nafCheck(node))</span><br><span class="line">        serializer.attribute(<span class="string">""</span>, <span class="string">"NAF"</span>, Boolean.toString(<span class="keyword">true</span>));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"index"</span>, Integer.toString(index));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"text"</span>, safeCharSeqToString(node.getText()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"resource-id"</span>, safeCharSeqToString(node.getViewIdResourceName()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"class"</span>, safeCharSeqToString(node.getClassName()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"package"</span>, safeCharSeqToString(node.getPackageName()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"content-desc"</span>, safeCharSeqToString(node.getContentDescription()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"checkable"</span>, Boolean.toString(node.isCheckable()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"checked"</span>, Boolean.toString(node.isChecked()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"clickable"</span>, Boolean.toString(node.isClickable()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"enabled"</span>, Boolean.toString(node.isEnabled()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"focusable"</span>, Boolean.toString(node.isFocusable()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"focused"</span>, Boolean.toString(node.isFocused()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"scrollable"</span>, Boolean.toString(node.isScrollable()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"long-clickable"</span>, Boolean.toString(node.isLongClickable()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"password"</span>, Boolean.toString(node.isPassword()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"selected"</span>, Boolean.toString(node.isSelected()));</span><br><span class="line">    serializer.attribute(<span class="string">""</span>, <span class="string">"bounds"</span>, AccessibilityNodeInfoHelper.getVisibleBoundsInScreen(</span><br><span class="line">            node, width, height).toShortString());</span><br><span class="line">    <span class="keyword">int</span> count = node.getChildCount();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">        AccessibilityNodeInfo child = node.getChild(i);</span><br><span class="line">        <span class="keyword">if</span> (child != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (child.isVisibleToUser()) &#123;</span><br><span class="line">                dumpNodeRec(child, serializer, i, width, height);</span><br><span class="line">                child.recycle();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                Log.i(LOGTAG, String.format(<span class="string">"Skipping invisible child: %s"</span>, child.toString()));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Log.i(LOGTAG, String.format(<span class="string">"Null child %d/%d, parent: %s"</span>,</span><br><span class="line">                    i, count, node.toString()));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    serializer.endTag(<span class="string">""</span>, <span class="string">"node"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>index</code>、<code>text</code>、<code>resource-id</code> 这些不就是 Node Detail 里面的属性么，我们要改变或者往里面新增一个属性怎么办，添加一行 <code>serializer.attribute(&quot;&quot;, &quot;background-id&quot;, &quot;value&quot;);</code>？那么问题来了，怎么添加？这里可是 framework 层的代码，虽然知道这部分代码在 <code>/system/framework/uiautomator.jar</code> 里面，但是代码被转成了 vdex 咋整啊，而且就算解决了这个问题那这个属性的值去哪里找？这一套整下来小白可吃不消，所以我们可以换一种思路。</p>
+<p>参考其他的属性，发现基本上都是 <code>node.getXXX</code>，找到对应的 <code>setXXX</code> 方法，这里使用 Xposed 打印堆栈：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">at android.view.accessibility.AccessibilityNodeInfo.setViewIdResourceName(Unknown Source:<span class="number">9</span>)</span><br><span class="line">at android.view.View.onInitializeAccessibilityNodeInfoInternal(View.java:<span class="number">8693</span>)</span><br><span class="line">at android.view.View.onInitializeAccessibilityNodeInfo(View.java:<span class="number">7699</span>)</span><br><span class="line">at android.view.View.createAccessibilityNodeInfoInternal(View.java:<span class="number">7658</span>)</span><br><span class="line">at android.view.View.createAccessibilityNodeInfo(View.java:<span class="number">7643</span>)</span><br></pre></td></tr></table></figure>
+
+<p>多次测试后可以确定：那些 <code>node.getXXX</code> 获取到的值就是在 <code>View.onInitializeAccessibilityNodeInfoInternal</code> 这个方法里面设置的，这样一来就解决了如何获取自定义属性值的问题，我们有了这个 View 的对象实例，什么属性获取不到？</p>
+<p>那么最后一个问题，我们怎么把它显示出来呢？</p>
+<p>在不修改系统代码的情况下(其实我也不会改)，我们可以这么玩，还记得上面留着一个坑么，UiAutomatorViewer 的源码我们不是还没动过吗，这下就该动手了。</p>
+<h2 id="源码修改"><a href="#源码修改" class="headerlink" title="源码修改"></a>源码修改</h2><p>在修改源码前，我们需要明确我们要改什么？怎么改？</p>
+<p>目的很明确，我们需要添加一些自定义的属性到 Node Detail 里面，怎么添加呢？下面看我怎么操作</p>
+<p>首先编写 Xposed 模块将我们需要的属性和值添加进去：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">XposedHelpers.findAndHookMethod(View.class, "onInitializeAccessibilityNodeInfoInternal", AccessibilityNodeInfo.class, new XC_MethodHook() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">afterHookedMethod</span><span class="params">(XC_MethodHook.MethodHookParam param)</span> </span>&#123;</span><br><span class="line">        View view = (View) param.thisObject;</span><br><span class="line">        AccessibilityNodeInfo node = (AccessibilityNodeInfo) param.args[<span class="number">0</span>];</span><br><span class="line">        node.setClassName(view.getClass().getCanonicalName());</span><br><span class="line">        node.setVisibleToUser(<span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">// 其他属性自行研究</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            JSONObject json = <span class="keyword">new</span> JSONObject();</span><br><span class="line">            <span class="keyword">long</span> viewId = view.getId();</span><br><span class="line">            <span class="keyword">if</span> (viewId &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                json.put(<span class="string">"resource-id"</span>, id2Hex(viewId));</span><br><span class="line">                json.put(<span class="string">"resource-name"</span>, node.getViewIdResourceName());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">int</span> backgroundRes = (<span class="keyword">int</span>) XposedHelpers.getObjectField(view, <span class="string">"mBackgroundResource"</span>);</span><br><span class="line">            <span class="keyword">if</span> (backgroundRes &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                json.put(<span class="string">"background-id"</span>, id2Hex(backgroundRes));</span><br><span class="line">                json.put(<span class="string">"background-name"</span>, view.getContext().getResources().getResourceName(backgroundRes));</span><br><span class="line">            &#125;</span><br><span class="line">            node.setViewIdResourceName(json.toString());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable th) &#123;</span><br><span class="line">            th.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">id2Hex</span><span class="params">(<span class="keyword">long</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"0x"</span> + Long.toHexString(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>然后稍稍修改一下 UiAutomatorViewer 解析 xml 的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UiNode tmpNode = <span class="keyword">new</span> UiNode();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; attributes.getLength(); i++) &#123;</span><br><span class="line">    tmpNode.addAtrribute(attributes.getQName(i), attributes.getValue(i));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改后：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">UiNode tmpNode = <span class="keyword">new</span> UiNode();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; attributes.getLength(); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="string">"resource-id"</span>.equals(attributes.getQName(i)) &amp;&amp; addExtNodeDetail(tmpNode, attributes.getValue(i))) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    tmpNode.addAtrribute(attributes.getQName(i), attributes.getValue(i));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">addExtNodeDetail</span><span class="params">(UiNode tmpNode, String extNodeDetail)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        JSONObject json = <span class="keyword">new</span> JSONObject(extNodeDetail);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 给强迫症排个序</span></span><br><span class="line">        Iterator&lt;String&gt; iteratorKeys = json.keys();</span><br><span class="line">        SortedMap&lt;String, Object&gt; map = <span class="keyword">new</span> TreeMap&lt;String, Object&gt;();</span><br><span class="line">        <span class="keyword">while</span> (iteratorKeys.hasNext()) &#123;</span><br><span class="line">            String key = iteratorKeys.next().toString();</span><br><span class="line">            String vlaue = json.optString(key);</span><br><span class="line">            map.put(key, vlaue);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 添加自定义的属性</span></span><br><span class="line">        Iterator&lt;String&gt; keys = map.keySet().iterator();</span><br><span class="line">        <span class="keyword">while</span>(keys.hasNext()) &#123;</span><br><span class="line">            String key = keys.next();</span><br><span class="line">            tmpNode.addAtrribute(key, String.valueOf(json.get(key)));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception ignored) &#123;&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>手机安装对应的模块，然后再使用这个二次编译的 UiAutomatorViewer 查看布局就行了，效果对比图（点击图片放大）：</p>
+<table>
+<thead>
+<tr>
+<th>修改前</th>
+<th>修改后</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="/images/xposed-uiautomator/unmodified.png" alt="unmodified"></td>
+<td><img src="/images/xposed-uiautomator/modified.png" alt="modified"></td>
+</tr>
+</tbody></table>
+<h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><ul>
+<li>听说用 idea 也可以编译，这个没试过，懒得折腾了。</li>
+<li>没有下载链接，代码都在这里了，自己动手丰衣足食。</li>
+<li>虽然还有一点点不优雅，但是起码实现了想要的功能，在别的优雅解决方案出来之前先凑合用吧。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/donate/vxin.jpg" alt="zpp0196 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/donate/alipay.jpg" alt="zpp0196 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"><i class="fa fa-tag"></i> Android</a>
+              <a href="/tags/Xposed/" rel="tag"><i class="fa fa-tag"></i> Xposed</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/11/24/java-design-singleton/" rel="prev" title="Java 设计模式之单例模式">
+      <i class="fa fa-chevron-left"></i> Java 设计模式之单例模式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/07/24/xposed-xsp-alternative/" rel="next" title="Xposed 开发之跨应用读取配置文件">
+      Xposed 开发之跨应用读取配置文件 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工具"><span class="nav-number">1.</span> <span class="nav-text">准备工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置环境变量"><span class="nav-number">2.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">3.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码修改"><span class="nav-number">4.</span> <span class="nav-text">源码修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写在后面"><span class="nav-number">5.</span> <span class="nav-text">写在后面</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zpp0196"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">zpp0196</p>
+  <div class="site-description" itemprop="description">欢迎来到本萌新的博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zpp0196" title="GitHub → https://github.com/zpp0196" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zpp0196@gmail.com" title="Email → mailto:zpp0196@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>Email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zpp0196</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ri5tyXNSjSPriqqfrPdoJnMg-gzGzoHsz',
+      appKey     : 'jWpytCCWLbvDghDuIPNxA5Wp',
+      placeholder: "What's your problem?",
+      avatar     : 'identicon',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1.03746905,"jsonPath":"/live2dw/assets/22.2017.school.model.json"},"display":{"width":200,"height":300,"position":"left","hOffset":-24,"vOffset":-50},"mobile":{"show":false},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-material.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zpp0196.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Java 中的集合包括三大类，分别是 Set(集)、List(列表)、Map(映射)，它们都位于 java.util 包下，Set、List 和 Map 都是接口，各有各自的实现类。Set 的常用实现类有 TreeSet 和 HashSet，List 的常用实现类有 ArrayList 和 LinkedList，Map 的常用实现类有 HashMap 和 TreeMap 等。">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 中的 Collection">
+<meta property="og:url" content="https://zpp0196.github.io/2018/11/15/java-collection/index.html">
+<meta property="og:site_name" content="zpp0196&#39;s Blog">
+<meta property="og:description" content="Java 中的集合包括三大类，分别是 Set(集)、List(列表)、Map(映射)，它们都位于 java.util 包下，Set、List 和 Map 都是接口，各有各自的实现类。Set 的常用实现类有 TreeSet 和 HashSet，List 的常用实现类有 ArrayList 和 LinkedList，Map 的常用实现类有 HashMap 和 TreeMap 等。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-15T00:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java 中的 Collection">
+<meta name="twitter:description" content="Java 中的集合包括三大类，分别是 Set(集)、List(列表)、Map(映射)，它们都位于 java.util 包下，Set、List 和 Map 都是接口，各有各自的实现类。Set 的常用实现类有 TreeSet 和 HashSet，List 的常用实现类有 ArrayList 和 LinkedList，Map 的常用实现类有 HashMap 和 TreeMap 等。">
+
+<link rel="canonical" href="https://zpp0196.github.io/2018/11/15/java-collection/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java 中的 Collection | zpp0196's Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?1733106d19266620cbe7fcfa32eef010";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">zpp0196's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zpp0196.github.io/2018/11/15/java-collection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="zpp0196">
+      <meta itemprop="description" content="欢迎来到本萌新的博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zpp0196's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 中的 Collection
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018/11/15 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-15T00:00:00+00:00">2018/11/15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java-基础/" itemprop="url" rel="index"><span itemprop="name">Java 基础</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2018/11/15/java-collection/" class="post-meta-item leancloud_visitors" data-flag-title="Java 中的 Collection" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/11/15/java-collection/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/11/15/java-collection/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Java 中的集合包括三大类，分别是 Set(集)、List(列表)、Map(映射)，它们都位于 <code>java.util</code> 包下，Set、List 和 Map 都是接口，各有各自的实现类。Set 的常用实现类有 TreeSet 和 HashSet，List 的常用实现类有 ArrayList 和 LinkedList，Map 的常用实现类有 HashMap 和 TreeMap 等。</p>
+<a id="more"></a>
+
+<h2 id="Collection"><a href="#Collection" class="headerlink" title="Collection"></a>Collection</h2><p>Collection 是最基本的集合接口，声明了适用于 Java 集合的通用方法，Set 和 List 都继承自 Collection 接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---|Collection&lt;E&gt;</span><br><span class="line">    ---|Set&lt;E&gt;</span><br><span class="line">        ---|TreeSet&lt;E&gt;</span><br><span class="line">        ---|HashSet&lt;E&gt;</span><br><span class="line">    ---|List&lt;E&gt;</span><br><span class="line">        ---|ArrayList&lt;E&gt;</span><br><span class="line">        ---|LinkedList&lt;E&gt;</span><br></pre></td></tr></table></figure>
+
+<p>下面是 Collection 接口中一些常用的 API: </p>
+<table>
+<thead>
+<tr>
+<th>Return Type</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean</td>
+<td>add(E e)</td>
+<td>确保集合中包含指定的元素</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>addAll(Collection&lt;? extends E&gt; c)</td>
+<td>将指定集合中的所有元素添加到此集合中</td>
+</tr>
+<tr>
+<td>void</td>
+<td>clear()</td>
+<td>从此集合中删除所有元素</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>contains(Object o)</td>
+<td>如果此集合中包含指定的元素则返回 true</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>containsAll(Collection&lt;?&gt; c)</td>
+<td>如果此集合包含指定集合中的所有元素则返回 true</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>isEmpty()</td>
+<td>如果此集合不包含元素则返回 true</td>
+</tr>
+<tr>
+<td>Iterator<e></e></td>
+<td>iterator()</td>
+<td>返回此集合中的元素的迭代器</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>remove(Object o)</td>
+<td>从此集合中删除指定元素</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>removeAll(Collection&lt;?&gt; c)</td>
+<td>从此集合中删除指定集合包含的所有元素</td>
+</tr>
+<tr>
+<td>int</td>
+<td>size()</td>
+<td>返回此集合中的元素数量</td>
+</tr>
+<tr>
+<td>Object[]</td>
+<td>toArray()</td>
+<td>返回一个包含此集合中所有元素的数组</td>
+</tr>
+</tbody></table>
+<h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><p>Set 具有与 Collection 完全一样的接口，因此没有任何额外的功能。实际上 Set 就是 Collection，只是行为不同。</p>
+<p>Set: 存入 Set 的每个元素都必须是唯一的，因为 Set 不保存重复元素。加入 Set 的元素必须重写 equals() 方法以确保对象的唯一性。Set 接口不保证维护元素的次序。</p>
+<p>TreeSet: 保存次序的 Set，底层为树结构。使用它可以从Set中提取有序的序列。</p>
+<p>HashSet: 为快速查找设计的 Set。存入 HashSet 的对象必须重写 hashCode() 方法。</p>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><p>List: 次序是 List 最大的特点，它保证元素可以按照特定的顺序排列。下面是 List 新增的一些常用 API: </p>
+<table>
+<thead>
+<tr>
+<th>Return Type</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean</td>
+<td>add(E e)</td>
+<td>将指定元素添加到此列表的末尾</td>
+</tr>
+<tr>
+<td>void</td>
+<td>add(int index, E element)</td>
+<td>将指定元素添加到此列表中的指定位置</td>
+</tr>
+<tr>
+<td>E</td>
+<td>get(int index)</td>
+<td>返回此列表中指定位置的元素</td>
+</tr>
+<tr>
+<td>int</td>
+<td>indexOf(Object o)</td>
+<td>返回此列表中指定元素第一次出现的索引，如果此列表不包含该元素则返回 -1</td>
+</tr>
+<tr>
+<td>int</td>
+<td>lastIndexOf(Object o)</td>
+<td>返回此列表中指定元素最后一次出现的索引，如果此列表不包含该元素则返回 -1</td>
+</tr>
+<tr>
+<td>E</td>
+<td>remove(int index)</td>
+<td>从此列表中删除指定位置的元素</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>remove(Object o)</td>
+<td>从此列表中删除第一次出现的指定元素</td>
+</tr>
+<tr>
+<td>E</td>
+<td>set(int index, E element)</td>
+<td>用指定的元素替换此列表中指定位置的元素</td>
+</tr>
+<tr>
+<td>void</td>
+<td>sort(Comparator&lt;? super E&gt; c)</td>
+<td>使用 Comparator 比较器将此列表中的元素重新排序</td>
+</tr>
+</tbody></table>
+<p>ArrayList: 由数组实现的 List，实现了随机访问的接口，允许对元素进行快速随机访问，但是向 List 中间插入与移除元素的速度比较慢。</p>
+<p>LinkedList: 基于链表实现的 List，对顺序访问进行了优化，向 List 中间插入与删除的开销并不大，但随机访问则相对较慢。除了上面的方法以外 LinkedList 还有下列常用 API: </p>
+<table>
+<thead>
+<tr>
+<th>Return Type</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean</td>
+<td>add(E e)/offer(E e)</td>
+<td>将指定元素添加到此列表的末尾</td>
+</tr>
+<tr>
+<td>void/boolean/void</td>
+<td>addFirst(E e)/offerFirst(E e)/push(E e)</td>
+<td>在此列表开头插入指定的元素</td>
+</tr>
+<tr>
+<td>void/boolean</td>
+<td>addLast(E e)/offerLast(E e)</td>
+<td>将指定的元素追加到此列表的末尾</td>
+</tr>
+<tr>
+<td>E</td>
+<td>getFirst()</td>
+<td>返回此列表中的第一个元素</td>
+</tr>
+<tr>
+<td>E</td>
+<td>getLast()</td>
+<td>返回此列表中的最后一个元素</td>
+</tr>
+<tr>
+<td>E</td>
+<td>removeFirst()/pop()</td>
+<td>删除并返回此列表中第一个元素</td>
+</tr>
+<tr>
+<td>E</td>
+<td>removeLast()</td>
+<td>删除并返回此列表中最后一个元素</td>
+</tr>
+</tbody></table>
+<p>如果对于 LinkedList 中多个方法都是同一个功能感到疑惑，看一下 LinkedList 的源码你就懂了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinkedList</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">AbstractSequentialList</span>&lt;<span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class">	<span class="keyword">implements</span> <span class="title">List</span>&lt;<span class="title">E</span>&gt;, <span class="title">Deque</span>&lt;<span class="title">E</span>&gt;, <span class="title">Cloneable</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 省略其它代码</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">offer</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> add(e);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">offerFirst</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">        addFirst(e);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">offerLast</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">        addLast(e);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">        addFirst(e);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> removeFirst();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><table>
+<thead>
+<tr>
+<th align="center">集合</th>
+<th align="center">使用场景</th>
+<th align="center">线程安全</th>
+<th align="center">可否添加 null</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Set</td>
+<td align="center">不需要保留存储顺序，并且需要去掉重复元素</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">TreeSet</td>
+<td align="center">需要将元素排序</td>
+<td align="center">×</td>
+<td align="center">×</td>
+</tr>
+<tr>
+<td align="center">HashSet</td>
+<td align="center">不需要将元素排序</td>
+<td align="center">×</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">List</td>
+<td align="center">需要保留存储顺序，并且保留重复元素</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">ArrayList</td>
+<td align="center">查询多，增删少</td>
+<td align="center">×</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">LinkedList</td>
+<td align="center">增删多，查询少</td>
+<td align="center">×</td>
+<td align="center">√</td>
+</tr>
+</tbody></table>
+<h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><p>Map 是一种使用「键值对」的方式来存储数据的集合，每个「键」映射一个「值」，可以通过「键」来获取对应的「值」。下面是 Map 接口中常用的一些 API: </p>
+<table>
+<thead>
+<tr>
+<th align="left">Return Type</th>
+<th align="left">Method</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">void</td>
+<td align="left">clear()</td>
+<td align="left">删除该 Map 中所有的映射</td>
+</tr>
+<tr>
+<td align="left">boolean</td>
+<td align="left">containsKey(Object key)</td>
+<td align="left">如果此 Map 包含指定键的映射，则返回 true</td>
+</tr>
+<tr>
+<td align="left">boolean</td>
+<td align="left">containsValue(Object value)</td>
+<td align="left">如果此 Map 将一个或多个键映射到指定的值，则返回 true</td>
+</tr>
+<tr>
+<td align="left">V</td>
+<td align="left">get(Object key)</td>
+<td align="left">返回此 Map 指定键对应的值，如果不存在返回 null</td>
+</tr>
+<tr>
+<td align="left">Set<k></k></td>
+<td align="left">keySet()</td>
+<td align="left">返回此 Map 中包含的键的 Set 集合</td>
+</tr>
+<tr>
+<td align="left">V</td>
+<td align="left">put(K key, V value)</td>
+<td align="left">将指定的值与指定键相关联</td>
+</tr>
+<tr>
+<td align="left">V</td>
+<td align="left">remove(Object key)</td>
+<td align="left">从此 Map 中删除指定键的映射</td>
+</tr>
+<tr>
+<td align="left">int</td>
+<td align="left">size()</td>
+<td align="left">返回此 Map 中键值映射的数量</td>
+</tr>
+<tr>
+<td align="left">Collection<v></v></td>
+<td align="left">values()</td>
+<td align="left">返回此 Map 中包含的值的 Collection 集合</td>
+</tr>
+</tbody></table>
+<p>HashMap: 基于散列表的实现。插入和查询「键值对」的开销是固定的。</p>
+<p>TreeMap: 基于红黑树数据结构的实现。查看「键」或「键值对」时，它们会被排序(次序由 Comparabel 或 Comparator 决定)。TreeMap 的特点在于，得到的结果是经过排序的。TreeMap 是唯一的带有 subMap() 方法的 Map，它可以返回一个子树。</p>
+<p>Hashtable: 和 HashMap 一样也是一个散列表，不过它的函数都是同步的，这意味着它是线程安全的。它的 key、value 都不可以为 null。此外，Hashtable 中的映射不是有序的。 </p>
+<h3 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h3><table>
+<thead>
+<tr>
+<th align="center">Map</th>
+<th align="center">使用场景</th>
+<th align="center">线程安全</th>
+<th align="center">键可否为 null</th>
+<th align="center">值可否为 null</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">HashMap</td>
+<td align="center">适用于 Map 中插入、删除和定位元素</td>
+<td align="center">×</td>
+<td align="center">√</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">TreeMap</td>
+<td align="center">适用于按自然顺序或自定义顺序遍历键(key)</td>
+<td align="center">×</td>
+<td align="center">×</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">Hashtable</td>
+<td align="center">适用于多线程时保证线程安全</td>
+<td align="center">√</td>
+<td align="center">×</td>
+<td align="center">×</td>
+</tr>
+</tbody></table>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://blog.csdn.net/weixin_36380516/article/details/54908418" target="_blank" rel="noopener">《List,Set和Map详解及其区别和他们分别适用的场景》</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/donate/vxin.jpg" alt="zpp0196 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/donate/alipay.jpg" alt="zpp0196 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/07/01/xposed-xsp/" rel="prev" title="Xposed 开发之 XSharedPreferences">
+      <i class="fa fa-chevron-left"></i> Xposed 开发之 XSharedPreferences
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/11/17/win10-dolby/" rel="next" title="Windows 10 安装 Dolby 音效">
+      Windows 10 安装 Dolby 音效 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Collection"><span class="nav-number">1.</span> <span class="nav-text">Collection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Set"><span class="nav-number">1.1.</span> <span class="nav-text">Set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#List"><span class="nav-number">1.2.</span> <span class="nav-text">List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">1.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map"><span class="nav-number">2.</span> <span class="nav-text">Map</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小结-1"><span class="nav-number">2.1.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zpp0196"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">zpp0196</p>
+  <div class="site-description" itemprop="description">欢迎来到本萌新的博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zpp0196" title="GitHub → https://github.com/zpp0196" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zpp0196@gmail.com" title="Email → mailto:zpp0196@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>Email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zpp0196</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ri5tyXNSjSPriqqfrPdoJnMg-gzGzoHsz',
+      appKey     : 'jWpytCCWLbvDghDuIPNxA5Wp',
+      placeholder: "What's your problem?",
+      avatar     : 'identicon',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1.03746905,"jsonPath":"/live2dw/assets/22.2017.school.model.json"},"display":{"width":200,"height":300,"position":"left","hOffset":-24,"vOffset":-50},"mobile":{"show":false},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

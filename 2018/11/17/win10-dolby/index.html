@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-material.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zpp0196.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="由于系统升级给我把我的逗比 (Dolby) 音效搞没了，搞得我又花时间折腾了一会，为了以后折腾能节约些时间，在此记个小笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows 10 安装 Dolby 音效">
+<meta property="og:url" content="https://zpp0196.github.io/2018/11/17/win10-dolby/index.html">
+<meta property="og:site_name" content="zpp0196&#39;s Blog">
+<meta property="og:description" content="由于系统升级给我把我的逗比 (Dolby) 音效搞没了，搞得我又花时间折腾了一会，为了以后折腾能节约些时间，在此记个小笔记。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-17T00:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Windows 10 安装 Dolby 音效">
+<meta name="twitter:description" content="由于系统升级给我把我的逗比 (Dolby) 音效搞没了，搞得我又花时间折腾了一会，为了以后折腾能节约些时间，在此记个小笔记。">
+
+<link rel="canonical" href="https://zpp0196.github.io/2018/11/17/win10-dolby/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Windows 10 安装 Dolby 音效 | zpp0196's Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?1733106d19266620cbe7fcfa32eef010";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">zpp0196's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zpp0196.github.io/2018/11/17/win10-dolby/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="zpp0196">
+      <meta itemprop="description" content="欢迎来到本萌新的博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zpp0196's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Windows 10 安装 Dolby 音效
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018/11/17 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-17T00:00:00+00:00">2018/11/17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/音效/" itemprop="url" rel="index"><span itemprop="name">音效</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2018/11/17/win10-dolby/" class="post-meta-item leancloud_visitors" data-flag-title="Windows 10 安装 Dolby 音效" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/11/17/win10-dolby/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/11/17/win10-dolby/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>由于系统升级给我把我的逗比 (Dolby) 音效搞没了，搞得我又花时间折腾了一会，为了以后折腾能节约些时间，在此记个小笔记。</p>
+<a id="more"></a>
+
+<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><p>Windows 10.0 x64(17134) （声卡支持）</p>
+<p>dolby home theater v4.1 32 x64</p>
+<h2 id="安装逗比"><a href="#安装逗比" class="headerlink" title="安装逗比"></a>安装逗比</h2><h3 id="卸载逗比"><a href="#卸载逗比" class="headerlink" title="卸载逗比"></a>卸载逗比</h3><p>打开 <code>C:\DRIVERS\WIN\DOLBY\x64\DTPC.msi</code> (因实际情况而异)然后选择 <code>remove</code> 移除以前安装过的逗比音效。</p>
+<blockquote>
+<p>一般用于修复逗比音效，如果电脑之前没有安装过逗比音效这一步可以省略跳过。</p>
+</blockquote>
+<h3 id="卸载驱动"><a href="#卸载驱动" class="headerlink" title="卸载驱动"></a>卸载驱动</h3><p>打开<strong>设备管理器</strong>找到<strong>声音、视频和游戏控制器</strong>(不是下面的<strong>音频输入和输出</strong>)，然后卸载系统自带的声卡驱动。</p>
+<h3 id="开启安装限制"><a href="#开启安装限制" class="headerlink" title="开启安装限制"></a>开启安装限制</h3><p><strong>win + R</strong> 运行 <code>gpedit.msc</code> 打开<strong>本地组策略编辑器</strong>，找到<strong>计算机配置 - 管理模板 - 系统 - 设备安装 - 设备安装限制 - 禁止安装未由其他策略设置描述的设备</strong>，然后改成<strong>已启用</strong>。</p>
+<blockquote>
+<p>防止电脑重启自动安装声卡驱动。</p>
+</blockquote>
+<h3 id="禁用签名"><a href="#禁用签名" class="headerlink" title="禁用签名"></a>禁用签名</h3><p><strong>Shift + 重启</strong> 或 <strong>设置 - 更新和安全 - 恢复 - 高级启动 - 立即重新启动</strong>，然后 <strong>疑难解答 - 启动设置 - 7)禁用驱动程序强制签名</strong>，然后坐等开机。</p>
+<blockquote>
+<p>不禁用签名无法安装逗比音效！</p>
+</blockquote>
+<h3 id="关闭安装限制"><a href="#关闭安装限制" class="headerlink" title="关闭安装限制"></a>关闭安装限制</h3><p>按照上面<strong>开启安装限制</strong>的方法修改回<strong>已禁用</strong>或<strong>未配置</strong>。</p>
+<blockquote>
+<p>刚才是因为禁止电脑自动安装声卡驱动所以开启安装限制，现在需要安装逗比音效所以需要关闭安装限制。</p>
+</blockquote>
+<h3 id="安装逗比-1"><a href="#安装逗比-1" class="headerlink" title="安装逗比"></a>安装逗比</h3><p>找到 <code>DTPC.msi</code> 安装逗比音效，安装时在 <strong>Install driver</strong> 那里只勾 <strong>DHT(Release)</strong>，然后询问重启电脑点击 Yes 开机后即可使用逗比音效。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://blog.csdn.net/u012348774/article/details/74931117" target="_blank" rel="noopener">Win10x64安装Dolby</a></li>
+<li><a href="http://tieba.baidu.com/p/4912839505" target="_blank" rel="noopener">我的win10专业版安装杜比音效软件的过程</a></li>
+<li><a href="http://tieba.baidu.com/p/3143778216" target="_blank" rel="noopener">杜比音效安装教程</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/donate/vxin.jpg" alt="zpp0196 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/donate/alipay.jpg" alt="zpp0196 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/11/15/java-collection/" rel="prev" title="Java 中的 Collection">
+      <i class="fa fa-chevron-left"></i> Java 中的 Collection
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/11/23/java-apk-parser/" rel="next" title="Java 解析 apk 信息">
+      Java 解析 apk 信息 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装环境"><span class="nav-number">1.</span> <span class="nav-text">安装环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装逗比"><span class="nav-number">2.</span> <span class="nav-text">安装逗比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#卸载逗比"><span class="nav-number">2.1.</span> <span class="nav-text">卸载逗比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卸载驱动"><span class="nav-number">2.2.</span> <span class="nav-text">卸载驱动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启安装限制"><span class="nav-number">2.3.</span> <span class="nav-text">开启安装限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#禁用签名"><span class="nav-number">2.4.</span> <span class="nav-text">禁用签名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭安装限制"><span class="nav-number">2.5.</span> <span class="nav-text">关闭安装限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装逗比-1"><span class="nav-number">2.6.</span> <span class="nav-text">安装逗比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zpp0196"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">zpp0196</p>
+  <div class="site-description" itemprop="description">欢迎来到本萌新的博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zpp0196" title="GitHub → https://github.com/zpp0196" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zpp0196@gmail.com" title="Email → mailto:zpp0196@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>Email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zpp0196</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ri5tyXNSjSPriqqfrPdoJnMg-gzGzoHsz',
+      appKey     : 'jWpytCCWLbvDghDuIPNxA5Wp',
+      placeholder: "What's your problem?",
+      avatar     : 'identicon',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1.03746905,"jsonPath":"/live2dw/assets/22.2017.school.model.json"},"display":{"width":200,"height":300,"position":"left","hOffset":-24,"vOffset":-50},"mobile":{"show":false},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

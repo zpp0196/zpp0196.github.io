@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-material.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zpp0196.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="上一篇 Xposed 相关的文章 发布已经是在前年了，主要是我早都已经不写 Xposed 模块了。但是今天为什么又突然更新了呢，这就要从那个夜晚说起了。">
+<meta name="keywords" content="Android,Xposed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xposed 开发之跨应用共享配置文件">
+<meta property="og:url" content="https://zpp0196.github.io/2021/01/01/xposed-spx/index.html">
+<meta property="og:site_name" content="zpp0196&#39;s Blog">
+<meta property="og:description" content="上一篇 Xposed 相关的文章 发布已经是在前年了，主要是我早都已经不写 Xposed 模块了。但是今天为什么又突然更新了呢，这就要从那个夜晚说起了。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-02-19T16:45:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Xposed 开发之跨应用共享配置文件">
+<meta name="twitter:description" content="上一篇 Xposed 相关的文章 发布已经是在前年了，主要是我早都已经不写 Xposed 模块了。但是今天为什么又突然更新了呢，这就要从那个夜晚说起了。">
+
+<link rel="canonical" href="https://zpp0196.github.io/2021/01/01/xposed-spx/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Xposed 开发之跨应用共享配置文件 | zpp0196's Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?1733106d19266620cbe7fcfa32eef010";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">zpp0196's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zpp0196.github.io/2021/01/01/xposed-spx/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="zpp0196">
+      <meta itemprop="description" content="欢迎来到本萌新的博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zpp0196's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Xposed 开发之跨应用共享配置文件
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021/01/01 21:24:33" itemprop="dateCreated datePublished" datetime="2021-01-01T21:24:33+00:00">2021/01/01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021/02/19 16:45:00" itemprop="dateModified" datetime="2021-02-19T16:45:00+00:00">2021/02/19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Xposed-开发/" itemprop="url" rel="index"><span itemprop="name">Xposed 开发</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/01/01/xposed-spx/" class="post-meta-item leancloud_visitors" data-flag-title="Xposed 开发之跨应用共享配置文件" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/01/01/xposed-spx/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/01/01/xposed-spx/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>上一篇 <a href="https://zpp0196.me/tags/Xposed/" target="_blank" rel="noopener">Xposed 相关的文章</a> 发布已经是在前年了，主要是我早都已经不写 Xposed 模块了。但是今天为什么又突然更新了呢，这就要从那个夜晚说起了。</p>
+<a id="more"></a>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>就在几天前，某米放出了 Android 11 的内测资格，我就去看了下热闹顺便小手一抖，结果当晚就给我推包了，再加上我当时用的系统 bug 略多，于是我就升级到了 Android 11。</p>
+<p>Android 11 存储相关的更新可以在 <a href="https://developer.android.com/about/versions/11/privacy/storage" target="_blank" rel="noopener">Storage updates in Android 11</a> 这个文档里面查看。</p>
+<p>这里我们只关心两点：</p>
+<ul>
+<li><del>requestLegacyExternalStorage 被忽略了</del></li>
+<li>无法访问外部存储中其他任何应用程序的专有目录了(/sdcard/Android/data/*)</li>
+</ul>
+<blockquote>
+<p>requestLegacyExternalStorage 仍然可以在 Android 11 上正常使用，如果不升级 targetSdkVersion 可以不用往下看了。</p>
+</blockquote>
+<p><a href="/2019/07/24/xposed-xsp-alternative/">上一篇</a> 的通用跨应用解决方案在这里就不通用了，因为他随着这次的 Android 11 更新失效了，那么还有没有别的通用解决方案呢？在我思考了 1.31226 分钟后一个新的解决方案诞生了。</p>
+<blockquote>
+<p>这个方案可能不是最好的，也不是唯一的解决方案，仅供参考。</p>
+</blockquote>
+<h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><p>下面这个表格列出了在开发 Xposed 模块时可能遇到的几种权限情况，以及我比较推荐的配置存储路径，仅供参考。</p>
+<table>
+<thead>
+<tr>
+<th>目标应用外部存储读写权限</th>
+<th>插件外部存储读写权限</th>
+<th>存储目录</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>无可读</td>
+<td>有可写</td>
+<td>/sdcard/Android/data/target_package/</td>
+</tr>
+<tr>
+<td>有可读</td>
+<td>有可写</td>
+<td>/sdcard/Android/data/plugin_package/</td>
+</tr>
+<tr>
+<td>有可读</td>
+<td>无可写</td>
+<td>/sdcard/Android/data/plugin_package/</td>
+</tr>
+<tr>
+<td>无可读</td>
+<td>无可写</td>
+<td>/data/data/target_package/ or /sdcard/Android/data/target_package/</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>实际的代码路径最好是不要用硬编码，这里用硬编码是因为一看就懂。</p>
+</blockquote>
+<p>前面三种就不多说了，看一眼就懂，这里主要讲一下最后一种。</p>
+<p>在目标应用的私有目录下写文件是最稳的办法（这里的稳指的是不会因为 Android 更新而失效），但是怎么写，这里有几种情况仅供参考：</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>目标应用运行状态</th>
+<th>插件运行状态</th>
+<th>插件注入状态</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>未运行</td>
+<td>运行中</td>
+<td>未注入</td>
+<td>从插件启动目标应用并共享文件</td>
+</tr>
+<tr>
+<td>2</td>
+<td>未运行</td>
+<td>未运行</td>
+<td>未注入</td>
+<td>打开插件，回到 1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>运行中</td>
+<td>未运行</td>
+<td>未注入</td>
+<td>停止目标应用，回到 2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>运行中</td>
+<td>未运行</td>
+<td>已注入</td>
+<td>拉起插件修改配置界面并返回结果</td>
+</tr>
+<tr>
+<td>5</td>
+<td>运行中</td>
+<td>运行中</td>
+<td>未注入</td>
+<td>停止目标应用，回到 1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>运行中</td>
+<td>运行中</td>
+<td>已注入</td>
+<td>回到 4 或在插件内注册广播</td>
+</tr>
+</tbody></table>
+<p>第 4 种方式是我最喜欢的方式之一，但是这种方案并不通用，在目标应用未知的情况下可能不知道应该什么时候去拉起 Activity。</p>
+<p>第 6 种方式看起来也可行，但是条件太苛刻了，一般情况下都是前几种情况，所以这里主要讲第 1 种从插件启动目标应用的实现。</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>先来看一下实现后的示例代码：</p>
+<h3 id="配置界面"><a href="#配置界面" class="headerlink" title="配置界面"></a>配置界面</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pref.setOnPreferenceClickListener &#123; _ -&gt;</span><br><span class="line">    pm.getLaunchIntentForPackage(<span class="string">"target_package"</span>)?.let  &#123;</span><br><span class="line">        PrefsBridge.launchWithDefaultPrefs(context, it)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="插件部分"><a href="#插件部分" class="headerlink" title="插件部分"></a>插件部分</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">handleLoadPackage</span><span class="params">(lpparam: <span class="type">XC_LoadPackage</span>.<span class="type">LoadPackageParam</span>)</span></span> &#123;</span><br><span class="line">    PrefsBridge.handleLoadPackage(SimplePrefsHandler(<span class="literal">true</span>)) &#123; app -&gt;</span><br><span class="line">        <span class="keyword">val</span> pluginContext = PluginContext(app)</span><br><span class="line">        <span class="keyword">val</span> sp = PrefsBridge.getDefaultSharedPreferences(app)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">val</span> switch = pluginContext.getString(R.string.pref_plugin_switch_key).let &#123; key -&gt;</span><br><span class="line">            sp.getBoolean(key, <span class="literal">false</span>)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (switch) &#123;</span><br><span class="line">            <span class="keyword">val</span> tvText = pluginContext.getString(R.string.pref_tv_set_text_key).let &#123; key -&gt;</span><br><span class="line">                sp.getString(key, <span class="string">""</span>)</span><br><span class="line">            &#125;</span><br><span class="line">            TextViewInterceptor.setText(tvText)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>上面的代码看起来很少，但确实已经可以满足大部分的场景了，这里大概讲一下原理：</p>
+<p>从插件启动目标应用，并在 <code>Intent</code> 里面传入一个 <code>uri</code>，这里的 <code>uri</code> 对应的是 <code>pluginContext.dataDir</code> 下面的一个文件。</p>
+<p>插件只需要从 <code>activity.intent</code> 里面取出来这个 <code>uri</code> 并调用 <code>contentResolver.openInputStream(uri)</code> 打开一个数据流，然后把这个流（文件）的内容写入到 <code>targetContext.dataDir</code> 下面即可。</p>
+<p>拷贝完数据以后，如果需要的话可以给用户一个提示，引导用户去停止一次目标应用，并且以后启动直接在启动器启动即可，只有在配置修改后才需要从插件打开一次目标应用。</p>
+<p>假设之前的用户体验是：</p>
+<p>下载插件 -&gt; 打开一个开关 -&gt; 点击按钮引导用户停止目标应用 -&gt; 停止后按返回按钮回到插件 -&gt; 启动目标应用 -&gt; 配置生效</p>
+<p>现在的用户体验就是：</p>
+<p>下载插件 -&gt; 打开一个开关 -&gt; 点击按钮打开目标应用（可能会有系统提示框），应用启动后引导用户停止目标应用 -&gt; 停止后按返回按钮回到插件 -&gt; 启动目标应用 -&gt; 配置生效</p>
+<p>唯一的区别就在于引导用户停止目标应用的界面不同，之前是在插件界面，现在是在目标应用界面。</p>
+<p>这里我们扮演的是一个启动器的角色，启动器不需要知道启动这个应用需要给他传什么 <code>uri</code>，所以启动后第一个 <code>Activity</code> 的 <code>uri</code> 一般都是空值，所以不用担心 <code>uri</code> 冲突问题。</p>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p>更多代码细节请参考完整源码: <a href="https://github.com/zpp0196/spx" target="_blank" rel="noopener">zpp0196/spx</a></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/donate/vxin.jpg" alt="zpp0196 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/donate/alipay.jpg" alt="zpp0196 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"><i class="fa fa-tag"></i> Android</a>
+              <a href="/tags/Xposed/" rel="tag"><i class="fa fa-tag"></i> Xposed</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/20/note-for-gradle-plugin-upgrade/" rel="prev" title="Gradle 插件升级注意事项">
+      <i class="fa fa-chevron-left"></i> Gradle 插件升级注意事项
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/12/android-adb-skill-and-faq/" rel="next" title="adb 使用技巧和常见问题解决方案">
+      adb 使用技巧和常见问题解决方案 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回顾"><span class="nav-number">2.</span> <span class="nav-text">回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例"><span class="nav-number">3.</span> <span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置界面"><span class="nav-number">3.1.</span> <span class="nav-text">配置界面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件部分"><span class="nav-number">3.2.</span> <span class="nav-text">插件部分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">4.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码"><span class="nav-number">5.</span> <span class="nav-text">源码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zpp0196"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">zpp0196</p>
+  <div class="site-description" itemprop="description">欢迎来到本萌新的博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zpp0196" title="GitHub → https://github.com/zpp0196" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zpp0196@gmail.com" title="Email → mailto:zpp0196@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>Email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zpp0196</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ri5tyXNSjSPriqqfrPdoJnMg-gzGzoHsz',
+      appKey     : 'jWpytCCWLbvDghDuIPNxA5Wp',
+      placeholder: "What's your problem?",
+      avatar     : 'identicon',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1.03746905,"jsonPath":"/live2dw/assets/22.2017.school.model.json"},"display":{"width":200,"height":300,"position":"left","hOffset":-24,"vOffset":-50},"mobile":{"show":false},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

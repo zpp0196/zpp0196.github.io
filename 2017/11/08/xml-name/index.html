@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-material.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zpp0196.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="你还记得最后一次不得不钻进 strings.xml 为了找到正确的字符串来使用吗？或者你会手动去在所有的 drawables 中寻找那个你需要的吗？ 每当我们开始一个新项目时，我们都会非常关心建立我们的架构，CI，构建风格，但是你有一个策略来命名您的资源吗？ 你应该有！由于缺乏 XML 命名空间，使得管理 Android Resources 变得乏味。并且使事情变得容易失控，特别是在大型项目中。">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 开发之 XML 文件的命名规范">
+<meta property="og:url" content="https://zpp0196.github.io/2017/11/08/xml-name/index.html">
+<meta property="og:site_name" content="zpp0196&#39;s Blog">
+<meta property="og:description" content="你还记得最后一次不得不钻进 strings.xml 为了找到正确的字符串来使用吗？或者你会手动去在所有的 drawables 中寻找那个你需要的吗？ 每当我们开始一个新项目时，我们都会非常关心建立我们的架构，CI，构建风格，但是你有一个策略来命名您的资源吗？ 你应该有！由于缺乏 XML 命名空间，使得管理 Android Resources 变得乏味。并且使事情变得容易失控，特别是在大型项目中。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://zpp0196.github.io/images/xml-name/xml_android.jpg">
+<meta property="og:image" content="https://zpp0196.github.io/images/xml-name/what_where_description_size.png">
+<meta property="og:image" content="https://zpp0196.github.io/images/xml-name/what_where_description_size_table.png">
+<meta property="og:image" content="https://zpp0196.github.io/images/xml-name/what_where.png">
+<meta property="og:image" content="https://zpp0196.github.io/images/xml-name/where_description.png">
+<meta property="og:image" content="https://zpp0196.github.io/images/xml-name/all_description.png">
+<meta property="og:image" content="https://zpp0196.github.io/images/xml-name/where_description_size.png">
+<meta property="og:image" content="https://zpp0196.github.io/images/xml-name/all_description_size.png">
+<meta property="og:image" content="https://zpp0196.github.io/images/xml-name/what_where_description.png">
+<meta property="og:image" content="https://zpp0196.github.io/images/xml-name/what_all_description_size.png">
+<meta property="og:image" content="https://zpp0196.github.io/images/xml-name/what_where_description_size.png">
+<meta property="og:updated_time" content="2018-06-23T00:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 开发之 XML 文件的命名规范">
+<meta name="twitter:description" content="你还记得最后一次不得不钻进 strings.xml 为了找到正确的字符串来使用吗？或者你会手动去在所有的 drawables 中寻找那个你需要的吗？ 每当我们开始一个新项目时，我们都会非常关心建立我们的架构，CI，构建风格，但是你有一个策略来命名您的资源吗？ 你应该有！由于缺乏 XML 命名空间，使得管理 Android Resources 变得乏味。并且使事情变得容易失控，特别是在大型项目中。">
+<meta name="twitter:image" content="https://zpp0196.github.io/images/xml-name/xml_android.jpg">
+
+<link rel="canonical" href="https://zpp0196.github.io/2017/11/08/xml-name/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android 开发之 XML 文件的命名规范 | zpp0196's Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?1733106d19266620cbe7fcfa32eef010";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">zpp0196's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zpp0196.github.io/2017/11/08/xml-name/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="zpp0196">
+      <meta itemprop="description" content="欢迎来到本萌新的博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zpp0196's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android 开发之 XML 文件的命名规范
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017/11/08 00:00:00" itemprop="dateCreated datePublished" datetime="2017-11-08T00:00:00+00:00">2017/11/08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018/06/23 00:00:00" itemprop="dateModified" datetime="2018-06-23T00:00:00+00:00">2018/06/23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android-开发/" itemprop="url" rel="index"><span itemprop="name">Android 开发</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2017/11/08/xml-name/" class="post-meta-item leancloud_visitors" data-flag-title="Android 开发之 XML 文件的命名规范" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/11/08/xml-name/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/11/08/xml-name/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/xml-name/xml_android.jpg" alt></p>
+<p>你还记得最后一次不得不钻进 <code>strings.xml</code> 为了找到正确的字符串来使用吗？或者你会手动去在所有的 drawables 中寻找那个你需要的吗？</p>
+<p>每当我们开始一个新项目时，我们都会非常关心建立我们的架构，CI，构建风格，但是你有一个策略来命名您的资源吗？</p>
+<p>你应该有！由于缺乏 XML 命名空间，使得管理 Android Resources 变得乏味。并且使事情变得容易失控，特别是在大型项目中。</p>
+<p>所以我们来介绍一个简单的方案来解决你的痛苦。</p>
+<a id="more"></a>
+
+<ul>
+<li>轻松查找任何资源（自动完成）</li>
+<li>合逻辑的，可预测的名称</li>
+<li>干净的资源排序</li>
+<li>强类型的资源</li>
+</ul>
+<p>这篇博客将解释其机制、优点、局限性，并提供易于使用的备忘表。</p>
+<h2 id="基本原则"><a href="#基本原则" class="headerlink" title="基本原则"></a>基本原则</h2><p>所有资源名称遵循简单的规则<br><img src="/images/xml-name/what_where_description_size.png" alt></p>
+<p>我们先简要介绍一下每个元素。然后我们将看到如何应用于每种资源类型。</p>
+<h3 id="lt-WHAT-gt"><a href="#lt-WHAT-gt" class="headerlink" title="&lt;WHAT&gt;"></a><code>&lt;WHAT&gt;</code></h3><p>指示资源实际代表什么，通常是标准的Android视图类，例如 MainActivity -&gt; <code>activity_</code> 。</p>
+<h3 id="lt-WHERE-gt"><a href="#lt-WHERE-gt" class="headerlink" title="&lt;WHERE&gt;"></a><code>&lt;WHERE&gt;</code></h3><p>描述它在逻辑上属于应用程序。多个屏幕中使用的资源使用 <code>all</code>，所有其他用户使用他们所在的Android视图子类的自定义部分，例如 MainActivity -&gt; <code>activity_main</code>，ArticleDetailFragment -&gt; <code>fragment_articledetail</code> 。</p>
+<h3 id="lt-DESCRIPTION-gt"><a href="#lt-DESCRIPTION-gt" class="headerlink" title="&lt;DESCRIPTION&gt;"></a><code>&lt;DESCRIPTION&gt;</code></h3><p>区分一个屏幕中的多个元素，例如 <code>title_</code> 。</p>
+<h3 id="lt-SIZE-gt-（可选）"><a href="#lt-SIZE-gt-（可选）" class="headerlink" title="&lt;SIZE&gt;（可选）"></a><code>&lt;SIZE&gt;</code>（可选）</h3><p>一个精确的大小或对大小的描述，用于 drawablem 和 dimension，例如 <code>_24dp</code> 或 <code>_small</code> 。</p>
+<p><img src="/images/xml-name/what_where_description_size_table.png" alt></p>
+<p>下载并打印<a href="http://jeroenmols.com/img/blog/resourcenaming/resourcenaming_cheatsheet.pdf" target="_blank" rel="noopener">备忘表</a>，方便参考。 </p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
+<li><strong>通过屏幕资源的排序</strong>。<br> <code>WHERE</code> 部分描述了筛选资源所属。因此，很容易获取特定屏幕的所有ID。</li>
+<li><strong>强类型的资源ID</strong>。<br> 对于资源 ID，<code>WHAT</code> 描述了它所属的 xml 元素的类名。这使得您的 <code>findViewById()</code> 变得容易使用。</li>
+<li><strong>更好的资源组织</strong>。<br> 文件浏览器/项目导航器通常按字母顺序排序文件。这意味着 layouts 和 drawables 可以按它们的 <code>WHAT</code>(activity 或 fragment 等) 和 <code>WHERE</code> 前缀分组排序。一个简单的 Android Studio 插件/特性可以将这些资源显示在它们自己的文件夹中。</li>
+<li><strong>更高效的自动填充</strong>。<br> 由于资源名称更加可预测，因此使用 IDE 的自动完成变得更加容易。通常输入 <code>WHAT</code> 或 <code>WHERE</code> 足以将自动完成缩小到有限的一组选项。</li>
+<li><strong>没有更多的名称冲突</strong>。<br> 不同屏幕中的类似资源是 <code>all</code> 或者有不同的 <code>WHERE</code>。固定的命名方案避免了所有的命名冲突。</li>
+<li><strong>干净的资源名称</strong>。<br> 总体而言，所有资源的命名将更加合乎逻辑，从而导致一个更干净的 Android 项目。</li>
+<li><strong>工具支持</strong>。<br> 这个命名方案可以很容易地被 Android Studio 支持，其功能包括：lint 规则强制执行这些名称，重构支持，当您更改 <code>WHAT</code> 或 <code>WHERE</code> 更好的资源可视化在项目视图……</li>
+</ol>
+<h2 id="Layouts"><a href="#Layouts" class="headerlink" title="Layouts"></a>Layouts</h2><p>布局相对简单，因为每个屏幕通常只有几个布局。因此，规则可以简化为：</p>
+<p><img src="/images/xml-name/what_where.png" alt></p>
+<p><code>&lt;WHAT&gt;</code> 是下面其中之一：</p>
+<table>
+<thead>
+<tr>
+<th>Prefix</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>activity</td>
+<td>contenview for activity</td>
+</tr>
+<tr>
+<td>fragment</td>
+<td>view for a fragment</td>
+</tr>
+<tr>
+<td>view</td>
+<td>inflated by a custom view</td>
+</tr>
+<tr>
+<td>item</td>
+<td>layout used in list/recycler/gridview</td>
+</tr>
+<tr>
+<td>layout</td>
+<td>layout reused using the include tag</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<ul>
+<li><strong>activity_main</strong>: content view of the MainActivity.</li>
+<li><strong>fragment_articledetail</strong>: view for the ArticleDetailFragment.</li>
+<li><strong>view_menu</strong>: layout inflated by custom view class MenuView.</li>
+<li><strong>item_article</strong>: list item in ArticleRecyclerView.</li>
+<li><strong>layout_actionbar_backbutton</strong>: layout for an actionbar with a backbutton (too simple to be a customview).</li>
+</ul>
+<h2 id="Strings"><a href="#Strings" class="headerlink" title="Strings"></a>Strings</h2><p>对于字符串来说不需要 <code>&lt;WHAT&gt;</code> 前缀，因此直接用 <code>&lt;WHERE&gt;</code> 作为前缀。</p>
+<p><img src="/images/xml-name/where_description.png" alt></p>
+<p>如果字符串会在多个页面被用到，使用 <code>all_</code> 作为前缀。</p>
+<p><img src="/images/xml-name/all_description.png" alt></p>
+<p>示例：</p>
+<ul>
+<li><strong>articledetail_title</strong>: title of ArticleDetailFragment.</li>
+<li><strong>feedback_explanation</strong>: feedback explanation in FeedbackFragment.</li>
+<li><strong>feedback_namehint</strong>: hint of name field in FeedbackFragment.</li>
+<li><strong>all_done</strong>: generic “done” string.</li>
+</ul>
+<p><code>&lt;WHERE&gt;</code> 对于同一视图中的所有资源显然是一样的。</p>
+<h2 id="Drawables"><a href="#Drawables" class="headerlink" title="Drawables"></a>Drawables</h2><p>同样<code>&lt;WHAT&gt;</code>对于 drawables 也是没有必要的，所以我们用 <code>&lt;WHERE&gt;</code> 来表示 drawable 的位置：</p>
+<p><img src="/images/xml-name/where_description_size.png" alt></p>
+<p>会被复用的 drawable 同样以 <code>all_</code> 作为前缀：</p>
+<p><img src="/images/xml-name/all_description_size.png" alt></p>
+<p>或者，您可以添加一个参数，它可以是实际大小 <code>_24dp</code> 或大小限定符 <code>_small</code>。</p>
+<p>示例：</p>
+<ul>
+<li><strong>articledetail_placeholder</strong>: placeholder in ArticleDetailFragment.</li>
+<li><strong>all_infoicon</strong>: generic info icon.</li>
+<li><strong>all_infoicon_large</strong>: large version of generic info icon.</li>
+<li><strong>all_infoicon_24dp</strong>: 24dp version of generic info icon.</li>
+</ul>
+<h2 id="IDs"><a href="#IDs" class="headerlink" title="IDs"></a>IDs</h2><p>对于ID，<code>&lt;WHAT&gt;</code> 是 xml 元素的类名，比如 tablayout、imageview 等等，<code>&lt;WHERE&gt;</code> 是 xml 文件所在屏幕的名称。<br><img src="/images/xml-name/what_where_description.png" alt></p>
+<p>示例：</p>
+<ul>
+<li><strong>tablayout_main</strong> -&gt; TabLayout in MainActivity.</li>
+<li><strong>imageview_menu_profile</strong> -&gt; profile image in custom MenuView.</li>
+<li><strong>textview_articledetail_title</strong> -&gt; title TextView in ArticleDetailFragment.</li>
+</ul>
+<h2 id="Dimensions"><a href="#Dimensions" class="headerlink" title="Dimensions"></a>Dimensions</h2><p>应当只定义有限的 dimension，并尽量复用它们，你应该主要使用：</p>
+<p><img src="/images/xml-name/what_all_description_size.png" alt></p>
+<p>并可选择使用屏幕特定的变体：</p>
+<p><img src="/images/xml-name/what_where_description_size.png" alt></p>
+<p><code>&lt;WHAT&gt;</code> 是下面其中之一：</p>
+<table>
+<thead>
+<tr>
+<th>Prefix</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>width</td>
+<td>width in dp</td>
+</tr>
+<tr>
+<td>height</td>
+<td>height in dp</td>
+</tr>
+<tr>
+<td>size</td>
+<td>if width == height</td>
+</tr>
+<tr>
+<td>margin</td>
+<td>margin in dp</td>
+</tr>
+<tr>
+<td>padding</td>
+<td>padding in dp</td>
+</tr>
+<tr>
+<td>elevation</td>
+<td>elevation in dp</td>
+</tr>
+<tr>
+<td>keyline</td>
+<td>absolute keyline measured from view edge in dp</td>
+</tr>
+<tr>
+<td>textsize</td>
+<td>size of text in sp</td>
+</tr>
+</tbody></table>
+<p>请注意，此列表仅包含最常用的<code>&lt;WHAT&gt;</code>s，其他 dimensions 限定符，如旋转，刻度等通常仅用于可绘制，因此较少重复使用。</p>
+<p>示例：</p>
+<ul>
+<li><strong>height_toolbar</strong>: height of all toolbars.</li>
+<li><strong>keyline_listtext</strong>: listitem text is aligned at this keyline.</li>
+<li><strong>textsize_medium</strong>: medium size of all text.</li>
+<li><strong>size_menu_icon</strong>: size of icons in menu.</li>
+<li><strong>height_menu_profileimage</strong>: height of profile image in menu.</li>
+</ul>
+<h2 id="已知限制"><a href="#已知限制" class="headerlink" title="已知限制"></a>已知限制</h2><ol>
+<li><p><strong>屏幕需要有唯一的名称</strong>。</p>
+<p> 为了避免参数中的冲突 <code>&lt;WHERE&gt;</code>，View（比如 activity 或 fragment）必须有唯一的名称。因此，您不能拥有 <code>MainActivity</code> 和 <code>MainFragment</code>，因为 <code>Main</code> 前缀将不再唯一标识一个 <code>&lt;WHERE&gt;</code>。</p>
+</li>
+<li><p><strong>不支持重构</strong>。</p>
+<p> 更改类名称不会随资源名称而变化，所以如果你将 <code>MainActivity</code> 重命名为 <code>ContentActivity</code>，那么布局 <code>activity_main</code> 将不被自动被重命名为 <code>activity_content</code>。希望 Android Studio 有一天会为此添加支持。</p>
+</li>
+<li><p><strong>并非所有资源类型都支持</strong>。</p>
+<p> 该方案目前尚不支持所有资源类型。对于某些资源来说，这是因为它们的使用频率较低，往往是非常多样化的（例如 <code>raw</code> 和 <code>assets</code>），对于其他资源，这是因为它们难以泛化（例如，主题/样式/颜色/动画）。</p>
+</li>
+</ol>
+<blockquote>
+<p>原文地址：<a href="http://jeroenmols.com/blog/2016/03/07/resourcenaming/" target="_blank" rel="noopener">《A successful XML naming convention》</a>。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/donate/vxin.jpg" alt="zpp0196 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/donate/alipay.jpg" alt="zpp0196 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"><i class="fa fa-tag"></i> Android</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/11/05/markdown-grammar/" rel="prev" title="Markdown 书写语法及规范">
+      <i class="fa fa-chevron-left"></i> Markdown 书写语法及规范
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/11/24/java-operator/" rel="next" title="Java 中的运算符">
+      Java 中的运算符 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本原则"><span class="nav-number">1.</span> <span class="nav-text">基本原则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-WHAT-gt"><span class="nav-number">1.1.</span> <span class="nav-text">&lt;WHAT&gt;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-WHERE-gt"><span class="nav-number">1.2.</span> <span class="nav-text">&lt;WHERE&gt;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-DESCRIPTION-gt"><span class="nav-number">1.3.</span> <span class="nav-text">&lt;DESCRIPTION&gt;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-SIZE-gt-（可选）"><span class="nav-number">1.4.</span> <span class="nav-text">&lt;SIZE&gt;（可选）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">1.5.</span> <span class="nav-text">优点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Layouts"><span class="nav-number">2.</span> <span class="nav-text">Layouts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Strings"><span class="nav-number">3.</span> <span class="nav-text">Strings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Drawables"><span class="nav-number">4.</span> <span class="nav-text">Drawables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IDs"><span class="nav-number">5.</span> <span class="nav-text">IDs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dimensions"><span class="nav-number">6.</span> <span class="nav-text">Dimensions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#已知限制"><span class="nav-number">7.</span> <span class="nav-text">已知限制</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zpp0196"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">zpp0196</p>
+  <div class="site-description" itemprop="description">欢迎来到本萌新的博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zpp0196" title="GitHub → https://github.com/zpp0196" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zpp0196@gmail.com" title="Email → mailto:zpp0196@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>Email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zpp0196</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ri5tyXNSjSPriqqfrPdoJnMg-gzGzoHsz',
+      appKey     : 'jWpytCCWLbvDghDuIPNxA5Wp',
+      placeholder: "What's your problem?",
+      avatar     : 'identicon',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1.03746905,"jsonPath":"/live2dw/assets/22.2017.school.model.json"},"display":{"width":200,"height":300,"position":"left","hOffset":-24,"vOffset":-50},"mobile":{"show":false},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

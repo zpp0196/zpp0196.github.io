@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-material.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zpp0196.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="去年介绍了一种如何在 Xposed 模块中读取配置文件的方法，这好像是 Xposed API 中唯一的跨应用读取配置的 API ？ 随着 Android 系统的不断升级再加上各大手机厂商对 ROM 的定制，导致这个 API 不再能那么完美的兼容所有 ROM，至于哪里不兼容我相信各大模块开发者和部分用户应该都已经体验过了，虽然说有临时的解决办法，但多多少少还是有点问题，今天就给开发者们提供一个新的">
+<meta name="keywords" content="Android,Xposed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xposed 开发之跨应用读取配置文件">
+<meta property="og:url" content="https://zpp0196.github.io/2019/07/24/xposed-xsp-alternative/index.html">
+<meta property="og:site_name" content="zpp0196&#39;s Blog">
+<meta property="og:description" content="去年介绍了一种如何在 Xposed 模块中读取配置文件的方法，这好像是 Xposed API 中唯一的跨应用读取配置的 API ？ 随着 Android 系统的不断升级再加上各大手机厂商对 ROM 的定制，导致这个 API 不再能那么完美的兼容所有 ROM，至于哪里不兼容我相信各大模块开发者和部分用户应该都已经体验过了，虽然说有临时的解决办法，但多多少少还是有点问题，今天就给开发者们提供一个新的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-24T15:28:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Xposed 开发之跨应用读取配置文件">
+<meta name="twitter:description" content="去年介绍了一种如何在 Xposed 模块中读取配置文件的方法，这好像是 Xposed API 中唯一的跨应用读取配置的 API ？ 随着 Android 系统的不断升级再加上各大手机厂商对 ROM 的定制，导致这个 API 不再能那么完美的兼容所有 ROM，至于哪里不兼容我相信各大模块开发者和部分用户应该都已经体验过了，虽然说有临时的解决办法，但多多少少还是有点问题，今天就给开发者们提供一个新的">
+
+<link rel="canonical" href="https://zpp0196.github.io/2019/07/24/xposed-xsp-alternative/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Xposed 开发之跨应用读取配置文件 | zpp0196's Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?1733106d19266620cbe7fcfa32eef010";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">zpp0196's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zpp0196.github.io/2019/07/24/xposed-xsp-alternative/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="zpp0196">
+      <meta itemprop="description" content="欢迎来到本萌新的博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zpp0196's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Xposed 开发之跨应用读取配置文件
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019/07/24 15:28:12" itemprop="dateCreated datePublished" datetime="2019-07-24T15:28:12+00:00">2019/07/24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Xposed-开发/" itemprop="url" rel="index"><span itemprop="name">Xposed 开发</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/07/24/xposed-xsp-alternative/" class="post-meta-item leancloud_visitors" data-flag-title="Xposed 开发之跨应用读取配置文件" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/07/24/xposed-xsp-alternative/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/07/24/xposed-xsp-alternative/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>去年介绍了一种<a href="https://zpp0196.me/2018/07/01/xposed-xsp" target="_blank" rel="noopener">如何在 Xposed 模块中读取配置文件</a>的方法，这好像是 <a href="https://api.xposed.info/reference/packages.html" target="_blank" rel="noopener">Xposed API</a> 中唯一的跨应用读取配置的 API ？</p>
+<p>随着 Android 系统的不断升级再加上各大手机厂商对 ROM 的定制，导致这个 API 不再能那么完美的兼容所有 ROM，至于哪里不兼容我相信各大模块开发者和部分用户应该都已经体验过了，虽然说有临时的解决办法，但多多少少还是有点问题，今天就给开发者们提供一个新的 <del>API</del> 办法来解决这个问题。</p>
+<a id="more"></a>
+
+<hr>
+<p>先来看一下目前有哪些方法可以在 Xposed 模块中读取配置文件：</p>
+<ol>
+<li><p><strong>XSharedPreferences</strong><br> 使用简单方便，虽然会出现没权限读不到配置文件的情况，手动改一下权限还是可以解决的，但是 EMUI 重启手机后又会改回来，需要再手动改一次，用户体验不是很好。</p>
+</li>
+<li><p><strong>/storage/emulated/user/user_id/xxx.cfg</strong><br> 看起来挺完美的解决方案，但是被 hook 的应用如果没有 <code>READ_EXTERNAL_STORAGE</code> 权限也是无法读取数据的。</p>
+</li>
+<li><p><strong>/data/data/hooked_app_package/shared_prefs</strong><br> 看起来也是挺完美的解决方案，但是模块和被 hook 的应用耦合度太高了，除定制化模块外不建议考虑。</p>
+</li>
+<li><p><strong>ContentProvider</strong><br> 这个我没试过，听说可以，但还是会出现会读不到数据的情况。</p>
+</li>
+</ol>
+<p>假设现在为了提高开发效率，要将 Xposed 模块中的读写配置封装成一个通用并且兼容性好的 API，第二种方法看起来应该是个不错的选择。</p>
+<p>那么问题来了，<strong>被 hook 的应用如果没有申请读取存储权限怎么办？</strong></p>
+<p>这个时候就要有请我们的沙盒登场了。</p>
+<blockquote>
+<p>Minecraft: Heard I was wanted?</p>
+</blockquote>
+<p>不不不，不是这个沙盒游戏，而是 Android 中的沙盒。</p>
+<p>我们知道每个应用在 <code>/data/data/package/</code> 这个自己的沙盒目录下可以随意读写文件而且不需要任何权限，<strong>从 Android 4.4 开始在 <code>/storage/emulated/user/Android/data/package/</code> 这个目录下的读写文件也无需申请权限了</strong>，而且这个目录下的文件不像 <code>/data/data/</code> 下面的文件需要 Root 权限才能跨应用读写，<strong>只要你有 <code>WRITE_EXTERNAL_STORAGE</code> 权限，你也可以随便读写别人的文件</strong>，比如随便找一个文件管理器，找到 <code>/Android/data/package/</code>，你可以看见里面的所有文件，也可以增删改。</p>
+<p>结合这两点以后，一个近乎完美的解决方案诞生了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 在自己的模块里面申请 WRITE_EXTERNAL_STORAGE 权限</span></span><br><span class="line">requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 将配置文件写到 /storage/emulated/user/Android/data/hooked_app_package/ 下</span></span><br><span class="line">File sdcard = Environment.getExternalStorageDirectory();</span><br><span class="line">File configFile = <span class="keyword">new</span> File(sdcard, <span class="string">"Android/data/"</span> + packageName);</span><br><span class="line">writeFile(configFile, <span class="string">"&#123;\"switch\":true&#125;"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 被 hook 的应用在 /storage/emulated/user/Android/data/hooked_app_package/ 下读取配置文件</span></span><br><span class="line">readFile(configFile);</span><br></pre></td></tr></table></figure>
+
+<p>当然还没有结束，这个方案看似很完美，其实它就是很完美，但是还有一些地方需要注意：</p>
+<ol start="0">
+<li><p>Android 4.4 以下还需要被 hook 的应用在 <code>AndroidManifest.xml</code> 中声明 <code>READ_EXTERNAL_STORAGE</code> 权限。但如果是 4.4 以下直接用 XSharedPreferences 就行了。</p>
+</li>
+<li><p>配置文件不会随模块的卸载而被删除，而是随被 hook 的应用卸载而删除，当仅模块被卸载后这些文件就成了<strong>垃圾文件</strong>，至于这些垃圾文件该怎么办就看开发者怎么处理了。</p>
+</li>
+<li><p>使用『<a href="https://rikka.app/storage_redirect/" target="_blank" rel="noopener">存储重定向</a>』等的用户需要自己手动配置相应的规则。由于我没用过这类软件，所以我没办法给你们举栗子，也不知道会不会有别的问题，就算冲突了，你们要找的人也不是模块开发者，毕竟冲突的原因不是开发者造成的。</p>
+</li>
+<li><p>该方法可能会随着 Android 版本的更新失效！</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/donate/vxin.jpg" alt="zpp0196 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/donate/alipay.jpg" alt="zpp0196 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"><i class="fa fa-tag"></i> Android</a>
+              <a href="/tags/Xposed/" rel="tag"><i class="fa fa-tag"></i> Xposed</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/07/01/xposed-uiautomator/" rel="prev" title="Xposed 开发之 UiAutomatorViewer 扩展">
+      <i class="fa fa-chevron-left"></i> Xposed 开发之 UiAutomatorViewer 扩展
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/07/25/xposed-debug/" rel="next" title="Xposed 开发之模块调试篇">
+      Xposed 开发之模块调试篇 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zpp0196"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">zpp0196</p>
+  <div class="site-description" itemprop="description">欢迎来到本萌新的博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zpp0196" title="GitHub → https://github.com/zpp0196" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zpp0196@gmail.com" title="Email → mailto:zpp0196@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>Email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zpp0196</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ri5tyXNSjSPriqqfrPdoJnMg-gzGzoHsz',
+      appKey     : 'jWpytCCWLbvDghDuIPNxA5Wp',
+      placeholder: "What's your problem?",
+      avatar     : 'identicon',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1.03746905,"jsonPath":"/live2dw/assets/22.2017.school.model.json"},"display":{"width":200,"height":300,"position":"left","hOffset":-24,"vOffset":-50},"mobile":{"show":false},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>
